@@ -49,8 +49,8 @@ class LoginPage extends Component{
         alert("Login----not implement")
         event.preventDefault();
         const {username,password} = this.state
-
         // console.log(username)
+        //ASDASDA
         // console.log(password)
         // console.log(this.history)
         // try{
