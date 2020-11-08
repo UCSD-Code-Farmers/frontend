@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './Login.css'
 import axios from 'axios'
+import store from '../../store/Store'
 class LoginPage extends Component{
     constructor(props) {
         super(props);
@@ -17,6 +18,7 @@ class LoginPage extends Component{
         this.handleSignUp = this.handleSignUp.bind(this)
         this.handleEmailVerification=this.handleEmailVerification.bind(this)
     }
+
     handleLoginSwitch(){
         this.setState({
             isSwitch:false,
@@ -35,6 +37,7 @@ class LoginPage extends Component{
         this.setState({
             email: event.target.value
         })
+
     }
     handleUserNameChange = (event) =>{
         this.setState({
@@ -62,10 +65,22 @@ class LoginPage extends Component{
         })
         .then(res => {
             switch (res.data.statusCode) {
-                case 200:
-                    console.log("signed up successfully")
+                case 200: {
+                    console.log(res.data)
                     this.props.closePopup()
+                    //pass userName and email redux storage
+                    
+                    const action = {
+                        type: 'setEmailAndUserName',
+                        data: {
+                            email: res.data.user.email,
+                            userName: res.data.user.userName
+                        }
+                    }
+                    
+                    store.dispatch(action)
                     break
+                }
                 case 403:
                     alert(res.data.errMsg)
                     return
