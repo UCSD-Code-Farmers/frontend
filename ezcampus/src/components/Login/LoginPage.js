@@ -10,7 +10,7 @@ class LoginPage extends Component{
             password:"",
             value:{}
         }
-        this.handleLoginSwitch = this.handleLoginSwitch.bind(this)
+        
         this.handleSignUpSwitch = this.handleSignUpSwitch.bind(this)
         this.handleLogin = this.handleLogin.bind(this)
         this.handleSignUp = this.handleSignUp.bind(this)
