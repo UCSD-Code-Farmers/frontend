@@ -37,7 +37,6 @@ class LoginPage extends Component{
         this.setState({
             email: event.target.value
         })
-
     }
     handleUserNameChange = (event) =>{
         this.setState({
