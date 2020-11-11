@@ -21,7 +21,6 @@ class SideBar extends React.Component {
       showPopUPLogin:false,
   };
 
-
   onTogglePopup= () => {
     this.setState({
         showPopUPLogin: !this.state.showPopUPLogin
@@ -81,7 +80,9 @@ class SideBar extends React.Component {
               >
                 Log In / Sign Up
               </Button>
-              {this.state.showPopUPLogin? <Login closePopup={this.onTogglePopup} /> : null}
+              {this.state.showPopUPLogin?
+                  <Login closePopup={this.onTogglePopup}
+                  /> : null}
          </div>
          <div>
             <NavLink to="/posts/create">
