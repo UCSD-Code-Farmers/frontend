@@ -24,12 +24,6 @@ class SideBar extends React.Component {
   };
 
   onTogglePopup= () => {
-    this.setState({
-      userName
-    })
-  }
-
-  onTogglePopup= () => {
     this.setState((prevState) => {
       return {showPopUPLogin: !prevState.showPopUPLogin}
     })
