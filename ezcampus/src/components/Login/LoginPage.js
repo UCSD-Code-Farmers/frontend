@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import './Login.css'
 import axios from 'axios'
+import store from '../../store/Store'
 class LoginPage extends Component{
     constructor(props) {
         super(props);
         this.state = {
             isSwitch:false,  //DO Not modify this
+            email:"",
             username:"",
             password:"",
             value:{}
@@ -16,6 +18,7 @@ class LoginPage extends Component{
         this.handleSignUp = this.handleSignUp.bind(this)
         this.handleEmailVerification=this.handleEmailVerification.bind(this)
     }
+
     handleLoginSwitch(){
         this.setState({
             isSwitch:false,
@@ -30,10 +33,16 @@ class LoginPage extends Component{
     /*
     * input box handler
     * */
+    handleEmailChange = (event) => {
+        this.setState({
+            email: event.target.value
+        })
+    }
     handleUserNameChange = (event) =>{
         this.setState({
             username:event.target.value,
         })
+
     }
     handlePasswordChange = (event) =>{
         this.setState({
@@ -46,15 +55,40 @@ class LoginPage extends Component{
    **/
     handleLogin= (event) =>{
         event.preventDefault();
-        const {username,password} = this.state
-        console.log(username, password)
+        const {email,password} = this.state
+
         axios.post('http://fanyangjeff.pythonanywhere.com/signin', {
-                'email': username,
+                'email': email,
                 'password': password
             
         })
         .then(res => {
-            console.log(res.data)
+            switch (res.data.statusCode) {
+                case 200: {
+                    console.log(res.data)
+                    this.props.closePopup()
+                    //pass userName and email redux storage
+                    
+                    const action = {
+                        type: 'setEmailAndUserName',
+                        data: {
+                            email: res.data.user.email,
+                            userName: res.data.user.userName
+                        }
+                    }
+                    
+                    store.dispatch(action)
+                    break
+                }
+                case 403:
+                    alert(res.data.errMsg)
+                    return
+                case 404:
+                    alert(res.data.errMsg)
+                    return
+                default:
+                    return
+            }
         })
         .catch(err => {
             console.log(err)
@@ -66,15 +100,28 @@ class LoginPage extends Component{
     handleSignUp= (event) =>{
         //alert("SignUp----not implement")
         event.preventDefault();
-        const {username,password} = this.state
+        const {email, username,password} = this.state
 
         axios.post('http://fanyangjeff.pythonanywhere.com/signup', {
-            'email': username,
+            'email': email,
             'userName': username, 
             'password': password
         })
         .then(res => {
             console.log(res.data)
+            switch (res.data.statusCode) {
+                case 200:
+                    console.log("signed up successfully")
+                    this.props.closePopup()
+                    break
+                case 403:
+                    alert(res.data.errMsg)
+                    console.log(res.data.errMsg)
+                    return
+                default:
+                    return
+            }
+
         })
         .catch(err => {
             console.log(err)
@@ -113,7 +160,7 @@ class LoginPage extends Component{
                             </button>
                         </div>
                         <form style={login} className="input-group" onSubmit={this.handleLogin}>
-                            <input type="text" className="input-field" placeholder="Email" onChange={this.handleUserNameChange}/>
+                            <input type="text" className="input-field" placeholder="Email" onChange={this.handleEmailChange}/>
                             <input type="text" className="input-field" placeholder="Password" onChange={this.handlePasswordChange}/>
                             <input
                                 type="checkbox"
@@ -138,8 +185,8 @@ class LoginPage extends Component{
                         </form>
 
                         <form style={signup} className="input-group" onSubmit={this.handleSignUp}>
-                            <input type="text" className="input-field" placeholder="Name" />
-                            <input type="email" className="input-field" placeholder="Email" onChange={this.handleUserNameChange}/>
+                            <input type="text" className="input-field" placeholder="Name" onChange={this.handleUserNameChange}/>
+                            <input type="email" className="input-field" placeholder="Email" onChange={this.handleEmailChange}/>
                             <input type="text" className="input-field" placeholder="Password" onChange={this.handlePasswordChange}/>
                             <input
                                 type="checkbox"
