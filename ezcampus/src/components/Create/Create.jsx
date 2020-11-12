@@ -38,7 +38,7 @@ export default class Create extends Component {
                     <div className="form-group">
                         <label><strong>SUBJECT</strong></label>
                         <input type="email" className="form-control" id="postSubject"
-                               placeholder="your subject goes here..."/>
+                               placeholder="Your subject goes here..."/>
                     </div>
                     <div className="form-group">
                         <label><strong>CATEGORY</strong></label>
