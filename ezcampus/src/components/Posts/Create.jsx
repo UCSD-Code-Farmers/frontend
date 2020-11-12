@@ -5,8 +5,8 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 import FroalaEditorComponent from 'react-froala-wysiwyg';
 import 'froala-editor/js/plugins.pkgd.min.js';
 import 'froala-editor/js/third_party/font_awesome.min.js';
-
-// import Button from 'react-bootstrap/Button';
+import Button from 'react-bootstrap/Button';
+import './CreatePost.css'
 
 export default class Create extends Component {
     constructor(props) {
@@ -47,6 +47,17 @@ export default class Create extends Component {
                     placeholderText: 'Write the details here!',
                     charCounterCount: true
                 }}/>
+                <br/>
+                <div>
+                    <Button type="button" id="creat-post-cancel"
+                            className="btn btn-secondary float-right btn-lg ml-3">
+                        <strong>Cancel</strong>
+                    </Button>
+                    <Button type="button" id="creat-post-send"
+                            className="btn btn-success float-right btn-lg">
+                        <strong>Send</strong>
+                    </Button>
+                </div>
             </div>
         )
     }
