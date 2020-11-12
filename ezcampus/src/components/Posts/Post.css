@@ -88,6 +88,10 @@
   float: right !important;
   padding: 5px 5px 5px 5px !important;
 }
+.single-post-likeButton {
+  float: right !important;
+  padding: 5px 10px 0 5px !important;
+}
 
 .posts-container {
   width: 100%;

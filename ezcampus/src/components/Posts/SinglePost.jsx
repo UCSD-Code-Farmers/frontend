@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './Post.css'
 import {Button} from 'react-bootstrap'
+import { LikeOutlined, DislikeOutlined } from '@ant-design/icons'
 
 export default class SinglePost extends Component {
     constructor(props) {
@@ -13,6 +14,13 @@ export default class SinglePost extends Component {
         console.log(this.data)
     }
 
+    handleDislike = () => {
+        console.log(this.data)
+    }
+
+    handleLike(){
+        console.log(this.data)
+    }
     render() {
         const {creator, title, description, views, likes, date, id, type} = this.data
 
@@ -51,6 +59,8 @@ export default class SinglePost extends Component {
 
                 <div className= 'single-post-detailButton-box'>
                     <Button variant='light' className='single-post-detailButton'>View Details</Button>
+                    <DislikeOutlined className='single-post-likeButton' onClick={this.handleDislike}/>
+                    <LikeOutlined className='single-post-likeButton' onClick={this.handleLike}/>
                 </div>
             </div>
         )
