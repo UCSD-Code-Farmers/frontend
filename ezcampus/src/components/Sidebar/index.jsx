@@ -26,13 +26,7 @@ class SideBar extends React.Component {
   componentDidMount() {
     store.subscribe(() => {
       const {userName} = store.getState()
-      this.updateUserName(userName)
-    })
-  }
-
-  updateUserName = (userName) => {
-    this.setState({
-      userName
+      console.log(userName)
     })
   }
 
@@ -47,6 +41,10 @@ class SideBar extends React.Component {
     console.log(collapsed);
     this.setState({ collapsed });
   };
+
+  updateUserName = () => {
+
+  }
 
   render() {
     const { collapsed } = this.state;
@@ -97,7 +95,9 @@ class SideBar extends React.Component {
               >
                 Log In / Sign Up
               </Button>
-              {this.state.showPopUPLogin? <Login closePopup={this.onTogglePopup} /> : null}
+              {this.state.showPopUPLogin?
+                  <Login closePopup={this.onTogglePopup}
+                  /> : null}
          </div>
          <div>
             <NavLink to="/posts/create">
