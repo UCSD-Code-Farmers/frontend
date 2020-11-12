@@ -8,7 +8,7 @@ export default class SinglePost extends Component {
     render() {
         return (
             <div>
-                <h1>Wo shi {this.props.id}</h1>
+                <h1>{this.props.content}</h1>
             </div>
         )
     }
