@@ -22,14 +22,12 @@ export default class SinglePost extends Component {
                 <div className='single-post-header'>
                 <div style={{display: 'inline-block'}}>
                     <div style={{display: 'flex'}}>
-                        <span className='single-post-creator'>
+                        <div className='single-post-creator'>
                             {creator}
-
-                            <span className='single-post-type'>
-                            {type}
-                            </span>
-
-                        </span>
+                        </div>
+                        <div className='single-post-type'>
+                            {type}  
+                        </div>
                     </div>
                 </div>
 
