@@ -1,5 +1,10 @@
 import SideBar from "./Sidebar";
 import UserProfile from "./Profile/ProfilePage/UserProfile"
+import Posts from './Posts/Posts'
+import PostDetail from './Posts/PostDetail/PostContent'
+
+import Create from "./Create/Create";
+
 import {
   BrowserRouter,
   NavLink,
@@ -7,6 +12,7 @@ import {
   Route,
   Switch,
 } from "react-router-dom";
+
 
 function App() {
   return (
@@ -38,6 +44,7 @@ function App() {
                     <Route
                       exact
                       path="/posts"
+                      component={Posts}
                     />
                     <Route
                       exact
@@ -46,6 +53,7 @@ function App() {
                     <Route
                       exact
                       path="/posts/create"
+                      component={Create}
                     />
                     <Route
                       exact
@@ -58,6 +66,7 @@ function App() {
                     <Route
                       exact
                       path="/groups"
+                      component={PostDetail}
                     />
                     <Route
                       exact
