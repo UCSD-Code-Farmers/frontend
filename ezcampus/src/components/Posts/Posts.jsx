@@ -106,7 +106,7 @@ export default class Posts extends Component {
     }
 
     createPostList = () => {
-        
+
         return (
             <div className='posts-container'>
             {this.data.map(
@@ -117,7 +117,6 @@ export default class Posts extends Component {
                 ))}
             </div>
         )
-        
 
     }
 
