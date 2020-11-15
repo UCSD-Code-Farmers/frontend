@@ -1,7 +1,7 @@
 import SideBar from "./Sidebar";
 import UserProfile from "./Profile/ProfilePage/UserProfile"
 import Posts from './Posts/Posts'
-
+import {useHistory} from 'react-router-dom'
 import Create from "./Create/Create";
 import Friends from "./Friends/Friends"
 
@@ -15,6 +15,8 @@ import {
 
 
 function App() {
+  const history = useHistory()
+
   return (
     <div className="App">
        <BrowserRouter>

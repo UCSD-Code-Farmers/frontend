@@ -23,7 +23,6 @@
 
 .single-post-creator {
   display: inline;
-  position: relative;
   left: 50px;
   font-size: 20px;
   color: rgb(84, 88, 113);
@@ -34,7 +33,6 @@
 .single-post-type {
   margin-left: 40px;
   padding-top: 18px;
-  position: relative;
   left: 30px;
   padding-top: 10px;
   color: rgb(84, 88, 113);

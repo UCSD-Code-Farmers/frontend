@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './Post.css'
 import {Button} from 'react-bootstrap'
-import { LikeOutlined, DislikeOutlined } from '@ant-design/icons'
+import ReactHtmlParser from 'react-html-parser'
 
 export default class PostCell extends Component {
     constructor(props) {
@@ -22,7 +22,7 @@ export default class PostCell extends Component {
         console.log(this.data)
     }
     render() {
-        const {creator, title, description, views, likes, date, id, type} = this.data
+        const {creatorName, creatorEmail, title, description, views, likes, date, postId, postType} = this.data
 
         return (
             <div className='single-post-container'>
@@ -32,10 +32,10 @@ export default class PostCell extends Component {
                     <div style={{display: 'flex'}}>
 
                         <div className='single-post-creator'>
-                            {creator}
+                            {creatorName? creatorName: 'unknown'}
                         </div>
                         <div className='single-post-type'>
-                            {type}  
+                            {postType}  
                         </div>
                     </div>
                 </div>
@@ -51,7 +51,7 @@ export default class PostCell extends Component {
 
                 <div className='single-post-description-box'>
                     <div className='single-post-description-text'>
-                        {description}
+                        {ReactHtmlParser(description)}
                     </div>
                 </div>
                 </div>
