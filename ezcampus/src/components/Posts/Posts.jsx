@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import SinglePost from './SinglePost'
+import PostCell from './PostCell'
 import { HomeOutlined } from '@ant-design/icons'
 import './Post.css'
 const data = [
@@ -131,7 +131,7 @@ export default class Posts extends Component {
             <div className='posts-container'>
             {this.data.map(
                 data => (
-                <SinglePost 
+                <PostCell 
                     data={data}
                 />
                 ))}

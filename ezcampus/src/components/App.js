@@ -3,6 +3,7 @@ import UserProfile from "./Profile/ProfilePage/UserProfile"
 import Posts from './Posts/Posts'
 
 import Create from "./Create/Create";
+import Friends from "./Friends/Friends"
 
 import {
   BrowserRouter,
@@ -69,6 +70,7 @@ function App() {
                     <Route
                       exact
                       path="/friends"
+                      component={Friends}
                     />
                     <Route
                       path="/posts/:postId"
