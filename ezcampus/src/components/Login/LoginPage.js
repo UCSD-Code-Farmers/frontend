@@ -69,7 +69,7 @@ class LoginPage extends Component{
         const {email,password} = this.state
         console.log(email)
         console.log(password)
-        axios.post('http://metaraw.world:3000/users/email_login', {
+        axios.post('http://server.metaraw.world:3000/users/email_login', {
                 'email': email,
                 'password': password
             
@@ -89,50 +89,24 @@ class LoginPage extends Component{
             }
         })
         .catch(err => {
-            console.log(err)
+            console.log(err.response)
             if (!err.response) return
             const errRes = err.response
-            alert(errRes.message)
-            console.log(errRes.message)
-        })
-        /*
-        axios.post('http://fanyangjeff.pythonanywhere.com/signin', {
-            'email': email,
-            'password': password
-            
-        })
-        .then(res => {
-            switch (res.data.statusCode) {
-                case 200: {
-                    console.log(res.data)
-                    this.props.closePopup()
-                    //pass userName and email redux storage
-                    
-                    const action = {
-                        type: 'setEmailAndUserName',
-                        data: {
-                            email: res.data.user.email,
-                            userName: res.data.user.userName
-                        }
-                    }
-                    
-                    store.dispatch(action)
-                    break
+            switch (errRes.status) {
+                case 404: {
+                    alert('user not found')
+                    return
                 }
-                case 403:
-                    alert(res.data.errMsg)
+                case 403: {
+                    alert('wrong password')
                     return
-                case 404:
-                    alert(res.data.errMsg)
+                }
+                default: {
                     return
-                default:
-                    return
+                }
             }
         })
-        .catch(err => {
-            console.log(err)
-        })
-        */
+       
     }
 
     handleSignUp= (event) =>{
@@ -166,32 +140,6 @@ class LoginPage extends Component{
                 alert(errRes.data.message)
             }
         })
-        /*
-        axios.post('http://fanyangjeff.pythonanywhere.com/signup', {
-            'email': email,
-            'userName': username, 
-            'password': password
-        })
-        .then(res => {
-            console.log(res.data)
-            switch (res.data.statusCode) {
-                case 200:
-                    console.log("signed up successfully")
-                    this.props.closePopup()
-                    break
-                case 403:
-                    alert(res.data.errMsg)
-                    console.log(res.data.errMsg)
-                    return
-                default:
-                    return
-            }
-
-        })
-        .catch(err => {
-            console.log(err)
-        })
-        */
     }
 
     handleEmailVerification=()=>{
