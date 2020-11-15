@@ -4,6 +4,7 @@ import { HomeOutlined } from '@ant-design/icons'
 import './Post.css'
 import axios from 'axios'
 
+
 export default class Posts extends Component {
     constructor(props) {
         super(props)
@@ -32,6 +33,7 @@ export default class Posts extends Component {
 
     createPostList = () => {
         return (
+
             <div className='posts-container'>
             {this.state.posts.map(
                 post => (
