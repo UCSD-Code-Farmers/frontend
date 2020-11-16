@@ -1,6 +1,9 @@
 import SideBar from "./Sidebar";
 import UserProfile from "./Profile/ProfilePage/UserProfile"
 import Posts from './Posts/Posts'
+import {useHistory} from 'react-router-dom'
+import Create from "./Create/Create";
+
 import {
   BrowserRouter,
   NavLink,
@@ -9,7 +12,10 @@ import {
   Switch,
 } from "react-router-dom";
 
+
 function App() {
+  const history = useHistory()
+
   return (
     <div className="App">
        <BrowserRouter>
@@ -48,6 +54,7 @@ function App() {
                     <Route
                       exact
                       path="/posts/create"
+                      component={Create}
                     />
                     <Route
                       exact
