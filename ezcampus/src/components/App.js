@@ -3,7 +3,10 @@ import UserProfile from "./Profile/ProfilePage/UserProfile"
 import Posts from './Posts/Posts'
 import PostDetail from './Posts/PostDetail/PostContent'
 
+import {useHistory} from 'react-router-dom'
 import Create from "./Create/Create";
+import Friends from "./Friends/Friends";
+import ProfileEdit from "./Profile/ProfileEdit/ProfileEdit";
 
 import {
   BrowserRouter,
@@ -15,6 +18,8 @@ import {
 
 
 function App() {
+  const history = useHistory()
+
   return (
     <div className="App">
        <BrowserRouter>
@@ -58,6 +63,7 @@ function App() {
                     <Route
                       exact
                       path="/profile/settings"
+                      component={ProfileEdit}
                     />
                     <Route
                       exact
@@ -71,6 +77,7 @@ function App() {
                     <Route
                       exact
                       path="/friends"
+                      component={Friends}
                     />
                     <Route
                       path="/posts/:postId"
