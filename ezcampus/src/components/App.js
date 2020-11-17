@@ -68,11 +68,12 @@ function App() {
                     <Route
                       exact
                       path="/message"
+                      component={PostDetail}
                     />
                     <Route
                       exact
                       path="/groups"
-                      component={PostDetail}
+                      
                     />
                     <Route
                       exact

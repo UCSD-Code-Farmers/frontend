@@ -9,10 +9,15 @@ import { Redirect } from "react-router-dom";
 
 
 class UserProfile extends React.Component {
+  state={
+    redirect: false,
+  }
+  
   renderRedirect = () => {
     if (this.state.redirect) {
       return <Redirect to="/profile/settings" />;
     }
+    console.log("hello")
   };
   render() {
     return (
@@ -24,6 +29,7 @@ class UserProfile extends React.Component {
           <Button
             style={styles.editButton}
             onClick={
+             
               (this.setRedirect = () => {
                 this.setState({
                   redirect: true
