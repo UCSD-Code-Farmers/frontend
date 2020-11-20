@@ -8,7 +8,6 @@ import {faPaw} from "@fortawesome/free-solid-svg-icons";
 import {faHouseUser} from "@fortawesome/free-solid-svg-icons";
 import {faAnchor} from "@fortawesome/free-solid-svg-icons";
 import {faAlignCenter} from "@fortawesome/free-solid-svg-icons";
-import {notify} from "react-notify-toast";
 
 const FreeForSale = <FontAwesomeIcon icon={faBalanceScaleLeft}/>;
 const RideSharing = <FontAwesomeIcon icon={faCar}/>;
