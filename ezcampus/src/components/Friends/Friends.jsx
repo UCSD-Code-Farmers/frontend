@@ -116,13 +116,12 @@ const data = [
     }
     
 ]
+
 export default class Friends extends Component {
     constructor(props){
         super(props)
         this.data = data
         this.history = props.history
-        
-        //check if the user has logged in, redirect to posts page if not
         
         const {isLoggedIn} = store.getState()
         if (!isLoggedIn) {
@@ -133,17 +132,21 @@ export default class Friends extends Component {
         
     }
 
+
     
+    
+
     componentDidMount() {
         store.subscribe(() => {
             const {isLoggedIn} = store.getState()
             if (!isLoggedIn) {
                 this.history.push('/posts')
             }
+            
         })
     }
-    
-    
+
+
 
     createFriendList = () => {
         return (
