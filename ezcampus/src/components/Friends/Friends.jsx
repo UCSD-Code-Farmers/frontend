@@ -3,6 +3,7 @@ import FriendCell from './FriendCell'
 import './Friends.css'
 import { Card } from 'antd';
 import Icon from '@ant-design/icons';
+import store from '../../store/Store'
 
 const PandaSvg = () => (
     <svg viewBox="0 0 1024 1024" width="1em" height="1em" fill="currentColor">
@@ -115,17 +116,39 @@ const data = [
     }
     
 ]
+
 export default class Friends extends Component {
     constructor(props){
         super(props)
         this.data = data
+        this.history = props.history
+        
+        const {isLoggedIn} = store.getState()
+        if (!isLoggedIn) {
+            const action = {type: 'setShowPromptLogIn'}
+            store.dispatch(action)
+            this.history.push('/posts')
+        }
+        
     }
 
+
+    
+    
+
+    componentDidMount() {
+        store.subscribe(() => {
+            const {isLoggedIn} = store.getState()
+            if (!isLoggedIn) {
+                this.history.push('/posts')
+            }
+            
+        })
+    }
+
+
+
     createFriendList = () => {
-        // const rows = data.reduce(function (rows, id, index){
-        //     return(index % 2 === 0? rows.push([id]):
-        //     rows[rows.length - 1].push([id])) && rows; 
-        // }, [])
         return (
             <div >
                 {this.data.map(
