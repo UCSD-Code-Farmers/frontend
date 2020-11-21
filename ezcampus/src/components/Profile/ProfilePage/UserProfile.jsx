@@ -17,11 +17,11 @@ class UserProfile extends React.Component {
     if (this.state.redirect) {
       return <Redirect to="/profile/settings" />;
     }
-    console.log("hello")
   };
   render() {
     return (
     <div>
+      {this.renderRedirect()}
       <Card
        style ={{width:"60%"}}
         headStyle={{ background: "#DEE0EB" }}

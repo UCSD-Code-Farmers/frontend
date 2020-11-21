@@ -40,7 +40,7 @@ class PostContent extends React.Component {
                 }}
               >
                 <div class="postText">
-                  <PostText>hello</PostText>
+                  <PostText> "about": "Located on the eastern end of campus between Eleanor Roosevelt College and Warren College, the Canyonview Aquatic Center features two outdoor, Olympic-sized pools, each of which can be divided into eight lanes of 50 meters in length, or 19 lanes of 25 yards in length. The aquatic center also features a state-of-the-art weight room. Canyonview is home to the UCSD men's and women's water polo teams, as well as the men's and women's swimming and diving programs.",</PostText>
                 </div>
                 <style type="text/css"></style>
               </div>
