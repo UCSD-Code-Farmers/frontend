@@ -43,7 +43,7 @@ class SideBar extends React.Component {
     };
 
 
-    componentWillUnmount() {
+    scomponentWillUnmount() {
         this.unsubscribe()
     }
 
