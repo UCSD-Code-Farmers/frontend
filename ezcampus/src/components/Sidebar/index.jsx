@@ -150,7 +150,7 @@ class SideBar extends React.Component {
                             <NavLink to="/posts/my"/>
                         </Menu.Item>
                         <Menu.Item key="4" icon={<UserOutlined/>}>
-                            Friends
+                            Contacts
                             <NavLink to="/friends"/>
                         </Menu.Item>
                         <Menu.Item key="5" icon={<DesktopOutlined/>}>
