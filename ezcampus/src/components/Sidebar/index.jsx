@@ -11,32 +11,58 @@ import {
 import "antd/dist/antd.css";
 import BigProfile from "./icons/BigProfile.png";
 import Login from "../Login/LoginPage";
+import Logout from '../Logout/Logout'
 import store from '../../store/Store'
 import EmailVerification from "../Login/EmailVerification/EmailVerification";
+import PromptLogIn from "../Login/PromptLogIn";
 
 const {Header, Content, Footer, Sider} = Layout;
 const {SubMenu} = Menu;
 
 class SideBar extends React.Component {
+    constructor(props) {
+        super(props)
+        this.unsubscribe = store.subscribe(() => {
+            const {userName, isLoggedIn, showPromptLogIn} = store.getState()
+            this.setState({userName, isLoggedIn, showPromptLogIn}, () => {
+                if (!this.state.isLoggedIn) {
+                    this.setState({currentSelectedMenuItem: '1'})
+                }
+            })
+        })
+    }
+
     state = {
         collapsed: false,
         showPopUPLogin: false,
+        showPromptLogIn: false,
         isEmailVerification: false,
         userName: 'Guest',
-        isLoggedIn: false
+        isLoggedIn: false,
+        currentSelectedMenuItem: '1'
     };
 
-    componentDidMount() {
-        store.subscribe(() => {
-            const {userName, isLoggedIn} = store.getState()
-            this.setState({userName, isLoggedIn})
-        })
+
+    scomponentWillUnmount() {
+        this.unsubscribe()
     }
 
     onTogglePopup = () => {
         this.setState((prevState) => {
-            return {showPopUPLogin: !prevState.showPopUPLogin}
+            return {
+                showPopUPLogin: !prevState.showPopUPLogin,
+            }
         })
+    }
+
+    onTogglePromptPopup = () => {
+        this.setState((prevState) => {
+            return {
+                showPromptLogIn: !prevState.showPromptLogIn
+            }
+        })
+        const action = {type: 'unsetShowPromptLogIn'}
+        store.dispatch(action)
     }
     // EmailVerification
     onToggleEmailVerification = () => {
@@ -53,8 +79,14 @@ class SideBar extends React.Component {
         this.setState({collapsed});
     };
 
-    updateUserName = () => {
-
+    onSelectMenuItem = ({key}) => {
+        //if the user hasn't logged in, but trying to select items other than Home and Sections,
+        //then we let the tab stay at the homepage 
+        if (!this.state.isLoggedIn && key != '1'&& key != '2') {
+            this.setState({currentSelectedMenuItem: '1'})
+            return
+        }
+        this.setState({currentSelectedMenuItem: key})
     }
 
     render() {
@@ -103,20 +135,29 @@ class SideBar extends React.Component {
                                 display: "inline"
                             }}
                             onClick={this.onTogglePopup}
-                            disabled={this.state.isLoggedIn}
                         >
                             {this.state.isLoggedIn ? this.state.userName : 'Log In / Sign Up'}
                         </Button>
-                        {this.state.showPopUPLogin ?
+                        {
+                            this.state.showPopUPLogin && !this.state.isLoggedIn?
                             <Login closePopup={this.onTogglePopup} onToggleEmailVerification={this.onToggleEmailVerification}
                             /> : null}
+                        
+                        {
+                            this.state.showPopUPLogin && this.state.isLoggedIn?
+                                <Logout closePopup={this.onTogglePopup}/>:null
+                        }
+                        
+                        {
+                            this.state.showPromptLogIn? <PromptLogIn openLogin={this.onTogglePopup} closePrompt={this.onTogglePromptPopup}/>:null    
+                        }
 
                         {this.state.isEmailVerification ?
                             <EmailVerification closePopup={this.onToggleEmailVerification}
                             /> : null}
                     </div>
                     <div>
-                        <NavLink to="/posts/create">
+                        <NavLink to={"/posts/create"}>
                             <Button
                                 type="primary"
                                 style={{
@@ -136,27 +177,31 @@ class SideBar extends React.Component {
                             </Button>
                         </NavLink>
                     </div>
-                    <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+                    <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" onSelect={this.onSelectMenuItem} selectedKeys={[this.state.currentSelectedMenuItem]}>
                         <Menu.Item key="1" icon={<PieChartOutlined/>}>
                             Home
                             <NavLink to="/posts"/>
                         </Menu.Item>
-                        <Menu.Item key="2" icon={<DesktopOutlined/>}>
-                            Groups
+                        <Menu.Item key="2" icon={<DesktopOutlined/>} >
+                            Sections
                             <NavLink to="/groups"/>
                         </Menu.Item>
+
                         <Menu.Item key="3" icon={<UserOutlined/>}>
                             My Posts
                             <NavLink to="/posts/my"/>
                         </Menu.Item>
+
                         <Menu.Item key="4" icon={<UserOutlined/>}>
                             Contacts
                             <NavLink to="/friends"/>
                         </Menu.Item>
+                            
                         <Menu.Item key="5" icon={<DesktopOutlined/>}>
                             Message
                             <NavLink to="/message"/>
                         </Menu.Item>
+
                     </Menu>
                 </Sider>
                 <Layout className="site-layout">
