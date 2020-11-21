@@ -7,6 +7,13 @@ class ProfileEdit extends React.Component {
         tempUser: {},
         editing: true,
         file: null,
+        firstName:"",
+        lastName:"",
+        contactEmail:"",
+        email:"",
+        city:"",
+        aboutMe:"",
+        stateName:"",
         firstNameEmpty: true,
         lastNameEmpty: true,
         titleEmpty: true,
@@ -75,23 +82,13 @@ class ProfileEdit extends React.Component {
       const { TextArea } = Input;
       const handleStateChange = (USstate) => {
         this.setState({
-          tempUser: {
-            ...this.state.tempUser,
             stateName: USstate,
-          },
         });
       };
       return (
         <div>
         <Row>
         <SettingsTitle>
-          {/* <img
-            src={lineIcon}
-            style={{
-              width: "5px",
-              height: "30px",
-            }}
-          /> */}
           Basic Information
         </SettingsTitle>
       </Row>
@@ -119,10 +116,7 @@ class ProfileEdit extends React.Component {
             onChange={(e) => {
               // change the value of the tempUser
               this.setState({
-                tempUser: {
-                  ...this.state.tempUser,
-                  firstName: e.target.value,
-                },
+                firstName:  e.target.value,
                 firstNameEmpty: e.target.value === "",
               });
             }}
@@ -150,13 +144,11 @@ class ProfileEdit extends React.Component {
             value={this.state.lastName}
             onChange={(e) => {
               this.setState({
-                tempUser: {
-                  ...this.state.tempUser,
-                  lastName: e.target.value,
-                },
+                lastName: e.target.value,
                 lastNameEmpty: e.target.value === "",
               });
             }}
+            
           />
         </Col>
         <Col
@@ -181,198 +173,162 @@ class ProfileEdit extends React.Component {
       </Row>
 
       <Row type="flex" justify="start" gutter={[24, 40]}>
-                      <Col
-                        xs={12}
-                        sm={12}
-                        md={12}
-                        lg={6}
-                        xl={6}
-                        style={{ maxHeight: "90px" }}
-                      >
-                        <InputLabel>City</InputLabel>
-                        <Input
-                          style={{ height: "80%" }}
-                          placeholder={this.state.city}
-                          value={this.state.city}
-                          onChange={(e) => {
-                            this.setState({
-                              tempUser: {
-                                ...this.state.tempUser,
-                                city: e.target.value,
-                              },
-                            });
-                          }}
-                        />
-                      </Col>
-                      <Col
-                        xs={12}
-                        sm={12}
-                        md={12}
-                        lg={6}
-                        xl={6}
-                        style={{ maxHeight: "90px" }}
-                      >
-                        <InputLabel>State</InputLabel>
-                        <div>
-                          <Select
-                            style={{ width: "100%" }}
-                            size="large"
-                            defaultValue={this.stateDefault}
-                            onChange={handleStateChange}
-                          >
-                            {this.state.USstates.map((USstate) => {
-                              let i = 1;
-                              return (
-                                <Option value={USstate} index={i++}>
-                                  {USstate}
-                                </Option>
-                              );
-                            })}
-                          </Select>
-                        </div>
-                      </Col>
-                    </Row>
+        <Col
+          xs={12}
+          sm={12}
+          md={12}
+          lg={6}
+          xl={6}
+          style={{ maxHeight: "90px" }}
+        >
+          <InputLabel>City</InputLabel>
+          <Input
+            style={{ height: "80%" }}
+            placeholder={this.state.city}
+            value={this.state.city}
+            onChange={(e) => {
+              this.setState({
+                  city: e.target.value,
+              });
+            }}
+          />
+        </Col>
+        <Col
+          xs={12}
+          sm={12}
+          md={12}
+          lg={6}
+          xl={6}
+          style={{ maxHeight: "90px" }}
+        >
+          <InputLabel>State</InputLabel>
+          <div>
+            <Select
+              style={{ width: "100%" }}
+              size="large"
+              defaultValue={this.stateDefault}
+              onChange={handleStateChange}
+            >
+              {this.state.USstates.map((USstate) => {
+                let i = 1;
+                return (
+                  <Option value={USstate} index={i++}>
+                    {USstate}
+                  </Option>
+                );
+              })}
+            </Select>
+          </div>
+        </Col>
+      </Row>
 
-                    <Row>
-                      <SettingsTitle>
-                        {/* <img
-                          src={lineIcon}
-                          alt="triangle with all three sides equal"
-                          style={{
-                            width: "5px",
-                            height: "30px",
-                          }}
-                        /> */}
-                        Contact
-                      </SettingsTitle>
-                    </Row>
-                    {/* first row */}
-                    <Row type="flex" justify="start" gutter={[24, 40]}>
-                      <Col
-                        xs={24}
-                        sm={24}
-                        md={24}
-                        lg={12}
-                        xl={12}
-                        style={{ maxHeight: "90px" }}
-                      >
-                        <InputLabel>Login Email</InputLabel>
-                        <Input
-                          style={{ height: "80%" }}
-                          value={this.state.tempUser.email}
-                          disabled={true}
-                        />
-                      </Col>
-                      <Col
-                        xs={24}
-                        sm={24}
-                        md={24}
-                        lg={12}
-                        xl={12}
-                        style={{ maxHeight: "90px" }}
-                      >
-                        <InputLabel>
-                          Contact Email
-                          {/* <ErrorLabel>{"\u00A0"}*</ErrorLabel>
-                          {this.state.tempUser.contactEmail &&
-                          !validator.isEmail(
-                            this.state.tempUser.contactEmail
-                          ) ? (
-                            <ErrorLabel>*not valid</ErrorLabel>
-                          ) : null} */}
-                        </InputLabel>
-                        <Input
-                          style={{ height: "80%" }}
-                          value={this.state.contactEmail}
-                          onChange={(e) => {
-                            this.setState({
-                              tempUser: {
-                                ...this.state.tempUser,
-                                contactEmail: e.target.value,
-                              },
-                              contactEmailEmpty: e.target.value === "",
-                            });
-                          }}
-                        />
-                      </Col>
-                    </Row>
-                    <Row type="flex" justify="start" gutter={[24, 40]}>
-                      <Col
-                        xs={24}
-                        sm={24}
-                        md={24}
-                        lg={12}
-                        xl={12}
-                        style={{ maxHeight: "90px" }}
-                      >
-                        <InputLabel>
-                          Phone
-                          {/* {this.state.tempUser.phoneNumber &&
-                          !validator.isMobilePhone(
-                            this.state.tempUser.phoneNumber
-                          ) ? (
-                            <ErrorLabel>*not valid</ErrorLabel>
-                          ) : null} */}
-                        </InputLabel>
+      <Row>
+        <SettingsTitle>
+          Contact
+        </SettingsTitle>
+      </Row>
+      {/* first row */}
+      <Row type="flex" justify="start" gutter={[24, 40]}>
+        <Col
+          xs={24}
+          sm={24}
+          md={24}
+          lg={12}
+          xl={12}
+          style={{ maxHeight: "90px" }}
+        >
+          <InputLabel>Login Email</InputLabel>
+          <Input
+            style={{ height: "80%" }}
+            value={this.state.email}
+            disabled={true}
+          />
+        </Col>
+        <Col
+          xs={24}
+          sm={24}
+          md={24}
+          lg={12}
+          xl={12}
+          style={{ maxHeight: "90px" }}
+        >
+          <InputLabel>
+            Contact Email
+          </InputLabel>
+          <Input
+            style={{ height: "80%" }}
+            value={this.state.contactEmail}
+            onChange={(e) => {
+              this.setState({
+                contactEmail: e.target.value,
+                contactEmailEmpty: e.target.value === "",
+              });
+            }}
+          />
+        </Col>
+      </Row>
+      <Row type="flex" justify="start" gutter={[24, 40]}>
+        <Col
+          xs={24}
+          sm={24}
+          md={24}
+          lg={12}
+          xl={12}
+          style={{ maxHeight: "90px" }}
+        >
+          <InputLabel>
+            Phone
+          </InputLabel>
 
-                        <Input
-                          style={{ height: "80%" }}
-                          placeholder="Your phone number goes here"
-                          value={this.state.tempUser.phoneNumber}
-                          onChange={(e) => {
-                            // change the value of the tempUser
-                            this.setState({
-                              tempUser: {
-                                ...this.state.tempUser,
-                                phoneNumber: e.target.value,
-                              },
-                            });
-                          }}
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                        <SettingsTitle>
-                            {/* <img
-                            src={lineIcon}
-                            alt="triangle with all three sides equal"
-                            style={{
-                                width: "5px",
-                                height: "30px",
-                            }}
-                            /> */}
-                            About Me
-                        </SettingsTitle>
-                        <TextArea rows={4} />
-
-
-                    </Row>
-                    <Row gutter={[24, 8]}>
-                       
-                        <Col
-                          span={6}
-                          style={{ maxHeight: "90px" }}
-                        >
-                          <Button
-                            type=""
-                            style={{
-                              height: "35px",
-                              marginTop:"25px",
-                              // set the button to be the full width of the Col,
-                              // but cannot be too big.
-                              width: "100%",
-                              maxWidth: 140,
-
-                              backgroundColor: "#545770",
-                              color: "white",
-                            }}
-                            onClick={this.saveAll}
-                          >
-                            Save
-                          </Button>
-                        </Col>
-                        
-                      </Row>
+          <Input
+            style={{ height: "80%" }}
+            placeholder="Your phone number goes here"
+            value={this.state.phoneNumber}
+            onChange={(e) => {
+              // change the value of the tempUser
+              this.setState({
+                  phoneNumber: e.target.value,
+              });
+            }}
+          />
+        </Col>
+      </Row>
+      <Row>
+          <SettingsTitle>
+              About Me
+          </SettingsTitle>
+          <TextArea rows={4} 
+           onChange={(e) => {
+            // change the value of the tempUser
+            this.setState({
+                aboutMe: e.target.value,
+            });
+          }}
+          
+          />
+      </Row>
+      <Row gutter={[24, 8]}>
+          
+          <Col
+            span={6}
+            style={{ maxHeight: "90px" }}
+          >
+            <Button
+              type=""
+              style={{
+                height: "35px",
+                marginTop:"25px",
+                width: "100%",
+                maxWidth: 140,
+                backgroundColor: "#545770",
+                color: "white",
+              }}
+              onClick={this.saveAll}
+            >
+              Save
+            </Button>
+          </Col>
+        </Row>
 
      </div>)
   }
