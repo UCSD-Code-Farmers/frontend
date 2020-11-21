@@ -123,28 +123,14 @@ export default class Friends extends Component {
         this.history = props.history
         
         //check if the user has logged in, redirect to posts page if not
-<<<<<<< HEAD
-        
-=======
-        /*
->>>>>>> cc50766af32f79a9325057e848c3e712a3e7bafb
         const {isLoggedIn} = store.getState()
         if (!isLoggedIn) {
             const action = {type: 'setShowPromptLogIn'}
             store.dispatch(action)
             this.history.push('/posts')
         }
-<<<<<<< HEAD
-        
     }
 
-    
-=======
-        */
-    }
-
-    /*
->>>>>>> cc50766af32f79a9325057e848c3e712a3e7bafb
     componentDidMount() {
         store.subscribe(() => {
             const {isLoggedIn} = store.getState()
@@ -153,11 +139,6 @@ export default class Friends extends Component {
             }
         })
     }
-<<<<<<< HEAD
-    
-=======
-    */
->>>>>>> cc50766af32f79a9325057e848c3e712a3e7bafb
     
 
     createFriendList = () => {
