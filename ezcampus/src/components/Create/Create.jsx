@@ -95,7 +95,7 @@ export default class Create extends Component {
             .then(res => {
                 if (res.data.statusCode == 200) {
                     console.log('post has been created')
-                    const action = {type: 'addPost', data: {newPost: [{...this.state, ...otherInfo}]}}
+                    const action = {type: 'addPost', data: {newPost: {...this.state, ...otherInfo}}}
                     store.dispatch(action)
                     this.history.push('/posts')
                 }

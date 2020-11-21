@@ -1,14 +1,10 @@
-import React, {useContext, useState, useEffect, createContext} from 'react'
+import React, {useEffect, createContext} from 'react'
 import store from '../store/Store'
 import axios from 'axios'
 
-const autoLoginContext = createContext(AutoLoginProvider)
 
-export function useAutoLogin() {
-    return useContext(autoLoginContext)
-}
 
-export function AutoLoginProvider({children}) {
+export default function AutoLogin({children}) {
 
     useEffect(() => {
         const userEmail = localStorage.getItem('ezcampus_user_email')
@@ -44,8 +40,8 @@ export function AutoLoginProvider({children}) {
     }
 
     return (
-        <autoLoginContext.Provider value={{}}>
+        <div>
             {children}
-        </autoLoginContext.Provider>
+        </div>
     )
 }

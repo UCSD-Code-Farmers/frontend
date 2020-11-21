@@ -34,7 +34,6 @@ class PostContent extends React.Component {
 
     componentDidMount() {
         const {postsMap} = store.getState()
-        console.log(postsMap.data)
         this.setState({data: postsMap[this.postId]})
     }
 
