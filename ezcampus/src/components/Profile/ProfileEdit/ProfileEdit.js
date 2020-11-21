@@ -119,6 +119,7 @@ class ProfileEdit extends React.Component {
                 firstName:  e.target.value,
                 firstNameEmpty: e.target.value === "",
               });
+              console.log(this.state)
             }}
           />
         </Col>
