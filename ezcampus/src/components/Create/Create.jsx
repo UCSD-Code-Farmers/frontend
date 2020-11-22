@@ -144,6 +144,7 @@ export default class Create extends Component {
                 <p><strong>Description</strong></p>
                 <FroalaEditorComponent tag={'textarea'} config={{
                     placeholderText: 'Write the details here!',
+                    imageDefaultWidth: 500,
                     imageUpload: true,
                     events: {
                             'image.beforeUpload': function (images) {                           
@@ -159,7 +160,7 @@ export default class Create extends Component {
                             });
 
                             return false;
-                        },
+                        }
                     },
                     charCounterCount: true
                 }} onModelChange={this.updateEditerComponentText}/>
