@@ -27,9 +27,6 @@ class UserProfile extends React.Component {
         })
       }
     })
-    console.log("hello")
-
-    
   }
   
   renderRedirect = () => {
@@ -66,8 +63,12 @@ class UserProfile extends React.Component {
           ></AvatarImage>
         </div>
         <div style={styles.nameText}>
-          <Name>Yingjia</Name>
-          <Name>Gu</Name>
+          <Name>{this.state.profile.firstName}</Name>
+          <Name>{this.state.profile.lastName}</Name>
+        </div>
+        <div style={styles.positionText}>
+          <Name>{this.state.profile.city}</Name>
+          <Name>{this.state.profile.state}</Name>
         </div>
       <div>
           <TitleField>
@@ -79,7 +80,7 @@ class UserProfile extends React.Component {
             About Me
           </TitleField>
           <div style={styles.fieldText}>
-            Welcome to my profile page!
+              {this.state.profile.aboutMe}
           </div>
       </div>
       <div>
@@ -92,15 +93,15 @@ class UserProfile extends React.Component {
             Contact Info
           </TitleField>
           <div style={styles.fieldText}>
-            Email:
+            Contact Email:
             <div style={styles.text}>
-              y1gu@ucsd.edu
+              {this.state.profile.contactEmail}
             </div>
           </div>
           <div style={styles.fieldText}>
             Phone:
             <div style={styles.text}>
-              8585317958
+               {this.state.profile.phone}
             </div>
           </div>
         </div>
@@ -159,6 +160,15 @@ const styles = {
   nameText: {
     fontFamily: "Ubuntu",
     fontSize: "35px",
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#545871",
+    width: "100%",
+    paddingTop: "5px"
+  },
+  positionText: {
+    fontFamily: "Ubuntu",
+    fontSize: "20px",
     fontWeight: "bold",
     textAlign: "center",
     color: "#545871",

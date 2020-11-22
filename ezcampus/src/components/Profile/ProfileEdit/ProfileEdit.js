@@ -302,6 +302,7 @@ class ProfileEdit extends React.Component {
                 tempUser: {                   
                     ...prevState.tempUser,    
                     contactEmail: e.target.value,
+                    loginEmail:e.target.value,
                 }
               }))
               
