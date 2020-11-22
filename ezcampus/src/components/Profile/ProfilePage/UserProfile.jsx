@@ -79,10 +79,15 @@ class UserProfile extends React.Component {
         }
       >
         <div style={styles.avatar}>
-          <AvatarImage
-            //  <img style={styles.img} src={avatar} alt="" />
-            src={this.state.profile.avatarlink==="" ? BigProfile : this.state.profile.avatarlink}
-          ></AvatarImage>
+        {!this.state.profile.avatarlink ?
+            <AvatarImage
+              src={BigProfile}
+            >
+            </AvatarImage>  :
+            <AvatarImage
+            src={this.state.profile.avatarlink}
+            ></AvatarImage>
+        }
         </div>
         <div style={styles.nameText}>
           <Name>{this.state.profile.userName}</Name>
