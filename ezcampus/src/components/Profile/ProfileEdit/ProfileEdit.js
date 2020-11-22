@@ -1,89 +1,111 @@
 import React from "react";
 import styled from "styled-components";
-import { Input, Row, Col, Select, Button, Affix, message, Upload } from "antd"
+import { Input, Row, Col, Select, Button, Affix, message, Upload } from "antd";
+import axios from 'axios';
+
 class ProfileEdit extends React.Component {
+  state = {
+    tempUser: {
+      firstName:"",
+      lastName:"",
+      city:"",
+      state:"",
+      loginEmail:"",
+      contactEmail:"",
+      phone:"",
+      aboutMe:"",
+
+    },
+    editing: true,
+    file: null,
+    firstNameEmpty: true,
+    lastNameEmpty: true,
+    titleEmpty: true,
+    contactEmailEmpty: true,
+    loading: true,
+    avatarLink: "",
+    avatar: null,
+    loadingAvatar: false,
+    USstates: [
+      "AL",
+      "AK",
+      "AZ",
+      "AR",
+      "CA",
+      "CO",
+      "CT",
+      "DC",
+      "DE",
+      "FL",
+      "GA",
+      "HI",
+      "ID",
+      "IL",
+      "IN",
+      "IA",
+      "KS",
+      "KY",
+      "LA",
+      "ME",
+      "MD",
+      "MA",
+      "MI",
+      "MN",
+      "MS",
+      "MO",
+      "MT",
+      "NE",
+      "NV",
+      "NH",
+      "NJ",
+      "NM",
+      "NY",
+      "NC",
+      "ND",
+      "OH",
+      "OK",
+      "OR",
+      "PA",
+      "RI",
+      "SC",
+      "SD",
+      "TN",
+      "TX",
+      "UT",
+      "VT",
+      "VA",
+      "WA",
+      "WV",
+      "WI",
+      "WY",
+    ],
+  };
+  constructor(props) {
+    super(props)
+    this.saveAll=this.saveAll.bind(this)
+  }
     
-    state = {
-        tempUser: {},
-        editing: true,
-        file: null,
-        firstName:"",
-        lastName:"",
-        contactEmail:"",
-        email:"",
-        city:"",
-        aboutMe:"",
-        stateName:"",
-        firstNameEmpty: true,
-        lastNameEmpty: true,
-        titleEmpty: true,
-        contactEmailEmpty: true,
-        loading: true,
-        avatarLink: "",
-        avatar: null,
-        loadingAvatar: false,
-        USstates: [
-          "AL",
-          "AK",
-          "AZ",
-          "AR",
-          "CA",
-          "CO",
-          "CT",
-          "DC",
-          "DE",
-          "FL",
-          "GA",
-          "HI",
-          "ID",
-          "IL",
-          "IN",
-          "IA",
-          "KS",
-          "KY",
-          "LA",
-          "ME",
-          "MD",
-          "MA",
-          "MI",
-          "MN",
-          "MS",
-          "MO",
-          "MT",
-          "NE",
-          "NV",
-          "NH",
-          "NJ",
-          "NM",
-          "NY",
-          "NC",
-          "ND",
-          "OH",
-          "OK",
-          "OR",
-          "PA",
-          "RI",
-          "SC",
-          "SD",
-          "TN",
-          "TX",
-          "UT",
-          "VT",
-          "VA",
-          "WA",
-          "WV",
-          "WI",
-          "WY",
-        ],
-      };
+
+  saveAll(){
+    axios.post('http://server.metaraw.world:3000/users/profile/save', {
+      ...this.state.tempUser})
+    .then(res => {
+      if (res.data.statusCode === 200) {
+          console.log('profile has been saved')
+      }
+  })
+  }
     
   render(){
       const Option = Select.Option;
       const { TextArea } = Input;
       const handleStateChange = (USstate) => {
-        this.setState({
-            stateName: USstate,
-        });
+        this.setState(prevState => ({
+          tempUser: {                   
+              ...prevState.tempUser,    
+              state: USstate,      
+          }
+        }))
       };
       return (
         <div>
@@ -116,10 +138,15 @@ class ProfileEdit extends React.Component {
             onChange={(e) => {
               // change the value of the tempUser
               this.setState({
-                firstName:  e.target.value,
                 firstNameEmpty: e.target.value === "",
               });
-              console.log(this.state)
+              this.setState(prevState => ({
+                tempUser: {                   
+                    ...prevState.tempUser,    
+                    firstName:  e.target.value,    
+                }
+              }))
+  
             }}
           />
         </Col>
@@ -145,9 +172,14 @@ class ProfileEdit extends React.Component {
             value={this.state.lastName}
             onChange={(e) => {
               this.setState({
-                lastName: e.target.value,
                 lastNameEmpty: e.target.value === "",
               });
+              this.setState(prevState => ({
+                tempUser: {                   
+                    ...prevState.tempUser,    
+                    lastName:  e.target.value, 
+                }
+              }))
             }}
             
           />
@@ -188,9 +220,12 @@ class ProfileEdit extends React.Component {
             placeholder={this.state.city}
             value={this.state.city}
             onChange={(e) => {
-              this.setState({
-                  city: e.target.value,
-              });
+              this.setState(prevState => ({
+                tempUser: {                   
+                    ...prevState.tempUser,    
+                    city: e.target.value,
+                }
+              }))
             }}
           />
         </Col>
@@ -241,7 +276,7 @@ class ProfileEdit extends React.Component {
           <InputLabel>Login Email</InputLabel>
           <Input
             style={{ height: "80%" }}
-            value={this.state.email}
+            value={this.state.tempUser.loginEmail}
             disabled={true}
           />
         </Col>
@@ -261,9 +296,15 @@ class ProfileEdit extends React.Component {
             value={this.state.contactEmail}
             onChange={(e) => {
               this.setState({
-                contactEmail: e.target.value,
                 contactEmailEmpty: e.target.value === "",
               });
+              this.setState(prevState => ({
+                tempUser: {                   
+                    ...prevState.tempUser,    
+                    contactEmail: e.target.value,
+                }
+              }))
+              
             }}
           />
         </Col>
@@ -287,9 +328,12 @@ class ProfileEdit extends React.Component {
             value={this.state.phoneNumber}
             onChange={(e) => {
               // change the value of the tempUser
-              this.setState({
-                  phoneNumber: e.target.value,
-              });
+              this.setState(prevState => ({
+                tempUser: {                   
+                    ...prevState.tempUser,    
+                    phone: e.target.value,
+                }
+              }))
             }}
           />
         </Col>
@@ -301,9 +345,12 @@ class ProfileEdit extends React.Component {
           <TextArea rows={4} 
            onChange={(e) => {
             // change the value of the tempUser
-            this.setState({
-                aboutMe: e.target.value,
-            });
+            this.setState(prevState => ({
+              tempUser: {                   
+                  ...prevState.tempUser,    
+                  aboutMe: e.target.value,
+              }
+            }))
           }}
           
           />

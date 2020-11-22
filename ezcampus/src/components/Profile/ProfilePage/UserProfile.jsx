@@ -1,16 +1,35 @@
 import React from "react";
 import styled from "styled-components";
 import BigProfile from "../icons/BigProfile.png";
-
+import axios from 'axios';
 import { Button, Card } from "antd";
 import contactIcon from "../icons/group.png";
 import { EditOutlined} from "@ant-design/icons";
 import { Redirect } from "react-router-dom";
+import store from '../../../store/Store';
 
 
 class UserProfile extends React.Component {
   state={
     redirect: false,
+    profile:{}
+  }
+
+  componentDidMount() {
+    const {email} = store.getState()
+    axios.get("http://server.metaraw.world:3000/users/profile/get", {params: {email}})
+    .then(res =>{
+      if(res.data.statusCode === 200){
+        this.setState({
+          profile:res.data.profile
+        },() =>{
+          console.log(this.state.profile)
+        })
+      }
+    })
+    console.log("hello")
+
+    
   }
   
   renderRedirect = () => {
