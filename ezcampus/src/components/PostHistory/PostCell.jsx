@@ -3,10 +3,7 @@ import './Post.css'
 import {Button} from 'react-bootstrap'
 import ReactHtmlParser from 'react-html-parser'
 import { Link } from "react-router-dom";
-<<<<<<< HEAD
-=======
 import store from '../../store/Store'
->>>>>>> b5768d0a3fe0ec7b8513e96b6163c8313d05380e
 
 export default class PostCell extends Component {
     constructor(props) {
@@ -38,11 +35,10 @@ export default class PostCell extends Component {
                 <div className='single-post-header'>
                 <div style={{display: 'inline-block'}}>
                     <div style={{display: 'flex'}}>
-                    <Link to={`/profile/${creatorEmail}`}>
+
                         <div className='single-post-creator'>
                             {creatorName? creatorName: 'unknown'}
                         </div>
-                    </Link>
                         <div className='single-post-type'>
                             {postType}  
                         </div>
@@ -61,6 +57,7 @@ export default class PostCell extends Component {
                 <div className='single-post-description-box'>
                     <div className='single-post-description-text'>
                         {ReactHtmlParser(description)}
+                        
                     </div>
                 </div>
                 </div>

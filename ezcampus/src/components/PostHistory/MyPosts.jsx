@@ -1,36 +1,39 @@
 import React, { Component } from 'react'
 import PostCell from './PostCell'
-import { HomeOutlined } from '@ant-design/icons'
+import { SwitcherOutlined } from '@ant-design/icons'
 import {Button} from 'react-bootstrap'
 import './Post.css'
 import store from '../../store/Store'
 
 
-export default class Posts extends Component {
+export default class MyPosts extends Component {
+	state = {
+		myPosts:[]
+	}
+
     constructor(props) {
         super(props)
-        this.state = {posts: []}
+		const { posts, email } = store.getState();
+		const myPosts = posts.filter(post => post.creatorEmail === email)
+		this.setState({myPosts})
         this.unsubscribe = store.subscribe(() => {
-            const {posts, currentSelectedPostType} = store.getState()
+            const {currentSelectedPostType} = store.getState()
             if (currentSelectedPostType) {
                 const customizedPosts = posts.filter(post => post.postType == currentSelectedPostType)
-                console.log(customizedPosts)
-                this.setState({posts: customizedPosts})
-            } else {
-                this.setState({posts})
+                //console.log(customizedPosts)
+                this.setState({myPosts: customizedPosts})
             }
         })
-    }
+	}
 
     componentDidMount() {
-        const {posts, currentSelectedPostType} = store.getState()
-
+        const {posts, email, currentSelectedPostType} = store.getState()
+		const myPosts = posts.filter(post => post.creatorEmail === email)
+		this.setState({myPosts})
         if (currentSelectedPostType) {
             const customizedPosts = posts.filter(post => post.postType == currentSelectedPostType)
-            console.log(customizedPosts)
-            this.setState({posts: customizedPosts})
-        } else {
-            this.setState({posts})
+            //console.log(customizedPosts)
+            this.setState({myPosts: customizedPosts})
         }
     }
 
@@ -43,14 +46,14 @@ export default class Posts extends Component {
         store.dispatch(action)
     }
 
-    homeOutlinedHeader = () => {
+    switcherOutlinedHeader = () => {
         return (
             <div style={{marginLeft: '35px', marginTop: '20px'}}>
-                <HomeOutlined style={{
+                <SwitcherOutlined style={{
                     fontSize:40,
                     float: "left"}}/>
                 <div className='posts-homeOutLined'>
-                    Home
+                    Post History
                 </div>
                 <div style={{float: 'right', marginRight: '50px'}}>
                         <Button variant='secondary' onClick={this.handleShowAll}>Show All</Button>
@@ -63,7 +66,7 @@ export default class Posts extends Component {
         return (
             <div className='posts-container'>
             {
-            this.state.posts.map(
+            this.state.myPosts.map(
                 post => (
                 <PostCell 
                     data={post}
@@ -79,10 +82,12 @@ export default class Posts extends Component {
     render() {
         return (
             <div>
-                <div className='posts-header'>
-                    {this.homeOutlinedHeader()}
-                </div>
-                {this.createPostList()}
+				<div className='post-history-header'>
+					{this.switcherOutlinedHeader()}
+				</div>
+				<div className='post-page-body-containe'>
+					{this.createPostList()}
+				</div>
             </div>
         )
     }

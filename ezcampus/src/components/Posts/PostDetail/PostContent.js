@@ -2,19 +2,47 @@ import { Avatar, Col, Row,  Card } from "antd";
 import React from "react";
 import BigProfile from "../icons/BigProfile.png"
 import styled from "styled-components";
+import store from '../../../store/Store'
+import ReactHtmlParser from 'react-html-parser'
 
 class PostContent extends React.Component {
-    state = {
-      userId: "",
-      loading: true,
-      firstName: "",
-      lastName: "",
-      title: "",
-      avatar: "",
-      timestamp: "",
-    };
 
-  
+    constructor(props) {
+      super(props)
+      this.postId = props.history.location.pathname.slice(7)
+      this.state = {
+        data: {
+          creatorName: '', 
+          creatorEmail: '', 
+          title: '', 
+          description: '', 
+          views: 0, 
+          likes: 0, 
+          date: '', 
+          postId: '', 
+          postType: ''
+        }
+      }
+      
+      this.unsubscribe = store.subscribe(() => {
+        const {postsMap} = store.getState()
+        console.log(postsMap.data)
+        this.setState({data: postsMap[this.postId]})
+      })
+
+    }
+
+    componentDidMount() {
+        const {postsMap} = store.getState()
+        console.log(postsMap.data)
+        this.setState({data: postsMap[this.postId]})
+    }
+
+
+    componentWillUnmount() {
+      this.unsubscribe()
+    }
+
     render() {
       return (
         <div>
@@ -25,13 +53,28 @@ class PostContent extends React.Component {
                 </Col>
                 <Col flex="2 1" style={{ margin: "5px" }}>
                   <span style={styles.nameText}>
-                    Yingjia Gu
+                    {this.state.data.creatorName}
                   </span>
                 </Col>
                 <Col flex="1 1" style={{ textAlign: "right", margin: "5px" }}>
-                  <span style={styles.timeText}>11/05/2020</span>
+                  <span style={styles.timeText}>{this.state.data.date}</span>
                 </Col>
               </Row>
+              <Col span={24}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  overflowY: "auto",
+                  fontFamily: "BasicSans",
+                  paddingTop: "25px",
+                }}
+              >
+                <div style={styles.postTitle}> {this.state.data.title} </div>
+
+                <style type="text/css"></style>
+              </div>
+            </Col>
               <div
                 style={{
                   display: "flex",
@@ -40,7 +83,7 @@ class PostContent extends React.Component {
                 }}
               >
                 <div class="postText">
-                  <PostText> "about": "Located on the eastern end of campus between Eleanor Roosevelt College and Warren College, the Canyonview Aquatic Center features two outdoor, Olympic-sized pools, each of which can be divided into eight lanes of 50 meters in length, or 19 lanes of 25 yards in length. The aquatic center also features a state-of-the-art weight room. Canyonview is home to the UCSD men's and women's water polo teams, as well as the men's and women's swimming and diving programs.",</PostText>
+                  <PostText>{ReactHtmlParser(this.state.data.description)}</PostText>
                 </div>
                 <style type="text/css"></style>
               </div>
@@ -66,6 +109,13 @@ class PostContent extends React.Component {
       fontWeight: "300",
       fontSize: "12",
       color: "#808295",
+    },
+    postTitle: {
+      fontFamily: "BasicSans",
+      fontSize: 26,
+      fontWeight: "bold",
+      textAlign: "left",
+      color: "#545871",
     },
   };
 
