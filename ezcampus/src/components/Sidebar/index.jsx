@@ -22,6 +22,9 @@ const {SubMenu} = Menu;
 class SideBar extends React.Component {
     constructor(props) {
         super(props)
+        this.state = {
+            defaultkey: ["1"],
+        };
         this.unsubscribe = store.subscribe(() => {
             const {userName, isLoggedIn, showPromptLogIn} = store.getState()
             this.setState({userName, isLoggedIn, showPromptLogIn}, () => {
@@ -31,6 +34,41 @@ class SideBar extends React.Component {
             })
         })
     }
+    componentDidMount() {
+        this.changeKey();
+    }
+    changeKey = () => {
+        switch (window.location.pathname) {
+          case "/posts":
+            this.setState({
+              defaultkey: ["1"]
+            })
+            console.log("posts")
+            break;
+        case "/groups":
+            this.setState({
+                defaultkey: ["2"]
+            })
+            break;
+          case "/posts/my":
+            this.setState({
+              defaultkey: ["3"]
+            })
+            break;
+          case "/contacts":
+            this.setState({
+              defaultkey: ["4"]
+            })
+            break;
+           case "/message":
+            this.setState({
+                defaultkey: ["4"]
+            })
+                break;
+          default:
+            break;
+        }
+      };
 
     state = {
         collapsed: false,
@@ -177,7 +215,7 @@ class SideBar extends React.Component {
                             </Button>
                         </NavLink>
                     </div>
-                    <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" onSelect={this.onSelectMenuItem} selectedKeys={[this.state.currentSelectedMenuItem]}>
+                    <Menu theme="dark" selectedKeys={this.state.defaultkey} mode="inline" onSelect={this.onSelectMenuItem} selectedKeys={[this.state.currentSelectedMenuItem]}>
                         <Menu.Item key="1" icon={<PieChartOutlined/>}>
                             Home
                             <NavLink to="/posts"/>
@@ -194,7 +232,7 @@ class SideBar extends React.Component {
 
                         <Menu.Item key="4" icon={<UserOutlined/>}>
                             Contacts
-                            <NavLink to="/friends"/>
+                            <NavLink to="/contacts"/>
                         </Menu.Item>
                             
                         <Menu.Item key="5" icon={<DesktopOutlined/>}>

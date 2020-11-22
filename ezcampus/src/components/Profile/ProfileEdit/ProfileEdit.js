@@ -17,8 +17,7 @@ class ProfileEdit extends React.Component {
       contactEmail:"",
       phone:"",
       aboutMe:"",
-      avatarLink:"",
-
+      avatarlink:"",
     },
     editing: true,
     file: null,
@@ -139,19 +138,19 @@ class ProfileEdit extends React.Component {
     if (info.file.status === "done") {
       
       // Get this url from response in real world.
-      this.getBase64(info.file.originFileObj, (avatarLink, avatar) =>
+      this.getBase64(info.file.originFileObj, (link, avatar) =>
         axios.post('https://api.imgur.com/3/image', avatar, {
           headers: {
               'Authorization': 'Client-ID c9897a7d288d020'
           }
         }).then(res => {                                
-            console.log(res.data.data.link);
+            // console.log(res.data.data.link);
             this.setState(prevState => ({
               avatar,
               loadingAvatar: false,
               tempUser: {                   
                   ...prevState.tempUser,    
-                  avatarLink:  res.data.data.link, 
+                  avatarlink:  res.data.data.link, 
               }
             }))
         }));
@@ -167,7 +166,7 @@ class ProfileEdit extends React.Component {
         this.setState({
           tempUser:res.data.profile
         },() =>{
-          console.log(this.state.tempUser)
+          // console.log(this.state.tempUser)
         })
       }
     })
@@ -250,36 +249,7 @@ class ProfileEdit extends React.Component {
             }}
           />
         </Col>
-        {/* <Col
-          xs={24}
-          sm={24}
-          md={24}
-          lg={6}
-          xl={6}
-          style={{ maxHeight: "90px" }}
-        >
-          <InputLabel>
-            Last name
-          </InputLabel>
-
-          <Input
-            style={{ height: "80%" }}
-            placeholder={this.state.tempUser.lastName}
-            value={this.state.tempUser.lastName}
-            onChange={(e) => {
-              this.setState({
-                lastNameEmpty: e.target.value === "",
-              });
-              this.setState(prevState => ({
-                tempUser: {                   
-                    ...prevState.tempUser,    
-                    lastName:  e.target.value, 
-                }
-              }))
-            }}
-            
-          />
-        </Col> */}
+        
         <Col
           xs={24}
           sm={24}
@@ -312,9 +282,9 @@ class ProfileEdit extends React.Component {
             >
               {this.state.loadingAvatar ? (
                 <LoadingOutlined />
-              ) : this.state.tempUser.avatarLink ? (
+              ) : this.state.tempUser.avatarlink ? (
                 <img
-                  src={this.state.tempUser.avatarLink}
+                  src={this.state.tempUser.avatarlink}
                   alt="avatar"
                   style={{ width: "100%" }}
                 />
