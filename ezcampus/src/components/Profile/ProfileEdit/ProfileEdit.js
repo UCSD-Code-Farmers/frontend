@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Input, Row, Col, Select, Button, Affix, message, Upload } from "antd";
 import axios from 'axios';
+import store from '../../../store/Store';
 
 class ProfileEdit extends React.Component {
   state = {
@@ -84,6 +85,20 @@ class ProfileEdit extends React.Component {
     super(props)
     this.saveAll=this.saveAll.bind(this)
   }
+
+  componentDidMount() {
+    const {email} = store.getState()
+    axios.get("http://server.metaraw.world:3000/users/profile/get", {params: {email}})
+    .then(res =>{
+      if(res.data.statusCode === 200){
+        this.setState({
+          tempUser:res.data.profile
+        },() =>{
+          console.log(this.state.tempUser)
+        })
+      }
+    })
+  }
     
 
   saveAll(){
@@ -133,8 +148,8 @@ class ProfileEdit extends React.Component {
 
           <Input
             style={{ height: "80%" }}
-            placeholder={this.state.firstName}
-            value={this.state.firstName}
+            placeholder={this.state.tempUser.firstName}
+            value={this.state.tempUser.firstName}
             onChange={(e) => {
               // change the value of the tempUser
               this.setState({
@@ -168,8 +183,8 @@ class ProfileEdit extends React.Component {
 
           <Input
             style={{ height: "80%" }}
-            placeholder={this.state.lastName}
-            value={this.state.lastName}
+            placeholder={this.state.tempUser.lastName}
+            value={this.state.tempUser.lastName}
             onChange={(e) => {
               this.setState({
                 lastNameEmpty: e.target.value === "",
@@ -217,8 +232,8 @@ class ProfileEdit extends React.Component {
           <InputLabel>City</InputLabel>
           <Input
             style={{ height: "80%" }}
-            placeholder={this.state.city}
-            value={this.state.city}
+            placeholder={this.state.tempUser.city}
+            value={this.state.tempUser.city}
             onChange={(e) => {
               this.setState(prevState => ({
                 tempUser: {                   
@@ -293,7 +308,7 @@ class ProfileEdit extends React.Component {
           </InputLabel>
           <Input
             style={{ height: "80%" }}
-            value={this.state.contactEmail}
+            value={this.state.tempUser.contactEmail}
             onChange={(e) => {
               this.setState({
                 contactEmailEmpty: e.target.value === "",
@@ -325,8 +340,8 @@ class ProfileEdit extends React.Component {
 
           <Input
             style={{ height: "80%" }}
-            placeholder="Your phone number goes here"
-            value={this.state.phoneNumber}
+            placeholder={this.state.tempUser.phoneNumber}
+            value={this.state.tempUser.phoneNumber}
             onChange={(e) => {
               // change the value of the tempUser
               this.setState(prevState => ({
@@ -344,6 +359,8 @@ class ProfileEdit extends React.Component {
               About Me
           </SettingsTitle>
           <TextArea rows={4} 
+           placeholder={this.state.tempUser.aboutMe}
+           value={this.state.tempUser.aboutMe}
            onChange={(e) => {
             // change the value of the tempUser
             this.setState(prevState => ({
