@@ -57,6 +57,7 @@ export default class PostCell extends Component {
                 <div className='single-post-description-box'>
                     <div className='single-post-description-text'>
                         {ReactHtmlParser(description)}
+                        
                     </div>
                 </div>
                 </div>

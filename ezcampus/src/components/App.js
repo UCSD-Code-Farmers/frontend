@@ -4,7 +4,10 @@ import Posts from './Posts/Posts'
 import React, { useState, useEffect } from 'react'
 import Create from "./Create/Create";
 import Friends from "./Friends/Friends"
-import Section from "./ResponsiveSection/Section";
+import Section from "./ResponsiveSection/Section"
+import MyPosts from "./PostHistory/MyPosts"
+import PostDetail from './Posts/PostDetail'
+import ProfileEdit from './Profile/ProfileEdit/ProfileEdit'
 import store from '../store/Store'
 import {AutoLoginProvider} from '../contexts/AutoLoginProvider'
 import LoadPosts from '../contexts/LoadPosts'
@@ -65,6 +68,7 @@ function App() {
                       <Route
                         exact
                         path="/posts/my"
+                        component={MyPosts}
                       />
                       <Route
                         exact
@@ -74,6 +78,7 @@ function App() {
                       <Route
                         exact
                         path="/profile/settings"
+                        component={ProfileEdit}
                       />
                       <Route
                         exact
@@ -91,6 +96,7 @@ function App() {
                       />
                       <Route
                         path="/posts/:postId"
+                        component={PostDetail}
                       />
                       <Route
                         path="/people/:userId"
