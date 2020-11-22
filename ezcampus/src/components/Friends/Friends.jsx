@@ -123,12 +123,6 @@ export default class Friends extends Component {
         this.data = data
         this.history = props.history
         
-        const {isLoggedIn} = store.getState()
-        if (!isLoggedIn) {
-            const action = {type: 'setShowPromptLogIn'}
-            store.dispatch(action)
-            this.history.push('/posts')
-        }
         
     }
 
@@ -137,12 +131,24 @@ export default class Friends extends Component {
     
 
     componentDidMount() {
-        store.subscribe(() => {
+        
             const {isLoggedIn} = store.getState()
             if (!isLoggedIn) {
+                console.log('not logged in')
+                const action = {type: 'setShowPromptLogIn'}
+                store.dispatch(action)
                 this.history.push('/posts')
             }
+     
+
+
+        store.subscribe(() => {
             
+                const {isLoggedIn} = store.getState()
+                if (!isLoggedIn) {
+                    this.history.push('/posts')
+                }
+           
         })
     }
 

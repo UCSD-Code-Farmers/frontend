@@ -22,6 +22,7 @@ export default function AutoLogin({children}) {
             
         })
         .then(res => {
+            console.log('auto logging in')
             if (res.data.statusCode == 200) {
                 const action = {
                     type: 'setEmailAndUserName',
