@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import BigProfile from "../icons/BigProfile.png";
 import axios from 'axios';
-import { Button, Card } from "antd";
+import { Button, Card, Row } from "antd";
 import contactIcon from "../icons/group.png";
 import { EditOutlined} from "@ant-design/icons";
 import { Redirect } from "react-router-dom";
@@ -60,12 +60,31 @@ class VisitorProfile extends React.Component {
         <div style={styles.nameText}>
           <Name>{this.state.profile.firstName}</Name>
           <Name>{this.state.profile.lastName}</Name>
+            
         </div>
         <div style={styles.positionText}>
           <Name>{this.state.profile.city}</Name>
           <Name>{this.state.profile.state}</Name>
         </div>
+        <div style={styles.positionText}>
+          <Button
+                type=""
+                style={{
+                  height: "35px",
+                  marginTop:"5px",
+                  width: "140px",
+                  backgroundColor: "#545770",
+                  color: "white",
+                }}
+                // onClick={}
+              >
+                Add friend
+          </Button>    
+        </div>
+        
+        
       <div>
+          
           <TitleField>
             <img
               src={contactIcon}
