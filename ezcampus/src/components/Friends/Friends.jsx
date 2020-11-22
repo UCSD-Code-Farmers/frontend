@@ -121,7 +121,7 @@ export default class Friends extends Component {
     }
 
     componentDidMount() {
-        
+        setTimeout(() => {
             const {isLoggedIn} = store.getState()
             if (!isLoggedIn) {
                 console.log('not logged in')
@@ -129,16 +129,17 @@ export default class Friends extends Component {
                 store.dispatch(action)
                 this.history.push('/posts')
             }
+        }, 400)
      
-
-
         store.subscribe(() => {
-            
+            setTimeout(() => {
                 const {isLoggedIn} = store.getState()
+
                 if (!isLoggedIn) {
+                    console.log(isLoggedIn)
                     this.history.push('/posts')
                 }
-           
+            }, 300)
         })
     }
 
