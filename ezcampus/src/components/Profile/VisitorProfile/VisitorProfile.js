@@ -78,7 +78,7 @@ class VisitorProfile extends React.Component {
                 }}
                 // onClick={}
               >
-                Add friend
+                Add to Contacts
           </Button>    
         </div>
         

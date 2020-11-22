@@ -11,6 +11,7 @@ import ProfileEdit from './Profile/ProfileEdit/ProfileEdit'
 import store from '../store/Store'
 import {AutoLoginProvider} from '../contexts/AutoLoginProvider'
 import LoadPosts from '../contexts/LoadPosts'
+import VisitorProfile from './Profile/VisitorProfile/VisitorProfile'
 
 import {
   BrowserRouter,

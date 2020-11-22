@@ -3,10 +3,7 @@ import './Post.css'
 import {Button} from 'react-bootstrap'
 import ReactHtmlParser from 'react-html-parser'
 import { Link } from "react-router-dom";
-<<<<<<< HEAD
-=======
 import store from '../../store/Store'
->>>>>>> b5768d0a3fe0ec7b8513e96b6163c8313d05380e
 
 export default class PostCell extends Component {
     constructor(props) {
