@@ -13,6 +13,7 @@ export default class MyPosts extends Component {
 
     constructor(props) {
         super(props)
+        this.history = props.history
 		const { posts, email } = store.getState();
 		const myPosts = posts.filter(post => post.creatorEmail === email)
 		this.setState({myPosts})
@@ -27,6 +28,22 @@ export default class MyPosts extends Component {
 	}
 
     componentDidMount() {
+        const {isLoggedIn} = store.getState()
+        if (!isLoggedIn) {
+            console.log('not logged in')
+            const action = {type: 'setShowPromptLogIn'}
+            store.dispatch(action)
+            this.history.push('/posts')
+        }
+ 
+        store.subscribe(() => {
+        
+            const {isLoggedIn} = store.getState()
+            if (!isLoggedIn) {
+                this.history.push('/posts')
+            }
+       
+        })
         const {posts, email, currentSelectedPostType} = store.getState()
 		const myPosts = posts.filter(post => post.creatorEmail === email)
 		this.setState({myPosts})
