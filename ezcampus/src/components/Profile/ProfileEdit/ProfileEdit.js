@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Input, Row, Col, Select, Button, Affix, message, Upload } from "antd";
+import { Redirect } from "react-router-dom"
 import axios from 'axios';
 import store from '../../../store/Store';
 
@@ -108,10 +109,23 @@ class ProfileEdit extends React.Component {
       if (res.data.statusCode === 200) {
           console.log('profile has been saved')
       }
+      this.setState({
+        editing: false,
+      });
+
   })
   }
     
   render(){
+      if (!this.state.editing) {
+        return (
+          <Redirect
+            to={{
+              pathname: "/profile",
+            }}
+          />
+        );
+      }
       const Option = Select.Option;
       const { TextArea } = Input;
       const handleStateChange = (USstate) => {
