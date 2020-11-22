@@ -13,6 +13,7 @@ import BigProfile from "./icons/BigProfile.png";
 import Login from "../Login/LoginPage";
 import Logout from '../Logout/Logout'
 import store from '../../store/Store'
+import {withRouter } from 'react-router-dom';
 import EmailVerification from "../Login/EmailVerification/EmailVerification";
 import PromptLogIn from "../Login/PromptLogIn";
 
@@ -22,9 +23,6 @@ const {SubMenu} = Menu;
 class SideBar extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            defaultkey: ["1"],
-        };
         this.unsubscribe = store.subscribe(() => {
             const {userName, isLoggedIn, showPromptLogIn} = store.getState()
             this.setState({userName, isLoggedIn, showPromptLogIn}, () => {
@@ -34,43 +32,40 @@ class SideBar extends React.Component {
             })
         })
     }
-    componentDidMount() {
-        this.changeKey();
-        console.log(this.state.defaultkey)
-    }
-    changeKey = () => {
-        console.log("hello")
-        switch (window.location.pathname) {
-          case "/posts":
-            this.setState({
-              defaultkey: ["1"]
-            })
+   
+    // changeKey = () => {
+    //     console.log("hello")
+    //     switch (window.location.pathname) {
+    //       case "/posts":
+    //         this.setState({
+    //           defaultkey: ["1"]
+    //         })
             
-            break;
-         case "/groups":
-            this.setState({
-                defaultkey: ["2"]
-            })
-            break;
-          case "/posts/my":
-            this.setState({
-              defaultkey: ["3"]
-            })
-            break;
-          case "/contacts":
-            this.setState({
-              defaultkey: ["4"]
-            })
-            break;
-           case "/message":
-            this.setState({
-               defaultkey: ["5"]
-            })
-                break;
-          default:
-            break;
-        }
-      };
+    //         break;
+    //      case "/groups":
+    //         this.setState({
+    //             defaultkey: ["2"]
+    //         })
+    //         break;
+    //       case "/posts/my":
+    //         this.setState({
+    //           defaultkey: ["3"]
+    //         })
+    //         break;
+    //       case "/contacts":
+    //         this.setState({
+    //           defaultkey: ["4"]
+    //         })
+    //         break;
+    //        case "/message":
+    //         this.setState({
+    //            defaultkey: ["5"]
+    //         })
+    //             break;
+    //       default:
+    //         break;
+    //     }
+    //   };
 
     state = {
         collapsed: false,
@@ -130,7 +125,7 @@ class SideBar extends React.Component {
     }
 
     render() {
-        const {collapsed} = this.state;
+        const { location } = this.props;
         return (
             <Layout style={{minHeight: '100vh'}}>
                 <Sider
@@ -217,27 +212,27 @@ class SideBar extends React.Component {
                             </Button>
                         </NavLink>
                     </div>
-                    <Menu theme="dark" selectedKeys={this.state.defaultkey}  onClick={this.changeKey}>
-                        <Menu.Item key="1" icon={<PieChartOutlined/>}>
+                    <Menu theme="dark"  selectedKeys={[location.pathname]}  defaultSelectedKeys={['/posts']} >
+                        <Menu.Item key="/posts" icon={<PieChartOutlined/>}>
                             Home
                             <NavLink to="/posts"/>
                         </Menu.Item>
-                        <Menu.Item key="2" icon={<DesktopOutlined/>} >
+                        <Menu.Item key="/groups" icon={<DesktopOutlined/>} >
                             Sections
                             <NavLink to="/groups"/>
                         </Menu.Item>
 
-                        <Menu.Item key="3" icon={<UserOutlined/>}>
+                        <Menu.Item key="/posts/my" icon={<UserOutlined/>}>
                             My Posts
                             <NavLink to="/posts/my"/>
                         </Menu.Item>
 
-                        <Menu.Item key="4" icon={<UserOutlined/>}>
+                        <Menu.Item key="/contacts" icon={<UserOutlined/>}>
                             Contacts
                             <NavLink to="/contacts"/>
                         </Menu.Item>
                             
-                        <Menu.Item key="5" icon={<DesktopOutlined/>}>
+                        <Menu.Item key="/message" icon={<DesktopOutlined/>}>
                             Message
                             <NavLink to="/message"/>
                         </Menu.Item>
@@ -261,4 +256,4 @@ class SideBar extends React.Component {
     }
 }
 
-export default SideBar
+export default  withRouter(SideBar);
