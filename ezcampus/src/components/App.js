@@ -9,8 +9,10 @@ import MyPosts from "./PostHistory/MyPosts"
 import PostDetail from './Posts/PostDetail'
 import ProfileEdit from './Profile/ProfileEdit/ProfileEdit'
 import store from '../store/Store'
-import LoadPosts from '../wrappers/LoadPosts'
 import AutoLogin from '../wrappers/AutoLogin'
+import LoadPosts from '../wrappers/LoadPosts'
+import VisitorProfile from './Profile/VisitorProfile/VisitorProfile'
+
 import {
   BrowserRouter,
   NavLink,
@@ -99,7 +101,8 @@ function App() {
                         component={PostDetail}
                       />
                       <Route
-                        path="/people/:userId"
+                        path="/profile/:userId"
+                        component={VisitorProfile}
                       />
                     </Switch>
                   </div>
