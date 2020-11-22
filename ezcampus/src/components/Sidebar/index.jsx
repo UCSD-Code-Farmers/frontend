@@ -36,16 +36,18 @@ class SideBar extends React.Component {
     }
     componentDidMount() {
         this.changeKey();
+        console.log(this.state.defaultkey)
     }
     changeKey = () => {
+        console.log("hello")
         switch (window.location.pathname) {
           case "/posts":
             this.setState({
               defaultkey: ["1"]
             })
-            console.log("posts")
+            
             break;
-        case "/groups":
+         case "/groups":
             this.setState({
                 defaultkey: ["2"]
             })
@@ -62,7 +64,7 @@ class SideBar extends React.Component {
             break;
            case "/message":
             this.setState({
-                defaultkey: ["4"]
+               defaultkey: ["5"]
             })
                 break;
           default:
@@ -215,7 +217,7 @@ class SideBar extends React.Component {
                             </Button>
                         </NavLink>
                     </div>
-                    <Menu theme="dark" selectedKeys={this.state.defaultkey} mode="inline" onSelect={this.onSelectMenuItem} selectedKeys={[this.state.currentSelectedMenuItem]}>
+                    <Menu theme="dark" selectedKeys={this.state.defaultkey}  onClick={this.changeKey}>
                         <Menu.Item key="1" icon={<PieChartOutlined/>}>
                             Home
                             <NavLink to="/posts"/>
