@@ -4,28 +4,27 @@ import { Input, Row, Col, Select, Button, Affix, message, Upload } from "antd";
 import { Redirect } from "react-router-dom"
 import axios from 'axios';
 import store from '../../../store/Store';
+import ImgCrop from "antd-img-crop";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 
 class ProfileEdit extends React.Component {
   state = {
     tempUser: {
-      firstName:"",
-      lastName:"",
+      userName:"",
       city:"",
       state:"",
       loginEmail:"",
       contactEmail:"",
       phone:"",
       aboutMe:"",
+      avatarLink:"",
 
     },
     editing: true,
     file: null,
-    firstNameEmpty: true,
-    lastNameEmpty: true,
-    titleEmpty: true,
+    userNameEmpty: true,
     contactEmailEmpty: true,
     loading: true,
-    avatarLink: "",
     avatar: null,
     loadingAvatar: false,
     USstates: [
@@ -87,6 +86,79 @@ class ProfileEdit extends React.Component {
     this.saveAll=this.saveAll.bind(this)
   }
 
+  validateAvatar = (file) => {
+    // Validate file type
+    if (file.type !== "image/jpeg" && file.type !== "image/png") {
+      message.error("Avatar image has to be in JPEG or PNG format");
+      return false;
+    }
+    // Validate file size. If size is greater than 5MB then reject. Otherwise compress.
+    if (file.size > 5 * 1024 * 1024) {
+      message.error("Avatar image has to be smaller than 5MB");
+      return false;
+    }
+    return true;
+  };
+
+  getBase64 = (img, callback) => {
+    const reader = new FileReader();
+    reader.addEventListener("load", (event) => {
+      this.compressAvatar(event.target.result, callback);
+    });
+    reader.readAsDataURL(img);
+  };
+
+  compressAvatar(dataURL, callback) {
+    let image = new Image();
+    image.onload = () => {
+      let canvas = document.createElement("canvas");
+      const maxWidth = 150,
+        maxHeight = 150;
+      canvas.width = canvas.width > maxWidth ? maxWidth : canvas.width;
+      canvas.height = canvas.height > maxHeight ? maxHeight : canvas.height;
+      canvas
+        .getContext("2d")
+        .drawImage(image, 0, 0, canvas.width, canvas.height);
+      canvas.toBlob(
+        function (blob) {
+          callback(canvas.toDataURL("image/jpeg", 0.5), blob);
+        },
+        "image/jpeg",
+        0.5
+      );
+    };
+    image.src = dataURL;
+  }
+  
+
+  handleChange = (info) => {
+    if (info.file.status === "uploading") {
+      this.setState({ loadingAvatar: true });
+      return;
+    }
+    if (info.file.status === "done") {
+      
+      // Get this url from response in real world.
+      this.getBase64(info.file.originFileObj, (avatarLink, avatar) =>
+        axios.post('https://api.imgur.com/3/image', avatar, {
+          headers: {
+              'Authorization': 'Client-ID c9897a7d288d020'
+          }
+        }).then(res => {                                
+            console.log(res.data.data.link);
+            this.setState(prevState => ({
+              avatar,
+              loadingAvatar: false,
+              tempUser: {                   
+                  ...prevState.tempUser,    
+                  avatarLink:  res.data.data.link, 
+              }
+            }))
+        }));
+      ;
+      
+    }
+  };
   componentDidMount() {
     const {email} = store.getState()
     axios.get("http://server.metaraw.world:3000/users/profile/get", {params: {email}})
@@ -153,7 +225,7 @@ class ProfileEdit extends React.Component {
           style={{ maxHeight: "90px" }}
         >
           <InputLabel>
-            First name
+            Username
             <ErrorLabel>{"\u00A0"}*</ErrorLabel>
             {/* {this.state.firstName.length > 20 ? (
               <ErrorLabel>*Too Long</ErrorLabel>
@@ -162,8 +234,8 @@ class ProfileEdit extends React.Component {
 
           <Input
             style={{ height: "80%" }}
-            placeholder={this.state.tempUser.firstName}
-            value={this.state.tempUser.firstName}
+            placeholder={this.state.tempUser.userName}
+            value={this.state.tempUser.userName}
             onChange={(e) => {
               // change the value of the tempUser
               this.setState({
@@ -172,14 +244,13 @@ class ProfileEdit extends React.Component {
               this.setState(prevState => ({
                 tempUser: {                   
                     ...prevState.tempUser,    
-                    firstName:  e.target.value,    
+                    userName:  e.target.value,    
                 }
               }))
-  
             }}
           />
         </Col>
-        <Col
+        {/* <Col
           xs={24}
           sm={24}
           md={24}
@@ -189,10 +260,6 @@ class ProfileEdit extends React.Component {
         >
           <InputLabel>
             Last name
-            {/* <ErrorLabel>{"\u00A0"}*</ErrorLabel>
-            {this.state.lastName.length > 20 ? (
-              <ErrorLabel>*Too Long</ErrorLabel>
-            ) : null} */}
           </InputLabel>
 
           <Input
@@ -212,7 +279,7 @@ class ProfileEdit extends React.Component {
             }}
             
           />
-        </Col>
+        </Col> */}
         <Col
           xs={24}
           sm={24}
@@ -229,9 +296,38 @@ class ProfileEdit extends React.Component {
           md={24}
           lg={6}
           xl={6}
-          style={{ maxHeight: "90px", padding: "0px" }}
+          style={{ maxHeight: "90px", padding: "0px", marginTop:"25px" }}
         >
+          <ImgCrop>
+            <Upload
+              style={{ width: "50px" }}
+              name="avatar"
+              listType="picture-card"
+              className="avatar-uploader"
+              showUploadList={false}
+              action="https://www.mocky.io/v2/5cc8019d300000980a055e76" 
+              beforeUpload={this.validateAvatar}
+              transformFile={this.compressAvatar}
+              onChange={this.handleChange}
+            >
+              {this.state.loadingAvatar ? (
+                <LoadingOutlined />
+              ) : this.state.tempUser.avatarLink ? (
+                <img
+                  src={this.state.tempUser.avatarLink}
+                  alt="avatar"
+                  style={{ width: "100%" }}
+                />
+              ) : (
+                <div>
+                  <PlusOutlined />
+                  <div className="ant-upload-text">Upload</div>
+                </div>
+              )}
+            </Upload>
+          </ImgCrop>
         </Col>
+      
       </Row>
 
       <Row type="flex" justify="start" gutter={[24, 40]}>
