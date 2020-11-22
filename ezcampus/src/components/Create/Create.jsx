@@ -13,13 +13,14 @@ import uuid from 'react-uuid';
 import store from '../../store/Store'
 import axios from 'axios'
 import FormData from 'form-data'
-import FroalaEditor from 'react-froala-wysiwyg';
+import { Redirect } from "react-router-dom";
+
 
 export default class Create extends Component {
     constructor(props) {
         super(props)
         this.history = props.history
-        this.state = {creatorEmail: '', creatorName: '', description: '', title: '', postType: 'furniture trading'};
+        this.state = {creatorEmail: '', creatorName: '', description: '', title: '', postType: 'Free or For Sale', redirect:false};
     
     }
 
@@ -47,6 +48,7 @@ export default class Create extends Component {
     }
 
     updateType = (e) => {
+        console.log(e.target.value)
         this.setState({postType: e.target.value})
     }
 
@@ -54,6 +56,11 @@ export default class Create extends Component {
     updateEditerComponentText = (e) => {
         this.setState({description: e})
     }
+    handleRedirect = () => {
+      if (this.state.redirect) {
+        return <Redirect to="/posts"/>;
+      }
+    };
 
     submitPost = () => {
 
@@ -97,9 +104,10 @@ export default class Create extends Component {
             .then(res => {
                 if (res.data.statusCode == 200) {
                     console.log('post has been created')
-                    const action = {type: 'addPost', data: {newPost: [{...this.state, ...otherInfo}]}}
+                    const action = {type: 'addPost', data: {newPost: {...this.state, ...otherInfo}}}
                     store.dispatch(action)
-                    this.history.push('/posts')
+                    // this.history.push('/posts')
+                    this.setState({redirect:true})
                 }
             })
         })
@@ -109,8 +117,10 @@ export default class Create extends Component {
 
     render() {
         
+        
         return (
             <div>
+                {this.handleRedirect()}
                 <br/>
                 <h2>Create Post</h2>
                 <br/>
@@ -143,6 +153,7 @@ export default class Create extends Component {
                 <p><strong>Description</strong></p>
                 <FroalaEditorComponent tag={'textarea'} config={{
                     placeholderText: 'Write the details here!',
+                    imageDefaultWidth: 500,
                     imageUpload: true,
                     events: {
                             'image.beforeUpload': function (images) {                           
@@ -158,7 +169,7 @@ export default class Create extends Component {
                             });
 
                             return false;
-                        },
+                        }
                     },
                     charCounterCount: true
                 }} onModelChange={this.updateEditerComponentText}/>

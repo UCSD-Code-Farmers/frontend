@@ -2,84 +2,58 @@ import React from "react";
 import styled from "styled-components";
 import BigProfile from "../icons/BigProfile.png";
 import axios from 'axios';
-import { Button, Card } from "antd";
+import { Button, Card, Row } from "antd";
 import contactIcon from "../icons/group.png";
 import { EditOutlined} from "@ant-design/icons";
 import { Redirect } from "react-router-dom";
 import store from '../../../store/Store';
+import {withRouter} from "react-router-dom";
 
 
-class UserProfile extends React.Component {
-  constructor(props) {
-    super(props)
-    this.history = props.history
-  }
+class VisitorProfile extends React.Component {
   state={
-    redirect: false,
     profile:{}
   }
 
   componentDidMount() {
-    const {isLoggedIn} = store.getState()
-    if (!isLoggedIn) {
-        console.log('not logged in')
-        const action = {type: 'setShowPromptLogIn'}
-        store.dispatch(action)
-        this.history.push('/posts')
-    }
-
-    store.subscribe(() => {
-        const {isLoggedIn} = store.getState()
-        if (!isLoggedIn) {
-            this.history.push('/posts')
+    const myemail = store.getState().email;
+    const email = this.props.match.params.userId;
+    if(myemail !== email){
+      axios.get("http://server.metaraw.world:3000/users/profile/get", {params: {email}})
+      .then(res =>{
+        if(res.data.statusCode === 200){
+          this.setState({
+            profile:res.data.profile
+          },() =>{
+            // console.log(this.state.profile)
+          })
         }
+      })
+    }
    
-    })
-
-    const {email} = store.getState()
-    axios.get("http://server.metaraw.world:3000/users/profile/get", {params: {email}})
-    .then(res =>{
-      if(res.data.statusCode === 200){
-        this.setState({
-          profile:res.data.profile
-        },() =>{
-          // console.log(this.state.profile.avatarlink)
-        })
-      }
-    })
     
   }
   
-  renderRedirect = () => {
-    if (this.state.redirect) {
-      return <Redirect to="/profile/settings" />;
-    }
-  };
   render() {
+    const useremail = this.props.match.params.userId;
+    const {email} = store.getState();
+    if (useremail === email) {
+      return (
+        <Redirect
+          to={{
+            pathname: "/profile",
+          }}
+        />
+      );
+    }
     return (
     <div>
-      {this.renderRedirect()}
       <Card
        style ={{width:"60%"}}
         headStyle={{ background: "#DEE0EB" }}
-        extra={
-          <Button
-            style={styles.editButton}
-            onClick={
-             
-              (this.setRedirect = () => {
-                this.setState({
-                  redirect: true
-                });
-              })
-            }
-          >
-            <EditOutlined />
-          </Button>
-        }
       >
         <div style={styles.avatar}>
-        {!this.state.profile.avatarlink ?
+          {!this.state.profile.avatarlink ?
             <AvatarImage
               src={BigProfile}
             >
@@ -87,7 +61,8 @@ class UserProfile extends React.Component {
             <AvatarImage
             src={this.state.profile.avatarlink}
             ></AvatarImage>
-        }
+          }
+         
         </div>
         <div style={styles.nameText}>
           <Name>{this.state.profile.userName}</Name>
@@ -96,7 +71,25 @@ class UserProfile extends React.Component {
           <Name>{this.state.profile.city}</Name>
           <Name>{this.state.profile.state}</Name>
         </div>
+        <div style={styles.positionText}>
+          <Button
+                type=""
+                style={{
+                  height: "35px",
+                  marginTop:"5px",
+                  width: "140px",
+                  backgroundColor: "#545770",
+                  color: "white",
+                }}
+                // onClick={}
+              >
+                Add to Contacts
+          </Button>    
+        </div>
+        
+        
       <div>
+          
           <TitleField>
             <img
               src={contactIcon}
@@ -204,4 +197,4 @@ const styles = {
 }
 
 
-export default UserProfile;
+export default  withRouter(VisitorProfile);
