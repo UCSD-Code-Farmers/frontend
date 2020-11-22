@@ -7,55 +7,50 @@ import contactIcon from "../icons/group.png";
 import { EditOutlined} from "@ant-design/icons";
 import { Redirect } from "react-router-dom";
 import store from '../../../store/Store';
+import {withRouter} from "react-router-dom";
 
 
-class UserProfile extends React.Component {
+class VisitorProfile extends React.Component {
   state={
-    redirect: false,
     profile:{}
   }
 
   componentDidMount() {
-    const {email} = store.getState()
-    axios.get("http://server.metaraw.world:3000/users/profile/get", {params: {email}})
-    .then(res =>{
-      if(res.data.statusCode === 200){
-        this.setState({
-          profile:res.data.profile
-        },() =>{
-          // console.log(this.state.profile)
-        })
-      }
-    })
+    const myemail = store.getState().email;
+    const email = this.props.match.params.userId;
+    if(myemail !== email){
+      axios.get("http://server.metaraw.world:3000/users/profile/get", {params: {email}})
+      .then(res =>{
+        if(res.data.statusCode === 200){
+          this.setState({
+            profile:res.data.profile
+          },() =>{
+            // console.log(this.state.profile)
+          })
+        }
+      })
+    }
+   
+    
   }
   
-  renderRedirect = () => {
-    if (this.state.redirect) {
-      return <Redirect to="/profile/settings" />;
-    }
-  };
   render() {
+    const useremail = this.props.match.params.userId;
+    const {email} = store.getState();
+    if (useremail === email) {
+      return (
+        <Redirect
+          to={{
+            pathname: "/profile",
+          }}
+        />
+      );
+    }
     return (
     <div>
-      {this.renderRedirect()}
       <Card
        style ={{width:"60%"}}
         headStyle={{ background: "#DEE0EB" }}
-        extra={
-          <Button
-            style={styles.editButton}
-            onClick={
-             
-              (this.setRedirect = () => {
-                this.setState({
-                  redirect: true
-                });
-              })
-            }
-          >
-            <EditOutlined />
-          </Button>
-        }
       >
         <div style={styles.avatar}>
           <AvatarImage
@@ -178,4 +173,4 @@ const styles = {
 }
 
 
-export default UserProfile;
+export default  withRouter(VisitorProfile);

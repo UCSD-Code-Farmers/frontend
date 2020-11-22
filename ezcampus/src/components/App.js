@@ -7,9 +7,11 @@ import Friends from "./Friends/Friends"
 import Section from "./ResponsiveSection/Section"
 import PostDetail from './Posts/PostDetail'
 import ProfileEdit from './Profile/ProfileEdit/ProfileEdit'
+import VisitorProfile from './Profile/VisitorProfile/VisitorProfile'
 import store from '../store/Store'
 import {AutoLoginProvider} from '../contexts/AutoLoginProvider'
 import LoadPosts from '../contexts/LoadPosts'
+
 import {
   BrowserRouter,
   NavLink,
@@ -97,7 +99,8 @@ function App() {
                         component={PostDetail}
                       />
                       <Route
-                        path="/people/:userId"
+                        path="/profile/:userId"
+                        component={VisitorProfile}
                       />
                     </Switch>
                   </div>
