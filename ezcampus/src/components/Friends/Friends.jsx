@@ -131,19 +131,8 @@ export default class Friends extends Component {
                 store.dispatch(action)
                 this.history.replace('/posts')
             }
-        }, 400)
+        }, 300)
      
-        store.subscribe(() => {
-            setTimeout(() => {
-                const {isLoggedIn} = store.getState()
-                if (!isLoggedIn) {
-                    if (this.props.history.location.pathname == '/contacts') {
-                        console.log(this.history.location)
-                        this.history.replace('/posts')
-                    }
-                }
-            }, 300)
-        })
     }
 
 
