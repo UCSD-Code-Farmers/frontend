@@ -35,11 +35,10 @@ export default class PostCell extends Component {
                 <div className='single-post-header'>
                 <div style={{display: 'inline-block'}}>
                     <div style={{display: 'flex'}}>
-                    <Link to={`/profile/${creatorEmail}`}>
+
                         <div className='single-post-creator'>
                             {creatorName? creatorName: 'unknown'}
                         </div>
-                    </Link>
                         <div className='single-post-type'>
                             {postType}  
                         </div>
@@ -58,6 +57,7 @@ export default class PostCell extends Component {
                 <div className='single-post-description-box'>
                     <div className='single-post-description-text'>
                         {ReactHtmlParser(description)}
+                        
                     </div>
                 </div>
                 </div>
