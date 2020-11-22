@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import PostCell from './PostCell'
+import PostCell from './MyPostCell'
 import { SwitcherOutlined } from '@ant-design/icons'
 import {Button} from 'react-bootstrap'
-import './Post.css'
+import './MyPost.css'
 import store from '../../store/Store'
 
 

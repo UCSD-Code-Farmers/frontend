@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import './Post.css'
+import './MyPost.css'
 import {Button} from 'react-bootstrap'
 import ReactHtmlParser from 'react-html-parser'
 import { Link } from "react-router-dom";
 import store from '../../store/Store'
+import BigProfile from "../Sidebar/icons/BigProfile.png"
 
 export default class PostCell extends Component {
     constructor(props) {
@@ -35,7 +36,20 @@ export default class PostCell extends Component {
                 <div className='single-post-header'>
                 <div style={{display: 'inline-block'}}>
                     <div style={{display: 'flex'}}>
-
+                        <div>
+                            
+                        <img
+                        src={BigProfile? BigProfile: null}
+                        style={{
+                             //marginTop: "100px",
+                             width: "50px",
+                             height: "50px",
+                            borderRadius: "39px",
+                            marginRight:"20px"
+                            }}
+                        alt="default profile pic"
+                        />
+                        </div>
                         <div className='single-post-creator'>
                             {creatorName? creatorName: 'unknown'}
                         </div>
