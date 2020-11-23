@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import FriendCell from './FriendCell'
 import './Friends.css'
 import { Card } from 'antd';
+import {Redirect} from 'react-router-dom'
 import Icon from '@ant-design/icons';
 import store from '../../store/Store'
 
@@ -116,25 +117,24 @@ export default class Friends extends Component {
         super(props)
         this.data = this.state.data
         this.history = props.history
+        console.log(this.props.location)
         
-        const {isLoggedIn} = store.getState()
-        if (!isLoggedIn) {
-            const action = {type: 'setShowPromptLogIn'}
-            store.dispatch(action)
-            this.history.push('/posts')
-        }
         
     }
 
     componentDidMount() {
-        store.subscribe(() => {
+        setTimeout(() => {
             const {isLoggedIn} = store.getState()
             if (!isLoggedIn) {
-                this.history.push('/posts')
+                console.log('not logged in')
+                const action = {type: 'setShowPromptLogIn'}
+                store.dispatch(action)
+                this.history.replace('/posts')
             }
-            
-        })
+        }, 300)
+     
     }
+
 
     handleDelete = friendID => {
         console.log(friendID);

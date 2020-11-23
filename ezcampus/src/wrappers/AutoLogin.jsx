@@ -1,14 +1,12 @@
-import React, {useContext, useState, useEffect, createContext} from 'react'
+import React, {useEffect} from 'react'
 import store from '../store/Store'
 import axios from 'axios'
+import {useHistory} from 'react-router-dom'
 
-const autoLoginContext = createContext(AutoLoginProvider)
 
-export function useAutoLogin() {
-    return useContext(autoLoginContext)
-}
-
-export function AutoLoginProvider({children}) {
+export default function AutoLogin(props) {
+    const children = props.children
+    const history = useHistory()
 
     useEffect(() => {
         const userEmail = localStorage.getItem('ezcampus_user_email')
@@ -17,6 +15,24 @@ export function AutoLoginProvider({children}) {
         if (userEmail && password) {
             autoLogin(userEmail, password)
         }
+
+        const unsubscribe = store.subscribe(() => {
+            setTimeout(() => {
+                const {isLoggedIn} = store.getState()
+                console.log(`we are currently at ${history.location.pathname}`)
+                if (!isLoggedIn) {
+                    if (history.location.pathname == '/contacts' ||
+                        history.location.pathname == '/posts/my') {
+                        console.log(history.location)
+                        history.replace('/posts')
+                    }
+                }
+            }, 200)
+        
+        })
+
+        return () => {unsubscribe()}
+
     }, [])
 
     const autoLogin = (userEmail, password) => {
@@ -26,6 +42,7 @@ export function AutoLoginProvider({children}) {
             
         })
         .then(res => {
+            console.log('auto logging in')
             if (res.data.statusCode == 200) {
                 const action = {
                     type: 'setEmailAndUserName',
@@ -44,8 +61,8 @@ export function AutoLoginProvider({children}) {
     }
 
     return (
-        <autoLoginContext.Provider value={{}}>
+        <div>
             {children}
-        </autoLoginContext.Provider>
+        </div>
     )
 }

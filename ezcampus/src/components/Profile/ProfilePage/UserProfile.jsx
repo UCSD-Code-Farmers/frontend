@@ -10,12 +10,32 @@ import store from '../../../store/Store';
 
 
 class UserProfile extends React.Component {
+  constructor(props) {
+    super(props)
+    this.history = props.history
+  }
   state={
     redirect: false,
     profile:{}
   }
 
   componentDidMount() {
+    const {isLoggedIn} = store.getState()
+    if (!isLoggedIn) {
+        console.log('not logged in')
+        const action = {type: 'setShowPromptLogIn'}
+        store.dispatch(action)
+        this.history.push('/posts')
+    }
+
+    store.subscribe(() => {
+        const {isLoggedIn} = store.getState()
+        if (!isLoggedIn) {
+            this.history.push('/posts')
+        }
+   
+    })
+
     const {email} = store.getState()
     axios.get("http://server.metaraw.world:3000/users/profile/get", {params: {email}})
     .then(res =>{
@@ -23,10 +43,11 @@ class UserProfile extends React.Component {
         this.setState({
           profile:res.data.profile
         },() =>{
-          // console.log(this.state.profile)
+          // console.log(this.state.profile.avatarlink)
         })
       }
     })
+    
   }
   
   renderRedirect = () => {
@@ -58,13 +79,18 @@ class UserProfile extends React.Component {
         }
       >
         <div style={styles.avatar}>
-          <AvatarImage
-            src={BigProfile}
-          ></AvatarImage>
+        {!this.state.profile.avatarlink ?
+            <AvatarImage
+              src={BigProfile}
+            >
+            </AvatarImage>  :
+            <AvatarImage
+            src={this.state.profile.avatarlink}
+            ></AvatarImage>
+        }
         </div>
         <div style={styles.nameText}>
-          <Name>{this.state.profile.firstName}</Name>
-          <Name>{this.state.profile.lastName}</Name>
+          <Name>{this.state.profile.userName}</Name>
         </div>
         <div style={styles.positionText}>
           <Name>{this.state.profile.city}</Name>

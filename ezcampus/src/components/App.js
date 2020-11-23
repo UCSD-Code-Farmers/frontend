@@ -9,8 +9,8 @@ import MyPosts from "./PostHistory/MyPosts"
 import PostDetail from './Posts/PostDetail'
 import ProfileEdit from './Profile/ProfileEdit/ProfileEdit'
 import store from '../store/Store'
-import {AutoLoginProvider} from '../contexts/AutoLoginProvider'
-import LoadPosts from '../contexts/LoadPosts'
+import AutoLogin from '../wrappers/AutoLogin'
+import LoadPosts from '../wrappers/LoadPosts'
 import VisitorProfile from './Profile/VisitorProfile/VisitorProfile'
 
 import {
@@ -35,10 +35,11 @@ function App() {
   }, [])
 
   return (
-    <LoadPosts>
-    <AutoLoginProvider>
+
       <div className="App">
         <BrowserRouter>
+        <LoadPosts>
+        <AutoLogin>
             <SideBar
                 routes={
                   <div>
@@ -93,8 +94,9 @@ function App() {
                       />
                       <Route
                         exact
-                        path="/friends"
+                        path="/contacts"
                         component={Friends}
+                        
                       />
                       <Route
                         path="/posts/:postId"
@@ -108,10 +110,10 @@ function App() {
                   </div>
                 }
             />
+          </AutoLogin>
+          </LoadPosts>
         </BrowserRouter>
       </div>
-    </AutoLoginProvider>
-    </LoadPosts>
   );
 }
 
