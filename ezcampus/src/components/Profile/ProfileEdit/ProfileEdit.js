@@ -179,6 +179,8 @@ class ProfileEdit extends React.Component {
     .then(res => {
       if (res.data.statusCode === 200) {
           console.log('profile has been saved')
+          const action = {type: 'setUserName', data: {userName: this.state.tempUser.userName}}
+          store.dispatch(action)
       }
       this.setState({
         editing: false,
@@ -419,8 +421,8 @@ class ProfileEdit extends React.Component {
 
           <Input
             style={{ height: "80%" }}
-            placeholder={this.state.tempUser.phoneNumber}
-            value={this.state.tempUser.phoneNumber}
+            placeholder={this.state.tempUser.phone}
+            value={this.state.tempUser.phone}
             onChange={(e) => {
               // change the value of the tempUser
               this.setState(prevState => ({

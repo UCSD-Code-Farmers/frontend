@@ -43,11 +43,10 @@ class UserProfile extends React.Component {
         this.setState({
           profile:res.data.profile
         },() =>{
-          console.log(this.state.profile)
+          // console.log(this.state.profile.avatarlink)
         })
       }
     })
-  
     
   }
   

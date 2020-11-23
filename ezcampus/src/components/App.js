@@ -35,10 +35,11 @@ function App() {
   }, [])
 
   return (
-    <LoadPosts>
-    <AutoLogin>
+
       <div className="App">
         <BrowserRouter>
+        <LoadPosts>
+        <AutoLogin>
             <SideBar
                 routes={
                   <div>
@@ -95,6 +96,7 @@ function App() {
                         exact
                         path="/contacts"
                         component={Friends}
+                        
                       />
                       <Route
                         path="/posts/:postId"
@@ -108,10 +110,10 @@ function App() {
                   </div>
                 }
             />
+          </AutoLogin>
+          </LoadPosts>
         </BrowserRouter>
       </div>
-    </AutoLogin>
-    </LoadPosts>
   );
 }
 
