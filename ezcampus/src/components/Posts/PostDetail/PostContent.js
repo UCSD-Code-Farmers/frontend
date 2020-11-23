@@ -86,7 +86,7 @@ class PostContent extends React.Component {
                 <style type="text/css"></style>
               </div>
           </Card>
-            <Comment/>
+            <Comment history={this.props.history}/>
         </div>
       );
     }

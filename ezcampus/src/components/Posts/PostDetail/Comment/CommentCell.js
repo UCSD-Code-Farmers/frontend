@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
+import './CommentCell.css'
 import {Card} from 'react-bootstrap';
 
 // styling sheet--do not modify
@@ -22,7 +23,7 @@ const textbody = {
 }
 
 function CommentCell(props) {
-    console.log(props)
+    // console.log(props)
     const date = new Date().toLocaleDateString();
     const time = new Date().toLocaleTimeString();
     return (
@@ -31,7 +32,8 @@ function CommentCell(props) {
                 {/*<div style={{textAlign:"left"}}><Card.Img src={'#'}></Card.Img></div>*/}
                 <Card.Title style={title}>
                     <div>
-                        <p style={{float:"left"}}>{props.item.name}</p>
+                        {/*onClick={()=>{props.history.push( `/posts/${this.id}`)}}*/}
+                        <div className={"CommentCell-name"}>{props.item.name}</div>
                         <p style={{float:"right"}}>{time} &nbsp;&nbsp;&nbsp;&nbsp; {date}</p>
                     </div>
                 </Card.Title>
