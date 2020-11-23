@@ -41,18 +41,6 @@ export default class MyPosts extends Component {
             }
         }, 300)
 
-        store.subscribe(() => {
-            setTimeout(() => {
-                const {isLoggedIn} = store.getState()
-                if (!isLoggedIn) {
-                    if (this.props.history.location.pathname == '/posts/my') {
-                        console.log(this.props.history.location)
-                        this.history.replace('/posts')
-                    }
-                }
-            }, 300)
-        })
-
         setTimeout(() => {
             const {posts, email, currentSelectedPostType} = store.getState()
             const myPosts = posts.filter(post => post.creatorEmail === email)
