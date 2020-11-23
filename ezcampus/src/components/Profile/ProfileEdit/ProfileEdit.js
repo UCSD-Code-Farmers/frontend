@@ -22,7 +22,6 @@ class ProfileEdit extends React.Component {
     editing: true,
     file: null,
     userNameEmpty: true,
-    contactEmailEmpty: true,
     loading: true,
     avatar: null,
     loadingAvatar: false,
@@ -240,7 +239,7 @@ class ProfileEdit extends React.Component {
             onChange={(e) => {
               // change the value of the tempUser
               this.setState({
-                firstNameEmpty: e.target.value === "",
+                userNameEmpty: e.target.value === "",
               });
               this.setState(prevState => ({
                 tempUser: {                   
@@ -392,9 +391,7 @@ class ProfileEdit extends React.Component {
             style={{ height: "80%" }}
             value={this.state.tempUser.contactEmail}
             onChange={(e) => {
-              this.setState({
-                contactEmailEmpty: e.target.value === "",
-              });
+             
               this.setState(prevState => ({
                 tempUser: {                   
                     ...prevState.tempUser,    
