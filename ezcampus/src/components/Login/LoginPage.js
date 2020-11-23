@@ -154,7 +154,7 @@ class LoginPage extends Component{
                     }
                 })
                 store.dispatch(action)
-                // this.props.closePopup()
+                this.props.closePopup()
                 //auto login next time
                 if (this.state.rememberUser)
                     localStorage.setItem('ezcampus_user_auto_login', {email: this.state.email, password: this.state.password})
