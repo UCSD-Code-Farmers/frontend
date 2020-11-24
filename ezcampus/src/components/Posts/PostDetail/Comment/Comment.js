@@ -101,7 +101,7 @@ class Comment extends Component {
                 if (!err.response) return
                 const errRes = err.response
                 if (errRes.status === 404) {
-                    console.log(errRes.data)
+                    // console.log(errRes.data)
                     alert(errRes.data.message)
                 }
             })
