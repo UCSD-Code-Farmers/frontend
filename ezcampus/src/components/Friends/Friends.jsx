@@ -73,13 +73,24 @@ export default class Friends extends Component {
                 store.dispatch(action)
                 this.history.replace('/posts')
             }
-        }, 300)
-     
+        }, 800)
+        setTimeout(() => {
+            const email = store.getState().email
+            axios.get("http://server.metaraw.world:3000/users/contact/get_contactList", {params: {email}})
+            .then(res => {
+                console.log("getting data")
+                if(res.data.statusCode === 200){
+                    console.log("logging contact data: ", res.data.contact)
+                    this.setState({data: res.data.contact})
+                }
+            })
+        }, 800)
+        
     }
 
 
     handleDelete = friendID => {
-        // console.log(friendID);
+        const myEmail = store.getState().email
         axios.delete("http://server.metaraw.world:3000/users/contact/delete",{
             params: {
                 myEmail: this.myEmail,
@@ -88,7 +99,7 @@ export default class Friends extends Component {
         })
         .then(res => {
             if(res.data.statusCode == 200){
-                const data = this.state.data.filter(friend => friend.id !== friendID);
+                const data = this.state.data.filter(friend => friend.userEmail !== friendID);
                 this.setState({data});
             }
         })
@@ -99,7 +110,7 @@ export default class Friends extends Component {
             <div >
                 {this.state.data.map(
                     data => (
-                        <div className='friend-card-container' key={data.id}>
+                        <div className='friend-card-container' key={data.userEmail}>
                         <Card style={{borderRadius:"10px"}}>
                         <FriendCell 
                             data={data}
@@ -118,7 +129,7 @@ export default class Friends extends Component {
                     <div className="custom-icons-list">
                         <PandaIcon style={{ fontSize: '60px' }} />
                     </div>
-                    <p style={{fontSize:'25px', display:"inline-block"}}>Friends</p>
+                    <p style={{fontSize:'25px', display:"inline-block"}}>Contact List</p>
                 </div>
                 <div className='friend-page-container'>
                     {this.createFriendList()}
@@ -129,58 +140,4 @@ export default class Friends extends Component {
     }
 }
 
- // {
-            //     id: '2232f-usff-2323f23-2fdsf',
-            //     name: 'Liyuan Lin',
-            //     /*img: null*/
-            // },
-            // {
-            //     id: '2232f-usrd-2323f23-2fdsf',
-            //     name: 'Guoyi Li',
-            //     /*img: null*/
-            // },
-            // {
-            //     id: '2342f-usfr-2323f23-2fdsf',
-            //     name: 'Hang Gao',
-            //     /*img: null*/
-            // },
-            // {
-            //     id: '2345f-usgt-2323f23-2fdsf',
-            //     name: 'Fan Yang',
-            //     /*img: null*/
-            // },
-            // {
-            //     id: '2232f-usgb-2323f23-2fdsf',
-            //     name: 'Xiaoxiao Li',
-            //     /*img: null*/
-            // },
-            // {
-            //     id: '2276f-usot-2323f23-2fdsf',
-            //     name: 'Iris Zhang',
-            //     /*img: null*/
-            // },
-            // {
-            //     id: '2290f-us34-2323f23-2fdsf',
-            //     name: 'Minghe Yang',
-            //     /*img: null*/
-            // },
-            // {
-            //     id: '2256f-usdy-2323f23-2fdsf',
-            //     name: 'Yanling Huang',
-            //     /*img: null*/
-            // },
-            // {
-            //     id: '2234f-usdf-2323f23-2fdsf',
-            //     name: 'Yiming Zhao',
-            //     /*img: null*/
-            // },
-            // {
-            //     id: '2232f-usrt-2323f23-2fdsf',
-            //     name: 'Vincent Li',
-            //     /*img: null*/
-            // },
-            // {
-            //     id: '2232f-ushy-2323f23-2fdsf',
-            //     name: 'Yingjia Gu',
-            //     /*img: null*/
-            // }
+ 
