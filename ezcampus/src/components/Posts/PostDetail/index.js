@@ -24,7 +24,6 @@ class PostDetail extends React.Component {
       
       })
     }
-
     render() {
         return (
           <div>
