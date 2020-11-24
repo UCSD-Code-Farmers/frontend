@@ -15,7 +15,7 @@ const title = {
 
 const styleText ={
     float:"left",
-    fontSize:"12px",
+    fontSize:"15px",
 }
 const textbody = {
     borderTop: "1px black solid",
@@ -40,13 +40,12 @@ function CommentCell(props) {
                         {/*    </div>*/}
                         {/*</Link>*/}
                         <div  className={"CommentCell-name"}>{props.item.userName}</div>
-                        <p style={{float:"right",margin:"0px"}}>{props.item.time} &nbsp;&nbsp;&nbsp;&nbsp; {props.item.date}</p>
+                        <div style={{float:"right"}}>
+                            {props.item.time} &nbsp;&nbsp;&nbsp;&nbsp; {props.item.date}
+                            {props.item.email !=email? null : <i onClick={props.delete} style={{paddingLeft:"30px",float:"right",fontSize:"13px",color:"#016ba8"}}>{transh}</i>}
+                        </div>
                     </div>
                 </Card.Title>
-                <div>
-                    {props.item.email !=email? null :
-                    <i onClick={props.delete} style={{clear:"both",float:"right",fontSize:"13px",color:"#016ba8"}}>{transh}</i>}
-                </div>
             </Card.Header>
             <Card.Body style={textbody}>
                 <Card.Text style={styleText}>{props.item.commentText}</Card.Text>
