@@ -138,6 +138,7 @@ class LoginPage extends Component{
                         userName: username
                     }
                 }
+                store.dispatch(action)
                 axios.post('http://server.metaraw.world:3000/users/profile/save', {
                     'loginEmail': email,
                     'userName': username, 
@@ -153,7 +154,7 @@ class LoginPage extends Component{
                         console.log('profile has been saved')
                     }
                 })
-                store.dispatch(action)
+
                 this.props.closePopup()
                 //auto login next time
                 if (this.state.rememberUser)
