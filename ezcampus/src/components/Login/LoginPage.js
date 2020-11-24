@@ -17,7 +17,7 @@ class LoginPage extends Component{
             username:"",
             password:"",
             value:{},
-            rememberUser: false
+            rememberUser: true
         }
         this.handleLoginSwitch = this.handleLoginSwitch.bind(this)
         this.handleSignUpSwitch = this.handleSignUpSwitch.bind(this)
@@ -131,7 +131,6 @@ class LoginPage extends Component{
         })
         .then(res => {
             if (res.data.statusCode === 200) {
-                console.log(res.data)
                 const action = {
                     type: 'setEmailAndUserName',
                     data: {
@@ -139,13 +138,28 @@ class LoginPage extends Component{
                         userName: username
                     }
                 }
-
                 store.dispatch(action)
-                this.props.closePopup()
+                axios.post('http://server.metaraw.world:3000/users/profile/save', {
+                    'loginEmail': email,
+                    'userName': username, 
+                    "aboutMe": "",
+                    "avatarlink": "",
+                    "city": "",
+                    "contactEmail": "",
+                    "phone": "",
+                    "state": ""
+                })
+                .then(res => {
+                    if (res.data.statusCode === 200) {
+                        console.log('profile has been saved')
+                    }
+                })
 
+                this.props.closePopup()
                 //auto login next time
                 if (this.state.rememberUser)
                     localStorage.setItem('ezcampus_user_auto_login', {email: this.state.email, password: this.state.password})
+                
             }
         })
         .catch(err => {
@@ -156,6 +170,7 @@ class LoginPage extends Component{
                 alert(errRes.data.message)
             }
         })
+       
     }
 
     handleEmailVerification=()=>{
@@ -202,8 +217,9 @@ class LoginPage extends Component{
                                 className="check-box"
                                 placeholder="possword"
                                 onChange={this.handleRememberUser}
+                                checked={this.state.rememberUser}
                             />
-                            <strong className={"spanText"}>Remember User</strong>
+                            <strong className={"spanText"}>Remember Me</strong>
                             <br />
                             <strong className={"spanText"}>Do you forget your password ?</strong>
                             <button
