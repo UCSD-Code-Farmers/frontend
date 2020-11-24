@@ -159,6 +159,12 @@ class ProfileEdit extends React.Component {
   };
   componentDidMount() {
     const {email} = store.getState()
+    this.setState(prevState => ({
+      tempUser: {                   
+          ...prevState.tempUser,    
+          loginEmail:  email, 
+      }
+    }))
     axios.get("http://server.metaraw.world:3000/users/profile/get", {params: {email}})
     .then(res =>{
       if(res.data.statusCode === 200){
