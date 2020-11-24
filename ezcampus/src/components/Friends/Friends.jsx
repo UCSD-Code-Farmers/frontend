@@ -65,6 +65,7 @@ export default class Friends extends Component {
     }
 
     componentDidMount() {
+
         let interval = setInterval(() => {
             const {isLoading} = store.getState()
             if (!isLoading) {
