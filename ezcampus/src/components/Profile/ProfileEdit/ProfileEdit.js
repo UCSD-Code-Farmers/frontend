@@ -170,9 +170,26 @@ class ProfileEdit extends React.Component {
       }
     })
   }
+  nameInSize = () => {
+    return (
+      this.state.tempUser.userName.length <= 20
+    );
+  };
     
 
-  saveAll(){
+  saveAll = async () =>{
+    if (!this.nameInSize()) {
+      message.warning(
+        "Name is too long, please double check or put a nickname. "
+      );
+      return;
+    }
+    if (this.state.tempUser.userName.length === 0) {
+      message.warning(
+        "Username can't be empty. "
+      );
+      return;
+    }
     axios.post('http://server.metaraw.world:3000/users/profile/save', {
       ...this.state.tempUser})
     .then(res => {
@@ -227,9 +244,6 @@ class ProfileEdit extends React.Component {
           <InputLabel>
             Username
             <ErrorLabel>{"\u00A0"}*</ErrorLabel>
-            {/* {this.state.firstName.length > 20 ? (
-              <ErrorLabel>*Too Long</ErrorLabel>
-            ) : null} */}
           </InputLabel>
 
           <Input
