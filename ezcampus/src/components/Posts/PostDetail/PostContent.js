@@ -3,8 +3,10 @@ import React from "react";
 import BigProfile from "../icons/BigProfile.png"
 import styled from "styled-components";
 import store from '../../../store/Store'
-import ReactHtmlParser from 'react-html-parser'
-import axios from 'axios'
+import Comment from "./Comment/Comment";
+import ReactHtmlParser from 'react-html-parser';
+import axios from 'axios';
+import { Link } from "react-router-dom";
 class PostContent extends React.Component {
 
     constructor(props) {
@@ -43,16 +45,20 @@ class PostContent extends React.Component {
     render() {
       return (
         <div>
-          <Card style={{width:"80%"}}>
+          <Card style={{width:"100%"}}>
               <Row align="middle">
-                <Col flex="0 1" style={{ margin: "5px" }}>
-                  <Avatar size={50} src={BigProfile} alt="" />
-                </Col>
-                <Col flex="2 1" style={{ margin: "5px" }}>
-                  <span style={styles.nameText}>
-                    {this.state.data.creatorName}
-                  </span>
-                </Col>
+                <Link to={`/profile/${this.state.data.creatorEmail}`}>
+                  <Col flex="0 1" style={{ margin: "5px" }}>
+                    <Avatar size={50} src={BigProfile} alt="" />
+                  </Col>
+                 </Link>
+                 <Link to={`/profile/${this.state.data.creatorEmail}`}>
+                  <Col flex="2 1" style={{ margin: "5px" }}>
+                    <span style={styles.nameText}>
+                      {this.state.data.creatorName}
+                    </span>
+                  </Col>
+                 </Link>
                 <Col flex="1 1" style={{ textAlign: "right", margin: "5px" }}>
                   <span style={styles.timeText}>{this.state.data.date}</span>
                 </Col>
@@ -85,7 +91,7 @@ class PostContent extends React.Component {
                 <style type="text/css"></style>
               </div>
           </Card>
-         
+            <Comment history={this.props.history}/>
         </div>
       );
     }
