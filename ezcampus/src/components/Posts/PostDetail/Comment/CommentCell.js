@@ -5,51 +5,47 @@ import {Card} from 'react-bootstrap';
 import {faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 import store from "../../../../store/Store";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-
+import { Link } from "react-router-dom";
 const transh = <FontAwesomeIcon icon={faTrashAlt}/>;
 // styling sheet--do not modify
 const title = {
-    textAlign: "left",
-    fontSize: "14px",
-    height: "5px"
+    textAlign:"left",
+    fontSize:"14px",
+    height:"5px"
 }
 
-const styleText = {
-    float: "left",
-    fontSize: "15px",
+const styleText ={
+    float:"left",
+    fontSize:"15px",
 }
 const textbody = {
     borderTop: "1px black solid",
     padding: "10px",
-    overflow: "scroll",
+    overflow:"scroll",
 }
 
 function CommentCell(props) {
     // console.log(props)
     // const date = new Date().toLocaleDateString();
     // const time = new Date().toLocaleTimeString();
-    const {email, userName} = store.getState()
+    const {email,userName} = store.getState()
     return (
-        <Card className={"Test-style-li"}>
-            <Card.Header style={{padding: "10px,10px,0px,10px"}}>
+        <Card className={"Test-style-li"} >
+            <Card.Header style={{padding:"10px,10px,0px,10px"}}>
                 {/*<div style={{textAlign:"left"}}><Card.Img src={'#'}></Card.Img></div>*/}
                 <Card.Title style={title}>
                     <div>
-                        {/*<Link to={`/profile/${props.item.userName}`}>*/}
-                        {/*    <div className='"CommentCell-name"'>*/}
-                        {/*        {props.item.userName}*/}
-                        {/*    </div>*/}
-                        {/*</Link>*/}
-                        <div className={"CommentCell-name"}>{props.item.userName}</div>
-                        <div style={{float: "right"}}>
+                      
+                        
+                            <div  className={"CommentCell-name"}>
+                                <Link to={`/profile/${props.item.email}`}>
+                                    {props.item.userName}
+                                </Link>
+                            </div>
+                       
+                        <div style={{float:"right"}}>
                             {props.item.time} &nbsp;&nbsp;&nbsp;&nbsp; {props.item.date}
-                            {props.item.email != email ? null : <i onClick={props.delete} style={{
-                                paddingLeft: "30px",
-                                float: "right",
-                                fontSize: "13px",
-                                color: "#016ba8",
-                                cursor: "pointer"
-                            }}>{transh}</i>}
+                            {props.item.email !=email? null : <i onClick={props.delete} style={{paddingLeft:"30px",float:"right",fontSize:"13px",color:"#016ba8"}}>{transh}</i>}
                         </div>
                     </div>
                 </Card.Title>
