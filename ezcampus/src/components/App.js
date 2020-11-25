@@ -8,6 +8,7 @@ import Section from "./ResponsiveSection/Section"
 import MyPosts from "./PostHistory/MyPosts"
 import PostDetail from './Posts/PostDetail'
 import ProfileEdit from './Profile/ProfileEdit/ProfileEdit'
+import Messages from './Messages/Messages'
 import store from '../store/Store'
 import AutoLogin from '../wrappers/AutoLogin'
 import LoadPosts from '../wrappers/LoadPosts'
@@ -86,6 +87,7 @@ function App() {
                       <Route
                         exact
                         path="/message"
+                        component={Messages}
                       />
                       <Route
                         exact

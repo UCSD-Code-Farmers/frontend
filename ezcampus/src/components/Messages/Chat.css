@@ -1,0 +1,94 @@
+
+.input-line {
+  height: 2vw;
+  width:auto;
+  margin:0 auto;
+}
+
+.content-header {
+	height: 5vw;
+	background-color: LightSkyBlue;
+	text-align: center;
+	border-style: solid;
+	border-width: 1px;
+	border-color: white;
+}
+
+.content-header-name {
+    margin: 0 auto;
+	font-size: 3vw;
+}
+
+li {
+  position:relative;
+  width: 100%;
+  height: auto;
+  height: 50px;
+  margin-top: 10px;
+}
+
+.messages {
+  background-color: AliceBlue;
+  height: 45vw;
+  overflow-y: scroll;
+  list-style-type: none;
+}
+
+.client {
+  width: fit-content;
+  width: -moz-fit-content;
+  height:48px;
+  font-size: 16px;
+  line-height: 40px;
+  padding: 5px 30px 6px;
+  border-radius: 25px;
+  position: relative;
+
+  background-color: #4080ff;
+  color: white;
+  text-align: right;
+  float: right;
+  margin-right: 10px;
+}
+
+.server {
+  width: fit-content;
+  width: -moz-fit-content;
+  height:45px;
+  font-size: 16px;
+  line-height: 40px;
+  padding: 5px 30px 6px;
+  border-radius: 25px;
+  position: relative;
+
+  background: #E5E5EA;
+  color: black;
+}
+
+.reminder {
+  width: fit-content;
+  width: -moz-fit-content;
+  height:30px;
+  font-size: 12px;
+  line-height: 20px;
+  padding: 5px 30px 6px;
+  border-radius: 25px;
+  position: relative;
+  float: center;
+  margin-left: 30vw;
+
+  background: Lavender;
+  color: black;
+}
+
+.back-button {
+	float: left;
+	font-size: 4vw;
+	color: Gray;
+}
+
+.send-button {
+  margin-top: 2px;
+  position: relative;
+  float: right;
+}
