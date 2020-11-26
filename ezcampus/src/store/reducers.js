@@ -6,7 +6,8 @@ const initialState = {
     posts: [],
     currentSelectedPostType: null,
     postsMap: {},
-    isLoading: false
+    isLoading: false,
+    avatarLink: ''
 }
 
 
@@ -77,8 +78,14 @@ export const userReducer = (state = initialState, action) => {
             newState.isLoading = action.data.isLoading
             return newState
         }
+
+        case 'updateAvatarLink': {
+            newState.avatarLink = action.data.avatarLink
+            return newState
+        }
         default: {
             return state
         }
+
     }
 }

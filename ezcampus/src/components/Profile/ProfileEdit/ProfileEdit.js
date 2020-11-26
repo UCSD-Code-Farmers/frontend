@@ -143,7 +143,7 @@ class ProfileEdit extends React.Component {
               'Authorization': 'Client-ID c9897a7d288d020'
           }
         }).then(res => {                                
-            // console.log(res.data.data.link);
+            console.log(res.data.data.link);
             this.setState(prevState => ({
               avatar,
               loadingAvatar: false,
