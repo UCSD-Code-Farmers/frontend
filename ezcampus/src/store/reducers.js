@@ -66,6 +66,13 @@ export const userReducer = (state = initialState, action) => {
             return newState
         }
 
+        case 'deletePost': {
+            let targetPostId = action.data.targetPostId
+            console.log(targetPostId)
+            newState.posts = newState.posts.filter(postId => postId != targetPostId)
+            return newState
+        }
+
         case 'setSelectedPostType': {
             newState.currentSelectedPostType = action.data.postType
             return newState
