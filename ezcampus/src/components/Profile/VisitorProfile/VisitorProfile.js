@@ -12,26 +12,105 @@ import {withRouter} from "react-router-dom";
 
 class VisitorProfile extends React.Component {
   state={
-    profile:{}
+    profile:{},
+    contactM: "",
+  }
+  constructor(props) {
+    super(props)
+    this.history = props.history
   }
 
   componentDidMount() {
-    const myemail = store.getState().email;
-    const email = this.props.match.params.userId;
-    if(myemail !== email){
-      axios.get("http://server.metaraw.world:3000/users/profile/get", {params: {email}})
-      .then(res =>{
-        if(res.data.statusCode === 200){
-          this.setState({
-            profile:res.data.profile
-          },() =>{
-            // console.log(this.state.profile)
+  
+    let interval = setInterval(() => {
+      const {isLoading} = store.getState()
+      if (!isLoading) {
+        clearInterval(interval)
+        const {isLoggedIn} = store.getState()
+        if (!isLoggedIn) {
+            console.log('not logged in')
+            const action = {type: 'setShowPromptLogIn'}
+            store.dispatch(action)
+            this.history.push('/posts')
+        }
+      }
+    }, 5)
+
+    store.subscribe(() => {
+        let interval = setInterval(() => {
+          const {isLoading} = store.getState()
+          if (!isLoading) {
+              clearInterval(interval)
+              const {isLoggedIn} = store.getState()
+              if (!isLoggedIn) 
+                this.history.push('/posts')
+          }
+        }, 5)
+    
+    })
+
+    let loadProfileInterval = setInterval(() => {
+      const {isLoading} = store.getState()
+      if (!isLoading) {
+        clearInterval(loadProfileInterval)
+        const userEmail = store.getState().email
+        const email = this.props.match.params.userId
+        if(userEmail !== email){
+          
+          axios.get("http://server.metaraw.world:3000/users/profile/get", {params: {email, userEmail}})
+          .then(res =>{
+            if(res.data.statusCode === 200){
+              this.setState({
+                profile:res.data.profile,
+              },() =>{
+                // console.log(this.state.profile)
+              })
+              //console.log(res.data.isInContacts)
+              if(!res.data.isInContacts){
+                this.setState({contactM:"Add to Contact"})
+              }
+              else{
+                this.setState({contactM:"Remove Contact"})
+              }
+            }
           })
         }
-      })
-    }
-   
-    
+      }
+    }, 5)
+  }
+
+  handleAddOrRemoveContact = () => {
+    this.state.contactM === "Add to Contact" ? this.handleAddToContact(): this.handleDeleteContact()
+  }
+
+  handleAddToContact = () => {
+    const myEmail = store.getState().email;
+    const userEmail = this.props.match.params.userId;
+    axios.post("http://server.metaraw.world:3000/users/contact/add_a_contact",{myEmail,userEmail})
+    .then(res => {
+      if(res.data.statusCode === 200){
+        this.setState({contactM: "Remove Contact"})
+      }
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
+
+  handleDeleteContact = () => {
+      const useremail = this.props.match.params.userId;
+      const myEmail = store.getState().email
+        axios.delete("http://server.metaraw.world:3000/users/contact/delete",{
+            params: {
+                myEmail: myEmail,
+                userEmail: useremail
+            }
+        })
+        .then(res => {
+            if(res.data.statusCode === 200){
+              this.setState({contactM:"Add to Contact"})
+            }
+        })
   }
   
   render() {
@@ -47,90 +126,89 @@ class VisitorProfile extends React.Component {
       );
     }
     return (
-    <div>
-      <Card
-       style ={{width:"60%"}}
-        headStyle={{ background: "#DEE0EB" }}
-      >
-        <div style={styles.avatar}>
-          {!this.state.profile.avatarlink ?
-            <AvatarImage
-              src={BigProfile}
-            >
-            </AvatarImage>  :
-            <AvatarImage
-            src={this.state.profile.avatarlink}
-            ></AvatarImage>
-          }
-         
-        </div>
-        <div style={styles.nameText}>
-          <Name>{this.state.profile.userName}</Name>
-        </div>
-        {this.state.profile.city || this.state.profile.state?
-           <div style={styles.positionText}>
-            <Name>{this.state.profile.city}</Name>
-            <Name>{this.state.profile.state}</Name>
-          </div> : null
-        }
-        <div style={styles.positionText}>
-          <Button
-                type=""
-                style={{
-                  height: "35px",
-                  marginTop:"5px",
-                  width: "140px",
-                  backgroundColor: "#545770",
-                  color: "white",
-                }}
-                // onClick={}
+    <FullPageContainer>
+      <ProfileContainer>
+        <Card
+          style ={{width:"60%"}}
+          headStyle={{ background: "#DEE0EB" }}
+        >
+          <div style={styles.avatar}>
+            {!this.state.profile.avatarlink ?
+              <AvatarImage
+                src={BigProfile}
               >
-                Add to Contacts
-          </Button>    
-        </div>
-        
-        
-      <div>
-          
-          <TitleField>
-            <img
-              src={contactIcon}
-              alt="contact"
-              style={{ width: 23, height: 23, marginRight: 10 }}
-            ></img>
-            About Me
-          </TitleField>
-          <div style={styles.fieldText}>
-              {this.state.profile.aboutMe}
+              </AvatarImage>  :
+              <AvatarImage
+              src={this.state.profile.avatarlink}
+              ></AvatarImage>
+            }
           </div>
-      </div>
-      <div>
-          <TitleField>
-            <img
-              src={contactIcon}
-              alt="contact"
-              style={{ width: 23, height: 23, marginRight: 10 }}
-            ></img>
-            Contact Info
-          </TitleField>
-          <div style={styles.fieldText}>
-            Contact Email:
-            <div style={styles.text}>
-              {this.state.profile.contactEmail}
+          <div style={styles.nameText}>
+            <Name>{this.state.profile.userName}</Name>
+          </div>
+          {this.state.profile.city || this.state.profile.state?
+            <div style={styles.positionText}>
+              <Name>{this.state.profile.city}</Name>
+              <Name>{this.state.profile.state}</Name>
+            </div> : null
+          }
+          <div style={styles.positionText}>
+            <Button
+                  type=""
+                  style={{
+                    height: "35px",
+                    marginTop:"5px",
+                    width: "140px",
+                    backgroundColor: "#545770",
+                    color: "white",
+                  }}
+                  onClick={this.handleAddOrRemoveContact}
+                >
+                  {this.state.contactM}
+            </Button>    
+          </div>
+        <div>
+            <TitleField>
+              <img
+                src={contactIcon}
+                alt="contact"
+                style={{ width: 23, height: 23, marginRight: 10 }}
+              ></img>
+              About Me
+            </TitleField>
+            <div style={styles.fieldText}>
+                {this.state.profile.aboutMe}
+            </div>
+        </div>
+        <div>
+            <TitleField>
+              <img
+                src={contactIcon}
+                alt="contact"
+                style={{ width: 23, height: 23, marginRight: 10 }}
+              ></img>
+              Contact Info
+            </TitleField>
+            <div style={styles.fieldText}>
+              Contact Email:
+              <div style={styles.text}>
+                {this.state.profile.contactEmail}
+              </div>
+            </div>
+            <div style={styles.fieldText}>
+              Phone:
+              <div style={styles.text}>
+                {this.state.profile.phone}
+              </div>
             </div>
           </div>
-          <div style={styles.fieldText}>
-            Phone:
-            <div style={styles.text}>
-               {this.state.profile.phone}
-            </div>
-          </div>
-        </div>
-      
-      </Card>
+        
+        </Card>
+      </ProfileContainer>
+    </FullPageContainer>
      
         
-    </div>
+ 
     )
   }
 }
@@ -159,6 +237,17 @@ const TitleField = styled.div`
   color: #545871;
   opacity: 1;
   word-break: break-word;
+`;
+const ProfileContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: space-around;
+  height: 100vh;
+`;
+const FullPageContainer = styled.div`
+    background-color: #f5f6fa;
+    width: 100%;
 `;
 
 const styles = {
