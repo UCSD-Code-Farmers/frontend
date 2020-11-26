@@ -1,9 +1,14 @@
 import SideBar from "./Sidebar";
 import UserProfile from "./Profile/ProfilePage/UserProfile"
 import Posts from './Posts/Posts'
+<<<<<<< HEAD
 import {useHistory} from 'react-router-dom'
 import Create from "./Create/Create";
 import Friends from "./Friends/Friends"
+=======
+
+import Create from "./Create/Create";
+>>>>>>> refs/remotes/origin/minghe
 
 import {
   BrowserRouter,

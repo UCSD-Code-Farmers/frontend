@@ -18,7 +18,7 @@ export default class Create extends Component {
         super(props)
         this.history = props.history
 
-        this.state = {creatorEmail: '', creatorName: '', description: '', title: '', postType: 'furniture trading'};
+        this.state = {creatorEmail: '', creatorName: '', description: '', title: '', postType: 'Free and for Sale'};
     }
 
 
@@ -40,12 +40,12 @@ export default class Create extends Component {
         //check if the title or description is left empty
         const {isLoggedIn} = store.getState()
         if (isLoggedIn == false) {
-            alert('please signup/login first')
+            alert('Please signup/login first')
             return
         }
 
         if (this.state.title == '') {
-            alert('please enter a valid title')
+            alert('Please enter a valid title')
             return
         }
 
@@ -101,12 +101,14 @@ export default class Create extends Component {
                                onChange={this.updateTitle}/>
                     </div>
                     <div className="form-group">
-                        <label><strong>CATEGORY</strong></label>
+                        <label><strong>Category</strong></label>
                         <select className="form-control" id="postCategory" onChange={this.updateType}>
-                            <option>furniture trading</option>
+                            <option>Free and for Sale</option>
                             <option>Ride Sharing</option>
-                            <option>Cutie Catty</option>
-                            <option>Outdoor Activity</option>
+                            <option>Cutie Pets</option>
+                            <option>Housing</option>
+                            <option>Entertainment</option>
+                            <option>Others</option>
                         </select>
                     </div>
                     {/*<div className="form-group">*/}
