@@ -102,7 +102,7 @@ export default class PostCell extends Component {
                 </div>
  
                 <div className= 'single-post-detailButton-box'>
-                   <Link to={`/posts/${this.id}`}>
+                   <Link to={`/posts/${this.postId}`}>
                         <Button variant='light' className='single-post-detailButton' onClick={this.handleClick}>View Details</Button>
                         {/* <DislikeOutlined className='single-post-likeButton' />
                         <LikeOutlined className='single-post-likeButton'/> */}
