@@ -59,6 +59,11 @@ export default class MyPosts extends Component {
             if(res.data.statusCode === 200){
                 const myPosts = this.state.myPosts.filter(post => post.postId !== postId);
                 this.setState({myPosts})
+                const action = {
+                    type: 'deletePost', 
+                    data: {targetPostId: postId}
+                }
+                store.dispatch(action)
             }
         })
     }

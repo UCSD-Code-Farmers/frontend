@@ -61,6 +61,11 @@ export default class Posts extends Component {
             if(res.data.statusCode === 200){
                 const posts = this.state.posts.filter(post => post.postId !== postId);
                 this.setState({posts})
+                const action = {
+                    type: 'setPosts', 
+                    data: {posts: this.state.posts}
+                }
+                store.dispatch(action)
             }
         })
     }
