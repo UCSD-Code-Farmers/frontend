@@ -82,8 +82,8 @@ class CommentCell extends Component {
                             <div style={{float: "right"}}>
                                 {this.props.item.time} &nbsp;&nbsp;&nbsp;&nbsp; {this.props.item.date}
                                 &nbsp;&nbsp;&nbsp;&nbsp;
-                                <i style={{cursor: "pointer", color: "#016ba8"}}
-                                   onClick={this.handlerEditComment}>{Edit}</i>
+                                {this.props.item.email != email ? null:<i style={{cursor: "pointer", color: "#016ba8"}}
+                                   onClick={this.handlerEditComment}>{Edit}</i>}
                                 &nbsp;&nbsp;
                                 {this.props.item.email != email ? null : <i onClick={this.props.delete} style={{
                                     float: "right",
