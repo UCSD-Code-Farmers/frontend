@@ -187,7 +187,7 @@ class SideBar extends React.Component {
                             <NavLink to="/posts"/>
                         </Menu.Item>
                         <Menu.Item key="/groups" icon={<DesktopOutlined/>} >
-                            Sections
+                            Category
                             <NavLink to="/groups"/>
                         </Menu.Item>
 
