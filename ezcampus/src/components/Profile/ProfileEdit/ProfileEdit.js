@@ -143,7 +143,7 @@ class ProfileEdit extends React.Component {
               'Authorization': 'Client-ID c9897a7d288d020'
           }
         }).then(res => {                                
-            // console.log(res.data.data.link);
+            console.log(res.data.data.link)
             this.setState(prevState => ({
               avatar,
               loadingAvatar: false,
@@ -201,7 +201,13 @@ class ProfileEdit extends React.Component {
     .then(res => {
       if (res.data.statusCode === 200) {
           console.log('profile has been saved')
-          const action = {type: 'setUserName', data: {userName: this.state.tempUser.userName}}
+          const action = {
+            type: 'setEmailAndUserName', 
+            data: {
+              userName: this.state.tempUser.userName,
+              email: this.state.tempUser.loginEmail,
+              avatarlink: this.state.tempUser.avatarlink
+            }}
           store.dispatch(action)
       }
       this.setState({
