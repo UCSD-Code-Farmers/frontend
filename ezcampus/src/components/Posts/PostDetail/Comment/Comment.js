@@ -3,6 +3,9 @@ import './Comment.css'
 import axios from 'axios'
 import store from "../../../../store/Store";
 import CommentCell from "./CommentCell";
+import Notifications from "react-notify-toast";
+import {Card} from "react-bootstrap";
+import {notify} from "react-notify-toast/bin/notify";
 import API_PREFIX from '../../../../API_PREFIX'
 class Comment extends Component {
     constructor(props) {
