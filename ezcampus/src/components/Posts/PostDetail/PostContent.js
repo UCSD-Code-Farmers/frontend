@@ -11,6 +11,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "antd";
 import { LikeOutlined} from "@ant-design/icons";
+import API_PREFIX from '../../../API_PREFIX';
 
 const editIcon = <FontAwesomeIcon icon={faEdit}/>;
 
@@ -38,7 +39,7 @@ class PostContent extends React.Component {
     }
     handleClick = async () =>{
       const {email} = store.getState()
-      axios.post(' https://server.metaraw.world:3000/posts/like/like', 
+      axios.post(`${API_PREFIX}/posts/like/like`, 
       {'email': email, 'postId': this.postId})
       .then(res => {
         if (res.data.statusCode === 200) {
@@ -51,7 +52,7 @@ class PostContent extends React.Component {
       })
     }
     getLikes = async () =>{
-      axios.get("https://server.metaraw.world:3000/posts/like/number", {params: {postId:this.postId}})
+      axios.get(`${API_PREFIX}/posts/like/number`, {params: {postId:this.postId}})
       .then(res => {
           if (res.data.statusCode === 200) {
               this.setState({
@@ -65,7 +66,7 @@ class PostContent extends React.Component {
     }
     checkLike = async () =>{
       const {email} = store.getState()
-      axios.get("https://server.metaraw.world:3000/posts/like/check", {params: {postId:this.postId, email: email}})
+      axios.get(`${API_PREFIX}/posts/like/check`, {params: {postId:this.postId, email: email}})
       .then(res => {
           if (res.data.statusCode === 200) {
               this.setState({
@@ -92,7 +93,7 @@ class PostContent extends React.Component {
                 store.dispatch(action)
                 this.history.replace('/posts')
             } else {
-              axios.get('http://server.metaraw.world:3000/posts/get_a_post_detail', {params: {postId:this.postId}})
+              axios.get(`${API_PREFIX}/posts/get_a_post_detail`, {params: {postId:this.postId}})
               .then(res => {
                   const post = res.data.data
                   this.setState({data: post})
@@ -150,7 +151,10 @@ class PostContent extends React.Component {
                  </Col>
                 :null}
                 <Col flex="1 1" style={{ textAlign: "right", margin: "5px" }}>
-                  <span style={styles.timeText}>Likes: {this.state.likeNumber}</span>
+                  <span style={styles.likesText}> 
+                     <LikeOutlined style={styles.likeIcon}/>
+                     Likes: {this.state.likeNumber}
+                  </span>
                   <span style={styles.timeText}>{this.state.data.date}</span>
                 </Col>
               </Row>
@@ -215,6 +219,17 @@ class PostContent extends React.Component {
       fontSize: "12",
       color: "#808295",
     },
+    likeIcon:{
+      marginTop: "-5px",
+      marginRight:"5px",
+    },
+    likesText: {
+      fontFamily: "BasicSans",
+      fontWeight: "300",
+      fontSize: "16px",
+      marginRight:"25px",
+      color: "#808295",
+    },
     postTitle: {
       fontFamily: "BasicSans",
       fontSize: 26,
@@ -223,7 +238,7 @@ class PostContent extends React.Component {
       color: "#545871",
     },
     liked:{
-     backgroundColor: "#d3d3d3"
+     backgroundColor: "#d3d3d3",
     }
    
   };
