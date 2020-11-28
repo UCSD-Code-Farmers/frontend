@@ -23,7 +23,7 @@ export default class PostCell extends Component {
 
 
     handleClick = () => {
-        console.log(this.id)
+        console.log(this.postId)
         const action = {
             type: 'setCurrentVisitingPost',
             data: {

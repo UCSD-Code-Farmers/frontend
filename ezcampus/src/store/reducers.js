@@ -68,7 +68,7 @@ export const userReducer = (state = initialState, action) => {
 
         case 'deletePost': {
             let targetPostId = action.data.targetPostId
-            newState.posts = newState.posts.filter(postId => postId != targetPostId)
+            newState.posts = newState.posts.filter(post => post.postId != targetPostId)
             return newState
         }
 
