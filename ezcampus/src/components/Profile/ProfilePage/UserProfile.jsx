@@ -214,6 +214,18 @@ const styles = {
     marginTop: "5px", 
     fontSize:"20px"
   },
+  editButton: {
+    cursor: "pointer",
+    textAlign: "center",
+    color: "#ffffff",
+    fontSize: "20px",
+    backgroundColor: "#545871",
+    borderRadius: "3px",
+    height: "36px",
+    width: "36px",
+    border: "0px",
+    padding: "0px"
+  },
   nameText: {
     fontFamily: "Ubuntu",
     fontSize: "35px",
