@@ -64,8 +64,6 @@ class PostContent extends React.Component {
                     this.setState({
                         liked: res.data.exist
                     }, () => {
-                      console.log("Hello" + email)
-                      console.log(res.data.exist)
                     })
                 }
             })
@@ -81,7 +79,6 @@ class PostContent extends React.Component {
               this.setState({
                   likeNumber: res.data.likeNumber
               }, () => {
-                  console.log(this.state.likeNumber)
               })
           }
       })
@@ -202,7 +199,6 @@ class PostContent extends React.Component {
                   Like this Post
                 <LikeOutlined style={styles.likeIcon}/>
               </Button> 
-             
               }
               
           </Card>
