@@ -70,6 +70,7 @@ class PostContent extends React.Component {
 
 
     render() {
+      const { email } = store.getState();
       return (
         <div>
           <Card style={{width:"100%"}}>
@@ -86,6 +87,16 @@ class PostContent extends React.Component {
                     </span>
                   </Col>
                  </Link>
+                 {email === this.state.data.creatorEmail ? 
+                  <Col>
+                    <Link to={{
+                      pathname:'/posts/edit',
+                      state: {data: this.state.data}
+                    }}>
+                    {editIcon}
+                    </Link>
+                 </Col>
+                :null}
                 <Col flex="1 1" style={{ textAlign: "right", margin: "5px" }}>
                   <span style={styles.timeText}>{this.state.data.date}</span>
                 </Col>
