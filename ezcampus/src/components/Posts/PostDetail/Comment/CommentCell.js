@@ -35,8 +35,6 @@ function CommentCell(props) {
                 {/*<div style={{textAlign:"left"}}><Card.Img src={'#'}></Card.Img></div>*/}
                 <Card.Title style={title}>
                     <div>
-                      
-                        
                             <div  className={"CommentCell-name"}>
                                 <Link to={`/profile/${props.item.email}`}>
                                     {props.item.userName}

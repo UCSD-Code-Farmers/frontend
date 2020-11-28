@@ -298,7 +298,7 @@ class ProfileEdit extends React.Component {
               showUploadList={false}
               action="https://www.mocky.io/v2/5cc8019d300000980a055e76" 
               beforeUpload={this.validateAvatar}
-              transformFile={this.compressAvatari}
+              transformFile={this.compressAvatar}
               onChange={this.handleChange}
             >
               {this.state.loadingAvatar ? (
