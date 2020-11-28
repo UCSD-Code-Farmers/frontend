@@ -38,7 +38,7 @@ class PostContent extends React.Component {
     }
     handleClick = async () =>{
       const {email} = store.getState()
-      axios.post(' http://server.metaraw.world:3000/posts/like/like', 
+      axios.post(' https://server.metaraw.world:3000/posts/like/like', 
       {'email': email, 'postId': this.postId})
       .then(res => {
         if (res.data.statusCode === 200) {
@@ -51,7 +51,7 @@ class PostContent extends React.Component {
       })
     }
     getLikes = async () =>{
-      axios.get("http://server.metaraw.world:3000/posts/like/number", {params: {postId:this.postId}})
+      axios.get("https://server.metaraw.world:3000/posts/like/number", {params: {postId:this.postId}})
       .then(res => {
           if (res.data.statusCode === 200) {
               this.setState({
@@ -65,7 +65,7 @@ class PostContent extends React.Component {
     }
     checkLike = async () =>{
       const {email} = store.getState()
-      axios.get("http://server.metaraw.world:3000/posts/like/check", {params: {postId:this.postId, email: email}})
+      axios.get("https://server.metaraw.world:3000/posts/like/check", {params: {postId:this.postId, email: email}})
       .then(res => {
           if (res.data.statusCode === 200) {
               this.setState({
@@ -150,7 +150,7 @@ class PostContent extends React.Component {
                  </Col>
                 :null}
                 <Col flex="1 1" style={{ textAlign: "right", margin: "5px" }}>
-                  <span>Likes: {this.state.likeNumber}</span>
+                  <span style={styles.timeText}>Likes: {this.state.likeNumber}</span>
                   <span style={styles.timeText}>{this.state.data.date}</span>
                 </Col>
               </Row>
