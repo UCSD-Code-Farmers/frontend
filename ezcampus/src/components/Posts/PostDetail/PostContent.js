@@ -9,9 +9,9 @@ import axios from 'axios';
 import { Link } from "react-router-dom";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
-
-const editIcon = <FontAwesomeIcon icon={faEdit}/>;
 import API_PREFIX from '../../../API_PREFIX'
+const editIcon = <FontAwesomeIcon icon={faEdit}/>;
+
 class PostContent extends React.Component {
 
     constructor(props) {
