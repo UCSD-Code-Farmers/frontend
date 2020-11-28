@@ -141,7 +141,7 @@ class LoginPage extends Component{
                     }
                 }
                 store.dispatch(action)
-                axios.post('http://server.metaraw.world:3000/users/profile/save', {
+                axios.post('https://server.metaraw.world/users/profile/save', {
                     'loginEmail': email,
                     'userName': username, 
                     "aboutMe": "",
