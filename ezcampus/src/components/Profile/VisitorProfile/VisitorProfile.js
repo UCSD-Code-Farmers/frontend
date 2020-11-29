@@ -8,8 +8,7 @@ import { EditOutlined} from "@ant-design/icons";
 import { Redirect } from "react-router-dom";
 import store from '../../../store/Store';
 import {withRouter} from "react-router-dom";
-
-
+import API_PREFIX from '../../../API_PREFIX'
 class VisitorProfile extends React.Component {
   state={
     profile:{},
@@ -22,45 +21,61 @@ class VisitorProfile extends React.Component {
 
   componentDidMount() {
   
-    const {isLoggedIn} = store.getState()
-    if (!isLoggedIn) {
-        console.log('not logged in')
-        const action = {type: 'setShowPromptLogIn'}
-        store.dispatch(action)
-        this.history.push('/posts')
-    }
-
-    store.subscribe(() => {
+    let interval = setInterval(() => {
+      const {isLoading} = store.getState()
+      if (!isLoading) {
+        clearInterval(interval)
         const {isLoggedIn} = store.getState()
         if (!isLoggedIn) {
+            console.log('not logged in')
+            const action = {type: 'setShowPromptLogIn'}
+            store.dispatch(action)
             this.history.push('/posts')
         }
+      }
+    }, 5)
+
+    store.subscribe(() => {
+        let interval = setInterval(() => {
+          const {isLoading} = store.getState()
+          if (!isLoading) {
+              clearInterval(interval)
+              const {isLoggedIn} = store.getState()
+              if (!isLoggedIn) 
+                this.history.push('/posts')
+          }
+        }, 5)
     
     })
-    setTimeout(() => {
-      const userEmail = store.getState().email;
-      const email = this.props.match.params.userId;
-      if(userEmail !== email){
-        
-        axios.get("http://server.metaraw.world:3000/users/profile/get", {params: {email, userEmail}})
-        .then(res =>{
-          if(res.data.statusCode === 200){
-            this.setState({
-              profile:res.data.profile,
-            },() =>{
-              // console.log(this.state.profile)
-            })
-            //console.log(res.data.isInContacts)
-            if(!res.data.isInContacts){
-              this.setState({contactM:"Add to Contact"})
+
+    let loadProfileInterval = setInterval(() => {
+      const {isLoading} = store.getState()
+      if (!isLoading) {
+        clearInterval(loadProfileInterval)
+        const userEmail = store.getState().email
+        const email = this.props.match.params.userId
+        if(userEmail !== email){
+          
+          axios.get(`${API_PREFIX}/users/profile/get`, {params: {email, userEmail}})
+          .then(res =>{
+            if(res.data.statusCode === 200){
+              this.setState({
+                profile:res.data.profile,
+              },() =>{
+                // console.log(this.state.profile)
+              })
+              //console.log(res.data.isInContacts)
+              if(!res.data.isInContacts){
+                this.setState({contactM:"Add to Contact"})
+              }
+              else{
+                this.setState({contactM:"Remove Contact"})
+              }
             }
-            else{
-              this.setState({contactM:"Remove Contact"})
-            }
-          }
-        })
+          })
+        }
       }
-    }, 300)
+    }, 5)
   }
 
   handleAddOrRemoveContact = () => {
@@ -70,7 +85,7 @@ class VisitorProfile extends React.Component {
   handleAddToContact = () => {
     const myEmail = store.getState().email;
     const userEmail = this.props.match.params.userId;
-    axios.post("http://server.metaraw.world:3000/users/contact/add_a_contact",{myEmail,userEmail})
+    axios.post(`${API_PREFIX}/users/contact/add_a_contact`,{myEmail,userEmail})
     .then(res => {
       if(res.data.statusCode === 200){
         this.setState({contactM: "Remove Contact"})
@@ -84,7 +99,7 @@ class VisitorProfile extends React.Component {
   handleDeleteContact = () => {
       const useremail = this.props.match.params.userId;
       const myEmail = store.getState().email
-        axios.delete("http://server.metaraw.world:3000/users/contact/delete",{
+        axios.delete(`${API_PREFIX}/users/contact/delete`,{
             params: {
                 myEmail: myEmail,
                 userEmail: useremail

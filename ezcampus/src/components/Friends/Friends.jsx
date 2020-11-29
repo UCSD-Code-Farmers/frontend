@@ -6,6 +6,7 @@ import {Redirect} from 'react-router-dom'
 import Icon from '@ant-design/icons';
 import store from '../../store/Store'
 import axios from 'axios';
+import API_PREFIX from '../../API_PREFIX'
 
 const PandaSvg = () => (
     <svg viewBox="0 0 1024 1024" width="1em" height="1em" fill="currentColor">
@@ -71,39 +72,32 @@ export default class Friends extends Component {
                 clearInterval(interval)
                 const {isLoggedIn} = store.getState()
                 if (!isLoggedIn) {
-                    console.log('not logged in')
+                    //console.log('not logged in')
                     const action = {type: 'setShowPromptLogIn'}
                     store.dispatch(action)
                     this.history.replace('/posts')
+                } else {
+                    const email = store.getState().email
+                    axios.get(`${API_PREFIX}/users/contact/get_contactList`, {params: {email}})
+                    .then(res => {
+                        //console.log("getting data")
+                        if(res.data.statusCode === 200){
+                            //console.log("logging contact data: ", res.data.contact)
+                            this.setState({data: res.data.contact})
+                        }
+                    })
                 }
             }else {
-                console.log('loading user info')
+                //console.log('loading user info')
             }
         }, 5)
 
-        
-        let friendInterval = setInterval(() => {
-            const {isLoading} = store.getState()
-            if(!isLoading){
-                clearInterval(friendInterval)
-                const email = store.getState().email
-            axios.get("http://server.metaraw.world:3000/users/contact/get_contactList", {params: {email}})
-            .then(res => {
-                console.log("getting data")
-                if(res.data.statusCode === 200){
-                    console.log("logging contact data: ", res.data.contact)
-                    this.setState({data: res.data.contact})
-                }
-            })
-            }
-        }, 5)
-        
     }
 
 
     handleDelete = friendID => {
         const myEmail = store.getState().email
-        axios.delete("http://server.metaraw.world:3000/users/contact/delete",{
+        axios.delete(`${API_PREFIX}/users/contact/delete`,{
             params: {
                 myEmail: this.myEmail,
                 userEmail: friendID
