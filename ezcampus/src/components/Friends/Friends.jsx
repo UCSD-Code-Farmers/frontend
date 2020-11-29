@@ -2,7 +2,11 @@ import React, { Component } from 'react'
 import FriendCell from './FriendCell'
 import './Friends.css'
 import { Card } from 'antd';
+import {Redirect} from 'react-router-dom'
 import Icon from '@ant-design/icons';
+import store from '../../store/Store'
+import axios from 'axios';
+import API_PREFIX from '../../API_PREFIX'
 
 const PandaSvg = () => (
     <svg viewBox="0 0 1024 1024" width="1em" height="1em" fill="currentColor">
@@ -50,90 +54,73 @@ const PandaSvg = () => (
   );
   const PandaIcon = props => <Icon component={PandaSvg} {...props} />;
 
-
-/* data will need for Friend:
-    1. id(for user database)
-    2. Name
-    3. friend's profile photo
- */
-
-const data = [
-    {
-        id: '2232f-usff-2323f23-2fdsf',
-        name: 'Liyuan Lin',
-        /*img: null*/
-    },
-    {
-        id: '2232f-usrd-2323f23-2fdsf',
-        name: 'Guoyi Li',
-        /*img: null*/
-    },
-    {
-        id: '2342f-usfr-2323f23-2fdsf',
-        name: 'Hang Gao',
-        /*img: null*/
-    },
-    {
-        id: '2345f-usgt-2323f23-2fdsf',
-        name: 'Fan Yang',
-        /*img: null*/
-    },
-    {
-        id: '2232f-ushy-2323f23-2fdsf',
-        name: 'Xiaoxiao Li',
-        /*img: null*/
-    },
-    {
-        id: '2276f-usot-2323f23-2fdsf',
-        name: 'Iris Zhang',
-        /*img: null*/
-    },
-    {
-        id: '2290f-us34-2323f23-2fdsf',
-        name: 'Minghe Yang',
-        /*img: null*/
-    },
-    {
-        id: '2256f-usdy-2323f23-2fdsf',
-        name: 'Yanling Huang',
-        /*img: null*/
-    },
-    {
-        id: '2234f-usdf-2323f23-2fdsf',
-        name: 'Yiming Zhao',
-        /*img: null*/
-    },
-    {
-        id: '2232f-ushy-2323f23-2fdsf',
-        name: 'Vincent Li',
-        /*img: null*/
-    },
-    {
-        id: '2232f-ushy-2323f23-2fdsf',
-        name: 'Yongjia Gu',
-        /*img: null*/
-    }
-    
-]
 export default class Friends extends Component {
+    state = {
+        data : []
+    }
     constructor(props){
         super(props)
-        this.data = data
+        this.data = this.state.data
+        this.history = props.history
+        this.myEmail = store.getState().email
+    }
+
+    componentDidMount() {
+        let interval = setInterval(() => {
+            const {isLoading} = store.getState()
+            if (!isLoading) {
+                clearInterval(interval)
+                const {isLoggedIn} = store.getState()
+                if (!isLoggedIn) {
+                    //console.log('not logged in')
+                    const action = {type: 'setShowPromptLogIn'}
+                    store.dispatch(action)
+                    this.history.replace('/posts')
+                } else {
+                    const email = store.getState().email
+                    axios.get(`${API_PREFIX}/users/contact/get_contactList`, {params: {email}})
+                    .then(res => {
+                        //console.log("getting data")
+                        if(res.data.statusCode === 200){
+                            //console.log("logging contact data: ", res.data.contact)
+                            this.setState({data: res.data.contact})
+                        }
+                    })
+                }
+            }else {
+                //console.log('loading user info')
+            }
+        }, 5)
+
+    }
+
+
+    handleDelete = friendID => {
+        const myEmail = store.getState().email
+        axios.delete(`${API_PREFIX}/users/contact/delete`,{
+            params: {
+                myEmail: this.myEmail,
+                userEmail: friendID
+            }
+        })
+        .then(res => {
+            if(res.data.statusCode == 200){
+                const data = this.state.data.filter(friend => friend.userEmail !== friendID);
+                this.setState({data});
+            }
+        })
     }
 
     createFriendList = () => {
-        // const rows = data.reduce(function (rows, id, index){
-        //     return(index % 2 === 0? rows.push([id]):
-        //     rows[rows.length - 1].push([id])) && rows; 
-        // }, [])
         return (
             <div >
-                {this.data.map(
+                {this.state.data.map(
                     data => (
-                        <div className='friend-card-container'>
+                        <div className='friend-card-container' key={data.userEmail}>
                         <Card style={{borderRadius:"10px"}}>
                         <FriendCell 
                             data={data}
+                            onDelete={this.handleDelete}
                         />
                         </Card>
                         </div>
@@ -143,12 +130,12 @@ export default class Friends extends Component {
     }
     render() {
         return (
-            <div class='friend-page'>
+            <div className='friend-page'>
                 <div className='friends-page-header'>
                     <div className="custom-icons-list">
                         <PandaIcon style={{ fontSize: '60px' }} />
                     </div>
-                    <p style={{fontSize:'25px', display:"inline-block"}}>Friends</p>
+                    <p style={{fontSize:'25px', display:"inline-block"}}>Contact List</p>
                 </div>
                 <div className='friend-page-container'>
                     {this.createFriendList()}
@@ -158,3 +145,5 @@ export default class Friends extends Component {
         )
     }
 }
+
+ 

@@ -10,18 +10,27 @@ import FroalaEditorView from 'react-froala-wysiwyg'
 import Button from 'react-bootstrap/Button';
 import './CreatePost.css';
 import uuid from 'react-uuid';
-import store from '../../store/Store'
+import store from '../../../store/Store'
 import axios from 'axios'
-import API_PREFIX from '../../API_PREFIX'
 import FormData from 'form-data'
 import { Redirect } from "react-router-dom";
 
 
-export default class Create extends Component {
+export default class Edit extends Component {
     constructor(props) {
         super(props)
         this.history = props.history
-        this.state = {creatorEmail: '', creatorName: '', description: '', title: '', postType: 'Free or For Sale', redirect:false};
+        this.state = {
+            postId: this.props.location.state.data.postId,
+            creatorEmail: this.props.location.state.data.creatorEmail, 
+            creatorName: this.props.location.state.data.creatorName, 
+            description: this.props.location.state.data.description, 
+            title: this.props.location.state.data.title, 
+            postType: this.props.location.state.data.postType, 
+            redirect:false
+        };
+        console.log(this.props.location.state);
+    
     }
 
     componentDidMount() {
@@ -67,13 +76,13 @@ export default class Create extends Component {
         this.setState({postType: e.target.value})
     }
 
-
+     
     updateEditerComponentText = (e) => {
         this.setState({description: e})
     }
     handleRedirect = () => {
       if (this.state.redirect) {
-        return <Redirect to="/posts"/>;
+        return <Redirect to={`/posts/${this.state.postId}`}/>;
       }
     };
 
@@ -86,17 +95,17 @@ export default class Create extends Component {
         //check if the title or description is left empty
         const {isLoggedIn} = store.getState()
         if (isLoggedIn == false) {
-            alert('Please signup/login first.')
+            alert('please signup/login first')
             return
         }
 
         if (this.state.title == '') {
-            alert('Please enter a valid title.')
+            alert('please enter a valid title')
             return
         }
 
         if (this.state.description == '') {
-            alert('Description cannot be empty.')
+            alert('Description cannot be empty')
             return
         }
 
@@ -112,19 +121,23 @@ export default class Create extends Component {
             postId: uuid()
         }
 
+        const info = {
+            postId: this.state.postId,
+            postType: this.state.postType,
+            title: this.state.title,
+            description: this.state.description
+        }
 
+        
         //since setState is aysnc, the aixos API call need to be placed in its callback function
-
+        
         this.setState({creatorName: userName, creatorEmail:email}, () => {
-            axios.post(`${API_PREFIX}/posts/create_a_post`, {
-                ...this.state,
-                ...otherInfo
+            axios.post('http://server.metaraw.world:3000/posts/update_a_post', {
+                ...info
             })
             .then(res => {
                 if (res.data.statusCode == 200) {
-                    console.log('post has been created')
-                    const action = {type: 'addPost', data: {newPost: {...this.state, ...otherInfo}}}
-                    store.dispatch(action)
+                    console.log('post has been updated');
                     // this.history.push('/posts')
                     this.setState({redirect:true})
                 }
@@ -134,11 +147,12 @@ export default class Create extends Component {
 
 
     render() {
+        const description = this.state.description;
         return (
             <div>
                 {this.handleRedirect()}
                 <br/>
-                <h2>Create Post</h2>
+                <h2>Edit Post</h2>
                 <br/>
                 <br/>
 
@@ -146,42 +160,46 @@ export default class Create extends Component {
                     <div className="form-group">
                         <label><strong>Title</strong></label>
                         <input type="text" className="form-control"
-                               placeholder="Please enter the title of this post."
+                               value={this.state.title}
                                onChange={this.updateTitle}/>
                     </div>
                     <div className="form-group">
                         <label><strong>Category</strong></label>
-                        <select className="form-control" id="postCategory" onChange={this.updateType}>
-                            <option>Others</option>
+                        <select className="form-control" id="postCategory" value={this.state.postType} onChange={this.updateType}>
                             <option>Free or For Sale</option>
                             <option>Ride Sharing</option>
                             <option>Cutie Pets</option>
                             <option>Housing</option>
                             <option>Entertainment</option>
+                            <option>Others</option>
                         </select>
                     </div>
                 </form>
                 <div className='create-post-text-area'>
                 <p><strong>Description</strong></p>
                 <FroalaEditorComponent tag={'textarea'} config={{
-                    placeholderText: 'Write the description here.',
+                    placeholderText: 'Write the details here!',
                     imageDefaultWidth: 500,
                     imageUpload: true,
                     events: {
-                            'image.beforeUpload': function (images) {
+                        'image.beforeUpload': function (images) {                           
                             const data = new FormData();
                             data.append('image', images[0]);
                             axios.post('https://api.imgur.com/3/image', data, {
                                 headers: {
                                     'Authorization': 'Client-ID c9897a7d288d020'
                                 }
-
-                            }).then(res => {
+                            }).then(res => {                                
                                 console.log(this);
                                 this.image.insert(res.data.data.link);
                             });
 
                             return false;
+                        },
+                        'initialized': function() {
+                            console.log("editor initialized");
+                            this.html.set(description);
+                            console.log(description);
                         }
                     },
                     charCounterCount: true
@@ -197,7 +215,7 @@ export default class Create extends Component {
                     <Button type="button" id="creat-post-send"
                             className="btn btn-success float-right btn-lg"
                             onClick={this.submitPost}>
-                        <strong>Send</strong>
+                        <strong>Update</strong>
                     </Button>
                 </div>
             </div>

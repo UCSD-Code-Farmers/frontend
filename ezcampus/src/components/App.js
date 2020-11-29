@@ -1,14 +1,18 @@
 import SideBar from "./Sidebar";
 import UserProfile from "./Profile/ProfilePage/UserProfile"
 import Posts from './Posts/Posts'
-<<<<<<< HEAD
-import {useHistory} from 'react-router-dom'
+import Edit from './Posts/EditPost/Edit'
+import React, { useState, useEffect } from 'react'
 import Create from "./Create/Create";
 import Friends from "./Friends/Friends"
-=======
-
-import Create from "./Create/Create";
->>>>>>> refs/remotes/origin/minghe
+import Section from "./ResponsiveSection/Section"
+import MyPosts from "./PostHistory/MyPosts"
+import PostDetail from './Posts/PostDetail'
+import ProfileEdit from './Profile/ProfileEdit/ProfileEdit'
+import store from '../store/Store'
+import AutoLogin from '../wrappers/AutoLogin'
+import LoadPosts from '../wrappers/LoadPosts'
+import VisitorProfile from './Profile/VisitorProfile/VisitorProfile'
 
 import {
   BrowserRouter,
@@ -20,77 +24,102 @@ import {
 
 
 function App() {
-  const history = useHistory()
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    const unsubscribe = store.subscribe(() => {
+      const {isLoggedIn} = store.getState()
+      setIsLoggedIn(isLoggedIn)
+    })
+
+    return () => {unsubscribe()}
+  }, [])
 
   return (
-    <div className="App">
-       <BrowserRouter>
-          <SideBar
-              routes={
-                <div>
-                  <Switch>
-                    <Route
-                      exact
-                      path="/"
-                      component={() => {
-                        return (
-                          <Redirect
-                            to={{
-                              pathname: "/posts",
-                            }}
-                          >
-                          </Redirect>
-                        );
-                      }}
-                    />
-                    <Route
-                      exact
-                      path="/profile"
-                      component={UserProfile}
-                    />
-                    <Route
-                      exact
-                      path="/posts"
-                      component={Posts}
-                    />
-                    <Route
-                      exact
-                      path="/posts/my"
-                    />
-                    <Route
-                      exact
-                      path="/posts/create"
-                      component={Create}
-                    />
-                    <Route
-                      exact
-                      path="/profile/settings"
-                    />
-                    <Route
-                      exact
-                      path="/message"
-                    />
-                    <Route
-                      exact
-                      path="/groups"
-                    />
-                    <Route
-                      exact
-                      path="/friends"
-                      component={Friends}
-                    />
-                    <Route
-                      path="/posts/:postId"
-                    />
-                    <Route
-                      path="/people/:userId"
-                    />
-                  </Switch>
-                </div>
-              }
-          />
-       </BrowserRouter>
-    </div>
+
+      <div className="App">
+        <BrowserRouter>
+        <LoadPosts>
+        <AutoLogin>
+            <SideBar
+                routes={
+                  <div>
+                    <Switch>
+                      <Route
+                        exact
+                        path="/"
+                        component={() => {
+                          return (
+                            <Redirect
+                              to={{
+                                pathname: "/posts",
+                              }}
+                            >
+                            </Redirect>
+                          );
+                        }}
+                      />
+                      <Route
+                        exact
+                        path="/profile"
+                        component={UserProfile}
+                      />
+                      <Route
+                        exact
+                        path="/posts"
+                        component={Posts}
+                      />
+                      <Route
+                        exact
+                        path="/posts/my"
+                        component={MyPosts}
+                      />
+                      <Route
+                        exact
+                        path="/posts/create"
+                        component={Create}
+                      />
+                      <Route
+                        exact
+                        path="/posts/edit"
+                        component={Edit}
+                      />
+                      <Route
+                        exact
+                        path="/profile/settings"
+                        component={ProfileEdit}
+                      />
+                      <Route
+                        exact
+                        path="/message"
+                      />
+                      <Route
+                        exact
+                        path="/groups"
+                        component={Section}
+                      />
+                      <Route
+                        exact
+                        path="/contacts"
+                        component={Friends}
+                        
+                      />
+                      <Route
+                        path="/posts/:postId"
+                        component={PostDetail}
+                      />
+                      <Route
+                        path="/profile/:userId"
+                        component={VisitorProfile}
+                      />
+                    </Switch>
+                  </div>
+                }
+            />
+          </AutoLogin>
+          </LoadPosts>
+        </BrowserRouter>
+      </div>
   );
 }
 

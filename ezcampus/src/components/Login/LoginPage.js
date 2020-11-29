@@ -3,11 +3,14 @@ import './Login.css'
 import axios from 'axios'
 import store from '../../store/Store'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import styled, { keyframes } from "styled-components";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
+import API_PREFIX from '../../API_PREFIX'
 const eye = <FontAwesomeIcon icon={faEye} />;
 
 class LoginPage extends Component{
     constructor(props) {
+        
         super(props);
         this.state = {
             isSwitch:false,  //DO Not modify this
@@ -15,7 +18,8 @@ class LoginPage extends Component{
             email:"",
             username:"",
             password:"",
-            value:{}
+            value:{},
+            rememberUser: true
         }
         this.handleLoginSwitch = this.handleLoginSwitch.bind(this)
         this.handleSignUpSwitch = this.handleSignUpSwitch.bind(this)
@@ -24,6 +28,7 @@ class LoginPage extends Component{
         this.handleEmailVerification=this.handleEmailVerification.bind(this)
         this.handlePasswordDisplay = this.handlePasswordDisplay.bind(this)
         this.eye  = eye
+        
     }
 
     handleLoginSwitch(){
@@ -39,6 +44,12 @@ class LoginPage extends Component{
     handlePasswordDisplay= () =>{
         this.setState((preState)=>{
             return{isShowPassword: !preState.isShowPassword}
+        })
+    }
+
+    handleRememberUser =() => {
+        this.setState((preState) => {
+            return {rememberUser: !preState.rememberUser}
         })
     }
     /*
@@ -67,25 +78,29 @@ class LoginPage extends Component{
     handleLogin= (event) =>{
         event.preventDefault();
         const {email,password} = this.state
-        console.log(email)
-        console.log(password)
-        axios.post('http://server.metaraw.world:3000/users/email_login', {
+        axios.post(`${API_PREFIX}/users/email_login`, {
                 'email': email,
                 'password': password
             
         })
         .then(res => {
-            console.log(res)
-            if (res.data.statusCode == 200) {
+            //console.log(res)
+            if (res.data.statusCode === 200) {
                 const action = {
                     type: 'setEmailAndUserName',
                     data: {
                         email: res.data.user.email,
-                        userName: res.data.user.userName
+                        userName: res.data.user.userName,
+                        avatarlink: res.data.user.avatarlink
                     }
                 }
                 store.dispatch(action)
                 this.props.closePopup()
+                if (this.state.rememberUser){
+                    localStorage.setItem('ezcampus_user_email', this.state.email)
+                    localStorage.setItem('ezcampus_user_password', this.state.password)
+                }
+
             }
         })
         .catch(err => {
@@ -112,14 +127,13 @@ class LoginPage extends Component{
     handleSignUp= (event) =>{
         event.preventDefault();
         const {email, username,password} = this.state
-        axios.post('http://server.metaraw.world:3000/users/email_register', {
+        axios.post(`${API_PREFIX}/users/email_register`, {
             'email': email,
             'userName': username, 
             'password': password
         })
         .then(res => {
-            if (res.data.statusCode == 200) {
-                console.log(res.data)
+            if (res.data.statusCode === 200) {
                 const action = {
                     type: 'setEmailAndUserName',
                     data: {
@@ -127,19 +141,39 @@ class LoginPage extends Component{
                         userName: username
                     }
                 }
-
                 store.dispatch(action)
+                axios.post(`${API_PREFIX}/users/profile/save`, {
+                    'loginEmail': email,
+                    'userName': username, 
+                    "aboutMe": "",
+                    "avatarlink": "",
+                    "city": "",
+                    "contactEmail": "",
+                    "phone": "",
+                    "state": ""
+                })
+                .then(res => {
+                    if (res.data.statusCode === 200) {
+                        console.log('profile has been saved')
+                    }
+                })
+
                 this.props.closePopup()
+                //auto login next time
+                if (this.state.rememberUser)
+                    localStorage.setItem('ezcampus_user_auto_login', {email: this.state.email, password: this.state.password})
+                
             }
         })
         .catch(err => {
             if (!err.response) return
             const errRes = err.response
-            if (errRes.status == 403) {
+            if (errRes.status === 403) {
                 console.log(errRes.data)
                 alert(errRes.data.message)
             }
         })
+       
     }
 
     handleEmailVerification=()=>{
@@ -161,9 +195,8 @@ class LoginPage extends Component{
             <div className={"popup"}>
                 <div className={"Hero"}>
                     <div className={"form-box"}>
-                        <button style={{float:"right", outline:"none",position:"relative",border:"0"}} type="button" onClick={this.props.closePopup}>x</button>
-                        <div>
-                            <img className={"left-image"}/>
+                        <button style={{float:"right", outline:"none",position:"relative",border:"0", borderRadius: '50%'}} type="button" onClick={this.props.closePopup}>x</button>
+                        <div className={"left-image-box"}>
                         </div>
                         <div className={"button-box-li"}>
                             <div style={btn} id="btn_li"></div>
@@ -175,9 +208,9 @@ class LoginPage extends Component{
                             </button>
                         </div>
                         <form style={login} className="input-group_li" onSubmit={this.handleLogin}>
-                            <input type="text" className="input-field" placeholder="Email" onChange={this.handleEmailChange}/>
+                            <input type="text" className="input-field" placeholder="Email" required={'required'} onChange={this.handleEmailChange}/>
                             <div className={'wrapper'}>
-                                 <input type={type} className="input-field-password" placeholder="Password" onChange={this.handlePasswordChange}/>
+                                 <input type={type} className="input-field-password" required={'required'} placeholder="Password" onChange={this.handlePasswordChange}/>
                                  <i className={"faeye"} onClick={this.handlePasswordDisplay}>{this.eye}</i>
                                  {/*ignore icon bug*/}
                                  <span></span>
@@ -186,8 +219,10 @@ class LoginPage extends Component{
                                 type="checkbox"
                                 className="check-box"
                                 placeholder="possword"
+                                onChange={this.handleRememberUser}
+                                checked={this.state.rememberUser}
                             />
-                            <strong className={"spanText"}>Remember Password</strong>
+                            <strong className={"spanText"}>Remember Me</strong>
                             <br />
                             <strong className={"spanText"}>Do you forget your password ?</strong>
                             <button
@@ -205,10 +240,10 @@ class LoginPage extends Component{
                         </form>
 
                         <form style={signup} className="input-group_li" onSubmit={this.handleSignUp}>
-                            <input type="text" className="input-field" placeholder="Name" onChange={this.handleUserNameChange}/>
-                            <input type="email" className="input-field" placeholder="Email" onChange={this.handleEmailChange}/>
+                            <input type="text" className="input-field" placeholder="Name" required={'required'}  onChange={this.handleUserNameChange}/>
+                            <input type="email" className="input-field" placeholder="Email" required={'required'}  onChange={this.handleEmailChange}/>
                             <div className={'wrapper'}>
-                                 <input type={type} className="input-field-password" placeholder="Password" onChange={this.handlePasswordChange}/>
+                                 <input type={type} className="input-field-password" placeholder="Password" required={'required'}  onChange={this.handlePasswordChange}/>
                                 <i className={"faeye"} onClick={this.handlePasswordDisplay}>{this.eye}</i>
                                 <span></span>
                             </div>
@@ -226,3 +261,4 @@ class LoginPage extends Component{
     }
 }
 export default LoginPage;
+
