@@ -12,13 +12,50 @@ import './CreatePost.css';
 import uuid from 'react-uuid';
 import store from '../../store/Store'
 import axios from 'axios'
+import API_PREFIX from '../../API_PREFIX'
+import FormData from 'form-data'
+import { Redirect } from "react-router-dom";
+
 
 export default class Create extends Component {
     constructor(props) {
         super(props)
         this.history = props.history
+        this.state = {creatorEmail: '', creatorName: '', description: '', title: '', postType: 'Free or For Sale', redirect:false};
 
-        this.state = {creatorEmail: '', creatorName: '', description: '', title: '', postType: 'Free and for Sale'};
+    }
+
+    componentDidMount() {
+
+        let interval = setInterval(() => {
+            const {isLoading} = store.getState()
+            if (!isLoading) {
+                clearInterval(interval)
+                const {isLoggedIn} = store.getState()
+                //if the user hasn't logged in, then redirect the user to the Post component
+                if (!isLoggedIn) {
+                    //after the user gets redirected to the Post component, we need to show PromptlogIn Modal
+                    const action = {type: 'setShowPromptLogIn'}
+                    store.dispatch(action)
+                    this.history.push('/posts')
+                }
+            }
+        }, 5)
+
+
+        store.subscribe(() => {
+            let interval = setInterval(() => {
+                const {isLoading} = store.getState()
+                if(!isLoading) {
+                    clearInterval(interval)
+                    const {isLoggedIn} = store.getState()
+                    if (!isLoggedIn) {
+                        this.history.push('/posts')
+                    }
+                }
+            }, 5)
+
+        })
     }
 
 
@@ -27,12 +64,22 @@ export default class Create extends Component {
     }
 
     updateType = (e) => {
+        console.log(e.target.value)
         this.setState({postType: e.target.value})
     }
 
-     
+
     updateEditerComponentText = (e) => {
         this.setState({description: e})
+    }
+    handleRedirect = () => {
+      if (this.state.redirect) {
+        return <Redirect to="/posts"/>;
+      }
+    };
+
+    cancelPost = () => {
+        this.setState({redirect:true})
     }
 
     submitPost = () => {
@@ -40,17 +87,17 @@ export default class Create extends Component {
         //check if the title or description is left empty
         const {isLoggedIn} = store.getState()
         if (isLoggedIn == false) {
-            alert('Please signup/login first')
+            alert('Please signup/login first.')
             return
         }
 
         if (this.state.title == '') {
-            alert('Please enter a valid title')
+            alert('Please enter a valid title.')
             return
         }
 
         if (this.state.description == '') {
-            alert('Description cannot be empty')
+            alert('Description cannot be empty.')
             return
         }
 
@@ -66,28 +113,31 @@ export default class Create extends Component {
             postId: uuid()
         }
 
-        
+
         //since setState is aysnc, the aixos API call need to be placed in its callback function
-        
+
         this.setState({creatorName: userName, creatorEmail:email}, () => {
-            axios.post('http://server.metaraw.world:3000/posts/create_a_post', {
+            axios.post(`${API_PREFIX}/posts/create_a_post`, {
                 ...this.state,
                 ...otherInfo
             })
             .then(res => {
                 if (res.data.statusCode == 200) {
                     console.log('post has been created')
-                    this.history.push('/posts')
+                    const action = {type: 'addPost', data: {newPost: {...this.state, ...otherInfo}}}
+                    store.dispatch(action)
+                    // this.history.push('/posts')
+                    this.setState({redirect:true})
                 }
             })
         })
-    
     }
-    
+
 
     render() {
         return (
             <div>
+                {this.handleRedirect()}
                 <br/>
                 <h2>Create Post</h2>
                 <br/>
@@ -97,36 +147,51 @@ export default class Create extends Component {
                     <div className="form-group">
                         <label><strong>Title</strong></label>
                         <input type="text" className="form-control"
-                               placeholder="Please enter the title of this post"
+                               placeholder="Please enter the title of this post."
                                onChange={this.updateTitle}/>
                     </div>
                     <div className="form-group">
                         <label><strong>Category</strong></label>
                         <select className="form-control" id="postCategory" onChange={this.updateType}>
-                            <option>Free and for Sale</option>
+                            <option>Others</option>
+                            <option>Free or For Sale</option>
                             <option>Ride Sharing</option>
                             <option>Cutie Pets</option>
                             <option>Housing</option>
                             <option>Entertainment</option>
-                            <option>Others</option>
                         </select>
                     </div>
-                    {/*<div className="form-group">*/}
-                    {/*    <label htmlFor="exampleFormControlTextarea1">Example textarea</label>*/}
-                    {/*    <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>*/}
-                    {/*</div>*/}
                 </form>
                 <div className='create-post-text-area'>
                 <p><strong>Description</strong></p>
                 <FroalaEditorComponent tag={'textarea'} config={{
-                    placeholderText: 'Write the details here!',
+                    placeholderText: 'Write the description here.',
+                    imageDefaultWidth: 500,
+                    imageUpload: true,
+                    events: {
+                            'image.beforeUpload': function (images) {
+                            const data = new FormData();
+                            data.append('image', images[0]);
+                            axios.post('https://api.imgur.com/3/image', data, {
+                                headers: {
+                                    'Authorization': 'Client-ID c9897a7d288d020'
+                                }
+                            }).then(res => {
+                                console.log(this);
+                                this.image.insert(res.data.data.link);
+                            });
+
+                            return false;
+                        }
+                    },
                     charCounterCount: true
                 }} onModelChange={this.updateEditerComponentText}/>
                 </div>
                 <br/>
                 <div>
                     <Button type="button" id="creat-post-cancel"
-                            className="btn btn-secondary float-right btn-lg ml-3">
+                            className="btn btn-secondary float-right btn-lg ml-3"
+                            onClick={this.cancelPost}>
                         <strong>Cancel</strong>
                     </Button>
                     <Button type="button" id="creat-post-send"
