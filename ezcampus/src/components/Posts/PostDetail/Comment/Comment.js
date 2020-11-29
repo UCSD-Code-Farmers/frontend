@@ -4,10 +4,9 @@ import axios from 'axios'
 import store from "../../../../store/Store";
 import CommentCell from "./CommentCell";
 import Notifications from "react-notify-toast";
-import {Button, Card, Form, FormControl, InputGroup} from "react-bootstrap";
+import {Card} from "react-bootstrap";
 import {notify} from "react-notify-toast/bin/notify";
 import API_PREFIX from '../../../../API_PREFIX'
-import {Modal} from "antd";
 class Comment extends Component {
     constructor(props) {
         super(props);
@@ -15,12 +14,9 @@ class Comment extends Component {
             commentList: [],
             commentText: '',
             postId: this.props.history.location.pathname.slice(7),
-            isDeleteConfirmation:false,
-            deleteId:' '
         }
         this.handlerTextChange = this.handlerTextChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
-
 
     }
 
@@ -56,16 +52,6 @@ class Comment extends Component {
     handlerTextChange = (event) => {
         this.setState({
             commentText: event.target.value
-        })
-    }
-
-    handlerDeleteComfirmation =(event)=>{
-        console.log(event)
-        this.setState({
-            isDeleteConfirmation:true,
-            deleteId:event,
-        },()=>{
-            console.log(this.state.isDeleteConfirmation)
         })
     }
 
@@ -108,7 +94,7 @@ class Comment extends Component {
     }
     handlerDeleteComment = (event) => {
         console.log("I am here--------",event)
-        // const {email,userName} = store.getState()
+        const {email,userName} = store.getState()
         axios.delete(`${API_PREFIX}/posts/deleteTheComment`,{
             // "postId": this.state.postId,
             // "commentId": event,
@@ -121,8 +107,7 @@ class Comment extends Component {
                 if (res.status === 200) {
                     notify.show('Delete Successfully')
                     this.setState({
-                        commentList: this.state.commentList.filter(el => el.commentId !== event),
-                        isDeleteConfirmation:false,
+                        commentList: this.state.commentList.filter(el => el.commentId !== event)
                     }, () => {
                         //for TESTING
                         // console.log(this.state.commentList)
@@ -134,9 +119,7 @@ class Comment extends Component {
                 if (!err.response) return
                 const errRes = err.response
                 if (errRes.status === 404) {
-                    this.setState({
-                        isDeleteConfirmation:false,
-                    })
+                    // console.log(errRes.data)
                     alert(errRes.data.message)
                 }
             })
@@ -175,18 +158,10 @@ class Comment extends Component {
                 <br/>
                 <br/>
                 {this.state.commentList == null ? null : this.state.commentList.map((item) => (
-                    <CommentCell key={item.commentId} delete={this.handlerDeleteComfirmation.bind(this,item.commentId)}
+                    <CommentCell key={item.commentId} delete={this.handlerDeleteComment.bind(this, item.commentId)}
                                  updateComment={this.handlerUpdateComment.bind(this)}
                                  history={this.props.history} item={item}/>
                 )).reverse()}
-                    <Modal
-                        visible={this.state.isDeleteConfirmation}
-                        onOk={this.handlerDeleteComment.bind(this,this.state.deleteId)}
-                        onCancel={()=>{this.setState({isDeleteConfirmation:false,})}}
-                    >
-                        <p>Confirm to remove <span style={{fontWeight:"bold"}}>your comment</span> from comment board?</p>
-                    </Modal>
-
             </form>
         );
     }
