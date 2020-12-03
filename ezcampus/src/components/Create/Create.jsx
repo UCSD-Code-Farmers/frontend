@@ -101,12 +101,15 @@ export default class Create extends Component {
         }
 
 
-        const {userName, email} = store.getState()
+        const {userName, email, avatarlink} = store.getState()
 
 
         //some other info is required for making a post
+
+        const date = new Date().toLocaleDateString();
+        const time = new Date().toLocaleTimeString();
         const otherInfo = {
-            date: new Date().toLocaleString('en-GB', { timeZone: 'PST' }),
+            date: `${time}, ${date}`,
             views: 0,
             likes: 0,
             postId: uuid()
@@ -123,9 +126,8 @@ export default class Create extends Component {
             .then(res => {
                 if (res.data.statusCode == 200) {
                     console.log('post has been created')
-                    const action = {type: 'addPost', data: {newPost: {...this.state, ...otherInfo}}}
+                    const action = {type: 'addPost', data: {newPost: {...this.state, ...otherInfo, avatarlink}}}
                     store.dispatch(action)
-                    // this.history.push('/posts')
                     this.setState({redirect:true})
                 }
             })
