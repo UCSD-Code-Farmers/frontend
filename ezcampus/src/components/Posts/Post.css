@@ -1,16 +1,3 @@
-.posts-background-color {
-  position: absolute;
-  border-radius: 4px;
-  width: 100%;
-  height: 100px;
-  background: -webkit-gradient(
-    linear,
-    0 0,
-    0 bottom,
-    from(rgba(0, 0, 0, 0)),
-    to(rgba(0, 0, 0, 0.5))
-  );
-}
 .post-page-body-container {
   width: 100%;
   height: 10vh;
