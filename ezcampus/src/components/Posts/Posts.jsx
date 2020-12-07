@@ -146,7 +146,7 @@ export default class Posts extends Component {
 
     render() {
         return (
-            <div>
+            <div >
                 <div className='posts-header'>
                     {this.homeOutlinedHeader()}
                 </div>

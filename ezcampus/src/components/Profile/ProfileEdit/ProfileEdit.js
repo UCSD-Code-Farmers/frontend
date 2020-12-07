@@ -79,6 +79,9 @@ class ProfileEdit extends React.Component {
       "WY",
     ],
   };
+  handleCancel = () => {
+      return <Redirect to="/profile" />;
+  };
   constructor(props) {
     super(props)
     this.saveAll=this.saveAll.bind(this)
@@ -497,6 +500,25 @@ class ProfileEdit extends React.Component {
             >
               Save
             </Button>
+          </Col>
+          <Col
+           span={6}
+           style={{ maxHeight: "90px" }}
+          >
+              <Button
+                type=""
+                style={{
+                  height: "35px",
+                  marginTop:"25px",
+                  width: "100%",
+                  maxWidth: 140,
+                  backgroundColor: "#545770",
+                  color: "white",
+                }}
+                onClick={this.saveAll}
+              >
+                Cancel
+              </Button>
           </Col>
         </Row>
 
