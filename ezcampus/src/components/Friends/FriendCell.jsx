@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import BigProfile from "../Sidebar/icons/BigProfile.png";
-import { UserDeleteOutlined, MessageOutlined } from "@ant-design/icons";
+import { UserDeleteOutlined, MailOutlined } from "@ant-design/icons";
 import { Button, Modal, Space } from "antd";
 
 export default class FriendCell extends Component {
@@ -52,7 +52,7 @@ export default class FriendCell extends Component {
                 <div className='friend-buttons'>
                     <div className='friend-button-description'>
                     <Button shape="circle" 
-                    icon={<MessageOutlined />} 
+                    icon={<MailOutlined />} 
                     size={"30px"} 
                     onClick={this.sendIndividualEmail}/>
                     </div>
