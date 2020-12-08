@@ -40,9 +40,9 @@
 }
 
 .button-box-li {
-  border: 1px solid;
+  border:  1px solid;
   width: 220px;
-  margin: 10px 350px;
+  margin: 25px 350px 20px 350px;
   position: absolute;
   /*box-shadow: 0 0 20px 9px #ff61241f;*/
   border-radius: 30px;
