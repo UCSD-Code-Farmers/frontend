@@ -100,7 +100,7 @@ export default class PostCell extends Component {
                             onOk={(postId) => this.handleDelete()}
                             onCancel={this.handleCancel}
                          >
-                        <p>are you sure to delete this post？</p>
+                        <p>Are you sure to delete this post？</p>
                         </Modal>
                         </div>
                         : null}

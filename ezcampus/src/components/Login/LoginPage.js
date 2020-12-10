@@ -3,7 +3,7 @@ import './Login.css'
 import axios from 'axios'
 import store from '../../store/Store'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import styled, { keyframes } from "styled-components";
+import logo from './Logo/Logo.jpeg';
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import API_PREFIX from '../../API_PREFIX'
 const eye = <FontAwesomeIcon icon={faEye} />;
@@ -196,15 +196,16 @@ class LoginPage extends Component{
                 <div className={"Hero"}>
                     <div className={"form-box"}>
                         <button style={{float:"right", outline:"none",position:"relative",border:"0", borderRadius: '50%'}} type="button" onClick={this.props.closePopup}>x</button>
-                        <div className={"left-image-box"}>
+                        <div>
+                            <img className={"left-image-box"} src={logo}/>
                         </div>
                         <div className={"button-box-li"}>
                             <div style={btn} id="btn_li"></div>
                             <button type="button" className="toggle-btn-li" onClick={this.handleLoginSwitch} >
-                                login
+                                Login
                             </button>
                             <button  type="button" className="toggle-btn-li" onClick={this.handleSignUpSwitch} >
-                                SignUp
+                                Signup
                             </button>
                         </div>
                         <form style={login} className="input-group_li" onSubmit={this.handleLogin}>
@@ -254,7 +255,7 @@ class LoginPage extends Component{
                             {/*    className="check-box"*/}
                             {/*    placeholder="possword"*/}
                             {/*/><strong className={"spanText"}>I agree with the term & condition</strong>*/}
-                            <button type="submit" className="sumbit-btn-li">SignUp</button>
+                            <button type="submit" className="sumbit-btn-li">Signup</button>
                         </form>
                     </div>
                 </div>
