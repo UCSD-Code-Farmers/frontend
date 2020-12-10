@@ -9,6 +9,9 @@ import axios from 'axios';
 import { Link } from "react-router-dom";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { Button } from "antd";
+import { LikeOutlined} from "@ant-design/icons";
+import API_PREFIX from '../../../API_PREFIX';
 
 const editIcon = <FontAwesomeIcon icon={faEdit}/>;
 
@@ -28,12 +31,64 @@ class PostContent extends React.Component {
           likes: 0, 
           date: '', 
           postId: '', 
-          postType: ''
-        }
+          postType: '',
+          avatarlink: ''
+        },
+        liked: false,
+        likeNumber: 0,
       }
+    }
+    handleClick = () =>{
+      const {email} = store.getState()
+      axios.post(`${API_PREFIX}/posts/like/like`, 
+      {'email': email, 'postId': this.postId})
+      .then(res => {
+        if (res.data.statusCode === 200) {
+          this.setState({
+            liked:true,
+            likeNumber: this.state.likeNumber + 1
+          })
+        }
+      });
+    }
+    
+    checkLike =  () =>{
+      let interval = setInterval(() => {
+          const {isLoading} = store.getState()
+          if (!isLoading) {
+           clearInterval(interval)
+           const {isLoggedIn, email} = store.getState()
+           if (isLoggedIn) {
+            axios.get(`${API_PREFIX}/posts/like/check`, {params: {postId:this.postId, email: email}})
+            .then(res => {
+                if (res.data.statusCode === 200) {
+                    this.setState({
+                        liked: res.data.exist
+                    }, () => {
+                    })
+                }
+            })
+           }
+         }
+      }, 5)
+    }
+    
+    getLikes = () =>{
+      axios.get(`${API_PREFIX}/posts/like/number`, {params: {postId:this.postId}})
+      .then(res => {
+          if (res.data.statusCode === 200) {
+              this.setState({
+                  likeNumber: res.data.likeNumber
+              }, () => {
+              })
+          }
+      })
+
     }
 
     componentDidMount() {
+      this.getLikes()
+      this.checkLike()
       let interval = setInterval(() => {
         const {isLoading} = store.getState()
         if (!isLoading) {
@@ -44,7 +99,7 @@ class PostContent extends React.Component {
                 store.dispatch(action)
                 this.history.replace('/posts')
             } else {
-              axios.get('http://server.metaraw.world:3000/posts/get_a_post_detail', {params: {postId:this.postId}})
+              axios.get(`${API_PREFIX}/posts/get_a_post_detail`, {params: {postId:this.postId}})
               .then(res => {
                   const post = res.data.data
                   this.setState({data: post})
@@ -81,7 +136,7 @@ class PostContent extends React.Component {
               <Row align="middle">
                 <Link to={`/profile/${this.state.data.creatorEmail}`}>
                   <Col flex="0 1" style={{ margin: "5px" }}>
-                    <Avatar size={50} src={BigProfile} alt="" />
+                    <Avatar size={50} src={this.state.data.avatarlink? this.state.data.avatarlink: BigProfile} alt="" />
                   </Col>
                  </Link>
                  <Link to={`/profile/${this.state.data.creatorEmail}`}>
@@ -102,6 +157,10 @@ class PostContent extends React.Component {
                  </Col>
                 :null}
                 <Col flex="1 1" style={{ textAlign: "right", margin: "5px" }}>
+                  <span style={styles.likesText}> 
+                     <LikeOutlined style={styles.likeIcon}/>
+                     Likes: {this.state.likeNumber}
+                  </span>
                   <span style={styles.timeText}>{this.state.data.date}</span>
                 </Col>
               </Row>
@@ -132,8 +191,19 @@ class PostContent extends React.Component {
                 </div>
                 <style type="text/css"></style>
               </div>
+              {this.state.liked === true?
+               <Button disabled style={styles.liked}>
+                  Liked
+                  <LikeOutlined style={styles.likeIcon}/>
+              </Button> :
+              <Button onClick={this.handleClick}>
+                  Like this Post
+                <LikeOutlined style={styles.likeIcon}/>
+              </Button> 
+              }
+              
           </Card>
-            <Comment history={this.props.history}/>
+            <Comment history={this.props.history} />
         </div>
       );
     }
@@ -155,6 +225,17 @@ class PostContent extends React.Component {
       fontSize: "12",
       color: "#808295",
     },
+    likeIcon:{
+      marginTop: "-5px",
+      marginRight:"5px",
+    },
+    likesText: {
+      fontFamily: "BasicSans",
+      fontWeight: "300",
+      fontSize: "16px",
+      marginRight:"25px",
+      color: "#808295",
+    },
     postTitle: {
       fontFamily: "BasicSans",
       fontSize: 26,
@@ -162,6 +243,10 @@ class PostContent extends React.Component {
       textAlign: "left",
       color: "#545871",
     },
+    liked:{
+     backgroundColor: "#d3d3d3",
+    }
+   
   };
 
   const PostText = styled.div`

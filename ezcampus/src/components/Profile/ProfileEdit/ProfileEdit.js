@@ -6,7 +6,7 @@ import axios from 'axios';
 import store from '../../../store/Store';
 import ImgCrop from "antd-img-crop";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-
+import API_PREFIX from '../../../API_PREFIX'
 class ProfileEdit extends React.Component {
   state = {
     tempUser: {
@@ -78,6 +78,9 @@ class ProfileEdit extends React.Component {
       "WI",
       "WY",
     ],
+  };
+  handleCancel = () => {
+      return <Redirect to="/profile" />;
   };
   constructor(props) {
     super(props)
@@ -165,7 +168,7 @@ class ProfileEdit extends React.Component {
           loginEmail:  email, 
       }
     }))
-    axios.get("http://server.metaraw.world:3000/users/profile/get", {params: {email}})
+    axios.get(`${API_PREFIX}/users/profile/get`, {params: {email}})
     .then(res =>{
       if(res.data.statusCode === 200){
         this.setState({
@@ -196,7 +199,7 @@ class ProfileEdit extends React.Component {
       );
       return;
     }
-    axios.post('http://server.metaraw.world:3000/users/profile/save', {
+    axios.post(`${API_PREFIX}/users/profile/save`, {
       ...this.state.tempUser})
     .then(res => {
       if (res.data.statusCode === 200) {
@@ -497,6 +500,25 @@ class ProfileEdit extends React.Component {
             >
               Save
             </Button>
+          </Col>
+          <Col
+           span={6}
+           style={{ maxHeight: "90px" }}
+          >
+              <Button
+                type=""
+                style={{
+                  height: "35px",
+                  marginTop:"25px",
+                  width: "100%",
+                  maxWidth: 140,
+                  backgroundColor: "#545770",
+                  color: "white",
+                }}
+                onClick={this.saveAll}
+              >
+                Cancel
+              </Button>
           </Col>
         </Row>
 

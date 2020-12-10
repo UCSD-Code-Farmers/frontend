@@ -3,8 +3,9 @@ import './Login.css'
 import axios from 'axios'
 import store from '../../store/Store'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import styled, { keyframes } from "styled-components";
+import logo from './Logo/Logo.jpeg';
 import { faEye } from "@fortawesome/free-solid-svg-icons";
+import API_PREFIX from '../../API_PREFIX'
 const eye = <FontAwesomeIcon icon={faEye} />;
 
 class LoginPage extends Component{
@@ -77,7 +78,7 @@ class LoginPage extends Component{
     handleLogin= (event) =>{
         event.preventDefault();
         const {email,password} = this.state
-        axios.post('http://server.metaraw.world:3000/users/email_login', {
+        axios.post(`${API_PREFIX}/users/email_login`, {
                 'email': email,
                 'password': password
             
@@ -126,7 +127,7 @@ class LoginPage extends Component{
     handleSignUp= (event) =>{
         event.preventDefault();
         const {email, username,password} = this.state
-        axios.post('http://server.metaraw.world:3000/users/email_register', {
+        axios.post(`${API_PREFIX}/users/email_register`, {
             'email': email,
             'userName': username, 
             'password': password
@@ -141,7 +142,7 @@ class LoginPage extends Component{
                     }
                 }
                 store.dispatch(action)
-                axios.post('http://server.metaraw.world:3000/users/profile/save', {
+                axios.post(`${API_PREFIX}/users/profile/save`, {
                     'loginEmail': email,
                     'userName': username, 
                     "aboutMe": "",
@@ -161,7 +162,7 @@ class LoginPage extends Component{
                 //auto login next time
                 if (this.state.rememberUser)
                     localStorage.setItem('ezcampus_user_auto_login', {email: this.state.email, password: this.state.password})
-                
+
             }
         })
         .catch(err => {
@@ -195,15 +196,16 @@ class LoginPage extends Component{
                 <div className={"Hero"}>
                     <div className={"form-box"}>
                         <button style={{float:"right", outline:"none",position:"relative",border:"0", borderRadius: '50%'}} type="button" onClick={this.props.closePopup}>x</button>
-                        <div className={"left-image-box"}>
+                        <div>
+                            <img className={"left-image-box"} src={logo}/>
                         </div>
                         <div className={"button-box-li"}>
                             <div style={btn} id="btn_li"></div>
                             <button type="button" className="toggle-btn-li" onClick={this.handleLoginSwitch} >
-                                login
+                                Login
                             </button>
                             <button  type="button" className="toggle-btn-li" onClick={this.handleSignUpSwitch} >
-                                SignUp
+                                Signup
                             </button>
                         </div>
                         <form style={login} className="input-group_li" onSubmit={this.handleLogin}>
@@ -246,12 +248,14 @@ class LoginPage extends Component{
                                 <i className={"faeye"} onClick={this.handlePasswordDisplay}>{this.eye}</i>
                                 <span></span>
                             </div>
-                            <input
-                                type="checkbox"
-                                className="check-box"
-                                placeholder="possword"
-                            /><strong className={"spanText"}>I agree with the term & condition</strong>
-                            <button type="submit" className="sumbit-btn-li">SignUp</button>
+                            <br/>
+                            <br/>
+                            {/*<input*/}
+                            {/*    type="checkbox"*/}
+                            {/*    className="check-box"*/}
+                            {/*    placeholder="possword"*/}
+                            {/*/><strong className={"spanText"}>I agree with the term & condition</strong>*/}
+                            <button type="submit" className="sumbit-btn-li">Signup</button>
                         </form>
                     </div>
                 </div>
