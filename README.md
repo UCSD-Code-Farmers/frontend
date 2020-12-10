@@ -12,4 +12,4 @@ npm start
 
 Or 
 
-please visit https://5fcaffa826e26c48906fdb0f--ucsd-ezcampus.netlify.app to see the deployment
+please visit https://ezcampus.metaraw.world to see the deployment
