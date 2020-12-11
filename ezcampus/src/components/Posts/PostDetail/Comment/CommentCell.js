@@ -51,7 +51,7 @@ class CommentCell extends Component {
         })
     }
     handlerUpdateComment = () => {
-        if(this.state.editText == ''){
+        if(this.state.editText === ''){
             alert("The comment can not be Empty")
         }else {
             this.setState({
@@ -68,7 +68,7 @@ class CommentCell extends Component {
     }
 
     render() {
-        const {email, userName} = store.getState()
+        const {email} = store.getState()
         return (
             <Card className={"Test-style-li"}>
                 <Card.Header style={{padding: "10px,10px,0px,10px"}}>
@@ -84,10 +84,10 @@ class CommentCell extends Component {
                             <div style={{float: "right"}}>
                                 {this.props.item.time} &nbsp;&nbsp;&nbsp;&nbsp; {this.props.item.date}
                                 &nbsp;&nbsp;&nbsp;&nbsp;
-                                {this.props.item.email != email ? null:<i style={{cursor: "pointer", color: "#016ba8"}}
+                                {this.props.item.email !== email ? null:<i style={{cursor: "pointer", color: "#016ba8"}}
                                    onClick={this.handlerEditComment}>{Edit}</i>}
                                 &nbsp;&nbsp;
-                                {this.props.item.email != email ? null : <i onClick={this.props.delete} style={{
+                                {this.props.item.email !== email ? null : <i onClick={this.props.delete} style={{
                                     float: "right",
                                     fontSize: "13px",
                                     color: "#016ba8",

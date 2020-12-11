@@ -21,8 +21,8 @@ export default function AutoLogin(props) {
                 const {isLoggedIn} = store.getState()
                 console.log(`we are currently at ${history.location.pathname}`)
                 if (!isLoggedIn) {
-                    if (history.location.pathname == '/contacts' ||
-                        history.location.pathname == '/posts/my') {
+                    if (history.location.pathname === '/contacts' ||
+                        history.location.pathname === '/posts/my') {
                         console.log(history.location)
                         history.replace('/posts')
                     }
@@ -45,7 +45,7 @@ export default function AutoLogin(props) {
         })
         .then(res => {
             console.log('auto logging in')
-            if (res.data.statusCode == 200) {
+            if (res.data.statusCode === 200) {
                 const action = {
                     type: 'setEmailAndUserName',
                     data: {
