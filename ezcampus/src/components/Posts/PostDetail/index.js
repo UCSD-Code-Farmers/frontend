@@ -1,6 +1,5 @@
 import React from "react";
 import PostContent from "./PostContent";
-import store from '../../../store/Store';
 
 class PostDetail extends React.Component {
     constructor(props) {

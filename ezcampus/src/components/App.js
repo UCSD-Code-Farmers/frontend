@@ -16,7 +16,6 @@ import VisitorProfile from './Profile/VisitorProfile/VisitorProfile'
 
 import {
   BrowserRouter,
-  NavLink,
   Redirect,
   Route,
   Switch,

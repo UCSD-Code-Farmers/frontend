@@ -16,8 +16,7 @@ import {withRouter } from 'react-router-dom';
 import EmailVerification from "../Login/EmailVerification/EmailVerification";
 import PromptLogIn from "../Login/PromptLogIn";
 
-const {Header, Content, Footer, Sider} = Layout;
-const {SubMenu} = Menu;
+const {Content,  Sider} = Layout;
 
 class SideBar extends React.Component {
     constructor(props) {
@@ -85,7 +84,7 @@ class SideBar extends React.Component {
     onSelectMenuItem = ({key}) => {
         //if the user hasn't logged in, but trying to select items other than Home and Sections,
         //then we let the tab stay at the homepage 
-        if (!this.state.isLoggedIn && key != '1'&& key != '2') {
+        if (!this.state.isLoggedIn && key !== '1'&& key !== '2') {
             this.setState({currentSelectedMenuItem: '1'})
             return
         }

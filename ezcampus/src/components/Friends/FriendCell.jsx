@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import BigProfile from "../Sidebar/icons/BigProfile.png";
 import { UserDeleteOutlined, MailOutlined } from "@ant-design/icons";
-import { Button, Modal, Space } from "antd";
+import { Button, Modal } from "antd";
 
 export default class FriendCell extends Component {
   constructor(props) {

@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
-import {useHistory} from 'react-router-dom'
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import FroalaEditorComponent from 'react-froala-wysiwyg';
-import FroalaEditorInput from 'react-froala-wysiwyg'
 import 'froala-editor/js/plugins.pkgd.min.js';
 import 'froala-editor/js/third_party/font_awesome.min.js';
-import FroalaEditorView from 'react-froala-wysiwyg'
 import Button from 'react-bootstrap/Button';
 import './CreatePost.css';
 import uuid from 'react-uuid';
@@ -85,17 +82,17 @@ export default class Create extends Component {
 
         //check if the title or description is left empty
         const {isLoggedIn} = store.getState()
-        if (isLoggedIn == false) {
+        if (isLoggedIn === false) {
             alert('Please signup/login first.')
             return
         }
 
-        if (this.state.title == '') {
+        if (this.state.title === '') {
             alert('Please enter a valid title.')
             return
         }
 
-        if (this.state.description == '') {
+        if (this.state.description === '') {
             alert('Description cannot be empty.')
             return
         }
@@ -124,7 +121,7 @@ export default class Create extends Component {
                 ...otherInfo
             })
             .then(res => {
-                if (res.data.statusCode == 200) {
+                if (res.data.statusCode === 200) {
                     console.log('post has been created')
                     const action = {type: 'addPost', data: {newPost: {...this.state, ...otherInfo, avatarlink}}}
                     store.dispatch(action)
