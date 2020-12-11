@@ -1,15 +1,11 @@
 import React, { Component } from 'react'
-import {useHistory} from 'react-router-dom'
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import FroalaEditorComponent from 'react-froala-wysiwyg';
-import FroalaEditorInput from 'react-froala-wysiwyg'
 import 'froala-editor/js/plugins.pkgd.min.js';
 import 'froala-editor/js/third_party/font_awesome.min.js';
-import FroalaEditorView from 'react-froala-wysiwyg'
 import Button from 'react-bootstrap/Button';
 import './CreatePost.css';
-import uuid from 'react-uuid';
 import store from '../../../store/Store'
 import axios from 'axios'
 import FormData from 'form-data'
@@ -95,17 +91,17 @@ export default class Edit extends Component {
 
         //check if the title or description is left empty
         const {isLoggedIn} = store.getState()
-        if (isLoggedIn == false) {
+        if (isLoggedIn === false) {
             alert('please signup/login first')
             return
         }
 
-        if (this.state.title == '') {
+        if (this.state.title === '') {
             alert('please enter a valid title')
             return
         }
 
-        if (this.state.description == '') {
+        if (this.state.description === '') {
             alert('Description cannot be empty')
             return
         }
@@ -114,13 +110,6 @@ export default class Edit extends Component {
         const {userName, email} = store.getState()
 
 
-        //some other info is required for making a post
-        const otherInfo = {
-            date: new Date().toLocaleString('en-GB', { timeZone: 'PST' }),
-            views: 0,
-            likes: 0,
-            postId: uuid()
-        }
 
         const info = {
             postId: this.state.postId,
@@ -137,7 +126,7 @@ export default class Edit extends Component {
                 ...info
             })
             .then(res => {
-                if (res.data.statusCode == 200) {
+                if (res.data.statusCode === 200) {
                     console.log('post has been updated');
                     //update post list in the home page
                     axios.get(`${API_PREFIX}/posts/get_all_posts`)

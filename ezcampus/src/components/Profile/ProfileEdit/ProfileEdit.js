@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Input, Row, Col, Select, Button, Affix, message, Upload } from "antd";
+import { Input, Row, Col, Select, Button, message, Upload } from "antd";
 import { Redirect } from "react-router-dom"
 import axios from 'axios';
 import store from '../../../store/Store';

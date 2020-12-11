@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import store from '../../store/Store'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faTrashAlt} from '@fortawesome/free-solid-svg-icons';
-import {Modal, Space} from 'antd';
+import {Modal} from 'antd';
 import BigProfile from "../Sidebar/icons/BigProfile.png"
 
 const deleteIcon = <FontAwesomeIcon icon={faTrashAlt}/>;

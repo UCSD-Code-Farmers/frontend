@@ -7,7 +7,7 @@ import store from '../../store/Store'
 import BigProfile from "../Sidebar/icons/BigProfile.png"
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import {Modal, Space} from 'antd';
+import {Modal} from 'antd';
 
 const deleteIcon = <FontAwesomeIcon icon={faTrashAlt}/>;
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PostCell from './PostCell'
 import { HomeOutlined } from '@ant-design/icons'
-import {Button, DropdownButton, Dropdown} from 'react-bootstrap'
+import {DropdownButton, Dropdown} from 'react-bootstrap'
 import './Post.css'
 import store from '../../store/Store'
 import axios from 'axios';
@@ -19,7 +19,7 @@ export default class Posts extends Component {
         this.unsubscribe = store.subscribe(() => {
             const {posts, currentSelectedPostType} = store.getState()
             if (currentSelectedPostType) {
-                const customizedPosts = posts.filter(post => post.postType == currentSelectedPostType)
+                const customizedPosts = posts.filter(post => post.postType === currentSelectedPostType)
                 console.log(customizedPosts)
                 console.log(currentSelectedPostType)
                 this.setState({posts: customizedPosts})
@@ -33,7 +33,7 @@ export default class Posts extends Component {
         const {posts, currentSelectedPostType} = store.getState()
         console.log('checking',currentSelectedPostType)
         if (currentSelectedPostType) {
-            const customizedPosts = posts.filter(post => post.postType == currentSelectedPostType)
+            const customizedPosts = posts.filter(post => post.postType === currentSelectedPostType)
             console.log(customizedPosts)
             this.setState({
                 posts: customizedPosts,

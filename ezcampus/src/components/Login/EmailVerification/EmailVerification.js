@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import './EmailVerification.css'
-import Spinning from "./Spinning";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Notifications, {notify} from 'react-notify-toast';
 import Welcomeback from "./Welcomeback";
