@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import BigProfile from "../Sidebar/icons/BigProfile.png";
 import { UserDeleteOutlined, MailOutlined } from "@ant-design/icons";
 import { Button, Modal } from "antd";
+import store from '../../store/Store'
 
 export default class FriendCell extends Component {
   constructor(props) {
@@ -26,9 +27,10 @@ export default class FriendCell extends Component {
     this.setState({ visible: false });
   };
   sendIndividualEmail = () => {
+    const {email} = store.getState();
     let chosenString = " " + this.data.userEmail;
     window.open(
-      "mailto:" + chosenString
+      "mailto:" + chosenString + "?cc=" + email
     );
   }
 
