@@ -136,8 +136,6 @@ export default class Edit extends Component {
                         const action = {type: 'setPosts', data: {posts}}
                         store.dispatch(action)
                     })
-
-
                     this.setState({redirect:true})
                 }
             })
