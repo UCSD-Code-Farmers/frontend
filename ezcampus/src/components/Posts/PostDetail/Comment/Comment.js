@@ -142,8 +142,7 @@ class Comment extends Component {
     handlerUpdateComment = (commentText,commentId) =>{
         console.log("what",commentText,commentId)
         notify.show('Edit Successfully')
-        // http://server.metaraw.world:3000/posts/updateTheComment
-        axios.post('https://server.metaraw.world/posts/updateTheComment',{
+        axios.post(`${API_PREFIX}/posts/updateTheComment`,{
             'postId':this.state.postId,
             'commentId':commentId,
             'commentText':commentText,

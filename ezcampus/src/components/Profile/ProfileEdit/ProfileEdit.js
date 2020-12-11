@@ -212,6 +212,15 @@ class ProfileEdit extends React.Component {
               avatarlink: this.state.tempUser.avatarlink
             }}
           store.dispatch(action)
+
+          //reload all the posts
+          axios.get(`${API_PREFIX}/posts/get_all_posts`)
+          .then(response => {
+              console.log('posts have been updated')
+              const posts = response.data.data
+              const action = {type: 'setPosts', data: {posts}}
+              store.dispatch(action)
+          })
       }
       this.setState({
         editing: false,

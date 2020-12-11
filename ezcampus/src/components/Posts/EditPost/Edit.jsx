@@ -128,7 +128,14 @@ export default class Edit extends Component {
             .then(res => {
                 if (res.data.statusCode === 200) {
                     console.log('post has been updated');
-                    // this.history.push('/posts')
+                    //update post list in the home page
+                    axios.get(`${API_PREFIX}/posts/get_all_posts`)
+                    .then(response => {
+                        console.log('posts have been updated')
+                        const posts = response.data.data
+                        const action = {type: 'setPosts', data: {posts}}
+                        store.dispatch(action)
+                    })
                     this.setState({redirect:true})
                 }
             })
