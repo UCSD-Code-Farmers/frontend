@@ -36,20 +36,22 @@ export default class FriendCell extends Component {
     render() {
         const userName = this.data.userName
         return (
-          <Link to={`/profile/${this.data.userEmail}`}>
+         
             <div>
-                <img
-                    src={!this.data.avatarlink? BigProfile: this.data.avatarlink}
-                    style={{
-                      //marginTop: "100px",
-                      width: "50px",
-                      height: "50px",
-                      borderRadius: "39px",
-                      marginRight:"20px"
-                    }}
-                    alt="default profile pic"
-                  />
-                {userName}
+               <Link to={`/profile/${this.data.userEmail}`}>
+                  <img
+                      src={!this.data.avatarlink? BigProfile: this.data.avatarlink}
+                      style={{
+                        //marginTop: "100px",
+                        width: "50px",
+                        height: "50px",
+                        borderRadius: "39px",
+                        marginRight:"20px"
+                      }}
+                      alt="default profile pic"
+                    />
+                  {userName}
+                </Link>
                 <div className='friend-buttons'>
                     <div className='friend-button-description'>
                     <Button shape="circle" 
@@ -73,7 +75,7 @@ export default class FriendCell extends Component {
                     </div>
                 </div>
             </div>
-            </Link>
+            
         )
     }
 }
