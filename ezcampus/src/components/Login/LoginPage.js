@@ -104,7 +104,6 @@ class LoginPage extends Component{
             }
         })
         .catch(err => {
-            console.log(err.response)
             if (!err.response) return
             const errRes = err.response
             switch (errRes.status) {
@@ -154,7 +153,6 @@ class LoginPage extends Component{
                 })
                 .then(res => {
                     if (res.data.statusCode === 200) {
-                        console.log('profile has been saved')
                     }
                 })
 
@@ -169,7 +167,6 @@ class LoginPage extends Component{
             if (!err.response) return
             const errRes = err.response
             if (errRes.status === 403) {
-                console.log(errRes.data)
                 alert(errRes.data.message)
             }
         })

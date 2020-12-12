@@ -26,8 +26,6 @@ export default class Edit extends Component {
             postType: this.props.location.state.data.postType, 
             redirect:false
         };
-        console.log(this.props.location.state);
-    
     }
 
     componentDidMount() {
@@ -69,7 +67,6 @@ export default class Edit extends Component {
     }
 
     updateType = (e) => {
-        console.log(e.target.value)
         this.setState({postType: e.target.value})
     }
 
@@ -127,11 +124,9 @@ export default class Edit extends Component {
             })
             .then(res => {
                 if (res.data.statusCode === 200) {
-                    console.log('post has been updated');
                     //update post list in the home page
                     axios.get(`${API_PREFIX}/posts/get_all_posts`)
                     .then(response => {
-                        console.log('posts have been updated')
                         const posts = response.data.data
                         const action = {type: 'setPosts', data: {posts}}
                         store.dispatch(action)
@@ -187,16 +182,13 @@ export default class Edit extends Component {
                                     'Authorization': 'Client-ID c9897a7d288d020'
                                 }
                             }).then(res => {                                
-                                console.log(this);
                                 this.image.insert(res.data.data.link);
                             });
 
                             return false;
                         },
                         'initialized': function() {
-                            console.log("editor initialized");
                             this.html.set(description);
-                            console.log(description);
                         }
                     },
                     charCounterCount: true

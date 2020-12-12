@@ -105,7 +105,6 @@ class PostContent extends React.Component {
                   this.setState({data: post})
               })
               .catch(err => {
-                console.log(err)
               })
             }
         } 

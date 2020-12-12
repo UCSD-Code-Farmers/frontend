@@ -20,8 +20,6 @@ export default class Posts extends Component {
             const {posts, currentSelectedPostType} = store.getState()
             if (currentSelectedPostType) {
                 const customizedPosts = posts.filter(post => post.postType === currentSelectedPostType)
-                console.log(customizedPosts)
-                console.log(currentSelectedPostType)
                 this.setState({posts: customizedPosts})
             } else {
                 this.setState({posts})
@@ -31,10 +29,8 @@ export default class Posts extends Component {
 
     componentDidMount() {
         const {posts, currentSelectedPostType} = store.getState()
-        console.log('checking',currentSelectedPostType)
         if (currentSelectedPostType) {
             const customizedPosts = posts.filter(post => post.postType === currentSelectedPostType)
-            console.log(customizedPosts)
             this.setState({
                 posts: customizedPosts,
                 title_name: currentSelectedPostType,
