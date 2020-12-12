@@ -60,7 +60,6 @@ export default class Create extends Component {
     }
 
     updateType = (e) => {
-        console.log(e.target.value)
         this.setState({postType: e.target.value})
     }
 
@@ -122,7 +121,6 @@ export default class Create extends Component {
             })
             .then(res => {
                 if (res.data.statusCode === 200) {
-                    console.log('post has been created')
                     const action = {type: 'addPost', data: {newPost: {...this.state, ...otherInfo, avatarlink}}}
                     store.dispatch(action)
                     this.setState({redirect:true})
@@ -176,7 +174,6 @@ export default class Create extends Component {
                                 }
 
                             }).then(res => {
-                                console.log(this);
                                 this.image.insert(res.data.data.link);
                             });
 

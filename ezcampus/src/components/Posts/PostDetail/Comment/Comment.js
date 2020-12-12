@@ -36,7 +36,6 @@ class Comment extends Component {
                 })
                     .then(res => {
                         if (res.data.statusCode === 200) {
-                            console.log(res.data)
                             this.setState({
                                 commentList: res.data.commentList,
                             })
@@ -57,12 +56,10 @@ class Comment extends Component {
     }
 
     handlerDeleteComfirmation =(event)=>{
-        console.log(event)
         this.setState({
             isDeleteConfirmation:true,
             deleteId:event,
         },()=>{
-            console.log(this.state.isDeleteConfirmation)
         })
     }
 
@@ -99,7 +96,6 @@ class Comment extends Component {
                     if (!err.response) return
                     const errRes = err.response
                     if (errRes.status === 404) {
-                        console.log(errRes.data)
                         alert(errRes.data.message)
                     }
                 })
@@ -140,7 +136,6 @@ class Comment extends Component {
             })
     }
     handlerUpdateComment = (commentText,commentId) =>{
-        console.log("what",commentText,commentId)
         notify.show('Edit Successfully')
         axios.post(`${API_PREFIX}/posts/updateTheComment`,{
             'postId':this.state.postId,

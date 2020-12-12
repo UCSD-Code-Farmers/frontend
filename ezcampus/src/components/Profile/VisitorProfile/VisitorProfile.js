@@ -26,7 +26,6 @@ class VisitorProfile extends React.Component {
         clearInterval(interval)
         const {isLoggedIn} = store.getState()
         if (!isLoggedIn) {
-            console.log('not logged in')
             const action = {type: 'setShowPromptLogIn'}
             store.dispatch(action)
             this.history.push('/posts')
@@ -91,7 +90,6 @@ class VisitorProfile extends React.Component {
       }
     })
     .catch(err => {
-      console.log(err)
     })
   }
 

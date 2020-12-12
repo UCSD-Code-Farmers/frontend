@@ -28,7 +28,6 @@ export default class MyPosts extends Component {
                 const {isLoggedIn} = store.getState()
                 clearInterval(interval)
                 if (!isLoggedIn) {
-                    console.log('not logged in')
                     const action = {type: 'setShowPromptLogIn'}
                     store.dispatch(action)
                     this.history.push('/posts')

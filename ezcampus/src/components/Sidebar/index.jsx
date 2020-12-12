@@ -49,7 +49,6 @@ class SideBar extends React.Component {
     }
 
     onTogglePopup = () => {
-        console.log('TOGGLE POPUP!!!!!')
         this.setState((prevState) => {
             return {
                 showPopUPLogin: !prevState.showPopUPLogin,
@@ -77,7 +76,6 @@ class SideBar extends React.Component {
     }
 
     onCollapse = collapsed => {
-        console.log(collapsed);
         this.setState({collapsed});
     };
 

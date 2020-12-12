@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import BigProfile from "../Sidebar/icons/BigProfile.png";
 import { UserDeleteOutlined, MailOutlined } from "@ant-design/icons";
 import { Button, Modal } from "antd";
-import store from '../../store/Store'
+import {Link} from "react-router-dom";
 
 export default class FriendCell extends Component {
   constructor(props) {
@@ -27,17 +27,16 @@ export default class FriendCell extends Component {
     this.setState({ visible: false });
   };
   sendIndividualEmail = () => {
-    const {email} = store.getState();
     let chosenString = " " + this.data.userEmail;
     window.open(
-      "mailto:" + chosenString + "?cc=" + email
+      "mailto:" + chosenString
     );
   }
 
     render() {
         const userName = this.data.userName
-        console.log(userName)
         return (
+          <Link to={`/profile/${this.data.userEmail}`}>
             <div>
                 <img
                     src={!this.data.avatarlink? BigProfile: this.data.avatarlink}
@@ -74,6 +73,7 @@ export default class FriendCell extends Component {
                     </div>
                 </div>
             </div>
+            </Link>
         )
     }
 }

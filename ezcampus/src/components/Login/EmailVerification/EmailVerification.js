@@ -37,7 +37,6 @@ class EmailVerification extends Component {
             if (Password !== RetypePassword) {
                 notify.show("The password does not match, Please, re-enter!")
             } else {
-                console.log("HERE:", codeEmail, Password, RetypePassword)
                 axios.post(`${API_PREFIX}/users/forget_password/reset_password`, {
                     "codeEmail":codeEmail,
                     "password":Password,
@@ -55,7 +54,6 @@ class EmailVerification extends Component {
                         }
                     })
                     .catch(err => {
-                        console.log(err.response)
                         if (!err.response) return
                         const errRes = err.response
                         switch (errRes.status) {
@@ -76,9 +74,6 @@ class EmailVerification extends Component {
 
         } else {
             if (isEnterCode) {
-                console.log("Here is EnterCode: ", codeEmail, code)
-                let myInt = parseInt(code);
-                console.log(typeof (myInt), myInt, codeEmail)
                 axios.get(`${API_PREFIX}/users/forget_password/verify`, {params: {code, codeEmail}})
                     .then(res => {
                         if (res.data.statusCode === 200) {
@@ -88,12 +83,11 @@ class EmailVerification extends Component {
                                 code: '',
                                 isEnterCode: false,
                             }, () => {
-                                console.log(this.state.code)
+                            
                             })
                         }
                     })
                     .catch(err => {
-                        console.log(err.response)
                         if (!err.response) return
                         const errRes = err.response
                         switch (errRes.status) {
@@ -119,7 +113,6 @@ class EmailVerification extends Component {
                                     codeEmail: this.state.email,
                                     email: '',
                                 }, () => {
-                                    console.log(this.state.codeEmail)
                                 }
                             )
                             notify.show('Check your access code in your email')

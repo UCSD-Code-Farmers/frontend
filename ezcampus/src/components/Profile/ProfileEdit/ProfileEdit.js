@@ -146,7 +146,6 @@ class ProfileEdit extends React.Component {
               'Authorization': 'Client-ID c9897a7d288d020'
           }
         }).then(res => {                                
-            console.log(res.data.data.link)
             this.setState(prevState => ({
               avatar,
               loadingAvatar: false,
@@ -203,7 +202,6 @@ class ProfileEdit extends React.Component {
       ...this.state.tempUser})
     .then(res => {
       if (res.data.statusCode === 200) {
-          console.log('profile has been saved')
           const action = {
             type: 'setEmailAndUserName', 
             data: {
@@ -216,7 +214,6 @@ class ProfileEdit extends React.Component {
           //reload all the posts
           axios.get(`${API_PREFIX}/posts/get_all_posts`)
           .then(response => {
-              console.log('posts have been updated')
               const posts = response.data.data
               const action = {type: 'setPosts', data: {posts}}
               store.dispatch(action)
