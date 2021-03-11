@@ -12,4 +12,6 @@ npm start
 
 Or 
 
-please visit https://ezcampus.metaraw.world to see the deployment
+please visit https://pvtezcampus.metaraw.world to see the deployment
+
+Visit backend of this project at: https://github.com/UCSD-Code-Farmers/backend
